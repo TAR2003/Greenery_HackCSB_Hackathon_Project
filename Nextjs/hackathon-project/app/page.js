@@ -8,6 +8,10 @@ export default function Home() {
   const handleClickToGlobalWarming = () => {
     router.push("/globalwarming");
   };
+
+  const goToLogin = () => {
+    router.push("/login");
+  };
   return (
     <main>
       <header className="flex justify-between items-center h-24 bg-green-400 rounded">
@@ -28,7 +32,8 @@ export default function Home() {
             <button className="bg-blue-500 hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-32 h-10">
               SIGN IN
             </button>
-            <button className="bg-blue-500 hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-32 h-10 ">
+            <button className="bg-blue-500 hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-32 h-10 "
+            onClick={goToLogin}>
               LOG IN
             </button>
           </div>
