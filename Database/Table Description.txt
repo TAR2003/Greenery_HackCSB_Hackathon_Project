@@ -1,0 +1,36 @@
+User(id, name, email, password, image, location, text)
+
+Company(id, name, email, password, image, text)
+
+Plant(id, name, image, description)
+
+UserXPlant(id, user_id, plant_id, no_of_plants)
+
+ForumQuestion(id, text, user_id, time)
+
+ForumAnswer(id, question_id, text, user_id, time)
+
+ReactXAnswer(id, answer_id, user_id, react, time)
+
+Harvest(id, user_id, plant_id, image, text, date, time)
+
+ReactXHarvest(id, harvest_id, user_id, react, time)
+
+CommentXHarvest(id, harvest_id, text, user_id, time)
+
+Post(id, user_id, plant_id, text, image, time, adviceOrplantation)
+
+ReactXPost(id, post_id, react)
+
+CommentXPost(id, user_id, post_id, text, time)
+
+ReactXComment(id, user_id, post_id, react) 
+
+Notification(id, user_id, post_id, text, read/unread, time)
+
+Product(id, name, text, price, image, status)
+
+UserXProduct(id, user_id, product_id, no_of_same_product, time)
+
+CompanyXProduct(id, company_id, product_id, no_of_stock)
+
