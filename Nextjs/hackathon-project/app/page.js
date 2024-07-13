@@ -6,6 +6,8 @@ export default function Home() {
     <main className="bg-red-700">
       <div>Home will start from here </div>
       <Link href={"/globalwarming"}>Click to go global warming</Link>
+      <br></br>
+      <Link href={"/login"}>Go to Login</Link>
     </main>
   );
 }
