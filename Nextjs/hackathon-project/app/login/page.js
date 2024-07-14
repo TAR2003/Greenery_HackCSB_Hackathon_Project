@@ -74,7 +74,7 @@ export default function login() {
         <div className={styles.container}>
             <form className={styles.loginForm} onSubmit={handleSubmit}>
                 <h1>Log in</h1>
-                <label className={styles.label} htmlfor="email">Email</label>
+                <label className={styles.label} htmlFor="email">Email</label>
                 
                 <input 
                 type="email" 
@@ -84,7 +84,7 @@ export default function login() {
                 onChange={handleInputChange}   
                 className={styles.inputField}></input>
 
-                <label className={styles.label} htmlfor="password">Password</label>
+                <label className={styles.label} htmlFor="password">Password</label>
                 
                 <input 
                 type="password" 
