@@ -53,7 +53,7 @@ const layout = ({ children }) => {
           </div>
         </div>
       </header>
-      <div className="py-10">{children}</div>
+      <div className="py-20">{children}</div>
 
       <footer>
         <div className="w-full bg-slate-500 text-white flex flex-col h-16">
