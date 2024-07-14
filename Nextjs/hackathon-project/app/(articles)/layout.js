@@ -33,7 +33,7 @@ const layout = ({ children }) => {
         <div className="flex-1 text-right">
           <div className="flex flex-row gap-2 justify-end items-end pr-4 md:pr-20">
             <a
-              href="/home"
+              href="/"
               className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10 text-center"
             >
               DOCS
