@@ -14,12 +14,16 @@ export default function login() {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
-      });
+    });
+
+
+    const [showInvalidPopup, setShowInvalidPopup] = useState(false);
 
 
     //to update any field that being typed  
     const handleInputChange = (event) => {
         const { name, value } = event.target;
+        setShowInvalidPopup(false);
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
@@ -49,6 +53,7 @@ export default function login() {
                 });
             }
             else {
+                setShowInvalidPopup(true);
                 console.log('Login failed:', data.message);
             }
 
@@ -91,6 +96,11 @@ export default function login() {
                 <p align='center'>Don't have an account? <br></br> 
                     <a href='/signin' className={styles.link}>Sign up</a></p>
             </form>
+            {showInvalidPopup && (
+                <div className={styles.invalidPopup}>
+                    Invalid username or password
+                </div>
+            )}
             
 
         </div>
