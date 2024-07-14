@@ -42,22 +42,13 @@ export default function signin() {
     }
 
     const districts = [
-        "Barguna", "Barishal", "Bhola", "Jhalokathi", "Patuakhali", "Pirojpur",
-        "Bandarban", "Brahmanbaria", "Chandpur", "Chattogram", "Cumilla", "Cox's Bazar",
-        "Feni", "Khagrachhari", "Lakshmipur", "Noakhali", "Rangamati",
-        "Dhaka", "Faridpur", "Gazipur", "Gopalganj", "Kishoreganj", "Madaripur",
-        "Manikganj", "Munshiganj", "Narayanganj", "Narsingdi", "Rajbari", "Shariatpur",
-        "Tangail",
-        "Bagerhat", "Chuadanga", "Jashore", "Jhenaidah", "Khulna", "Kushtia",
-        "Magura", "Meherpur", "Narail", "Satkhira",
-        "Jamalpur", "Mymensingh", "Netrokona", "Sherpur",
-        "Bogra", "Joypurhat", "Naogaon", "Natore", "Chapai Nawabganj", "Pabna",
-        "Rajshahi", "Sirajganj",
-        "Dinajpur", "Gaibandha", "Kurigram", "Lalmonirhat", "Nilphamari", "Panchagarh",
-        "Rangpur", "Thakurgaon",
-        "Habiganj", "Maulvibazar", "Sunamganj", "Sylhet",
-        "Bagerhat", "Chuadanga", "Jashore", "Jhenaidah", "Khulna", "Kushtia",
-        "Magura", "Meherpur", "Narail", "Satkhira"
+        "Bagerhat", "Bandarban", "Barguna", "Barishal", "Bhola", "Bogura", "Brahmanbaria", "Chandpur", "Chattogram",
+        "Chuadanga", "Cox's Bazar", "Cumilla", "Dhaka", "Dinajpur", "Faridpur", "Feni", "Gaibandha", "Gazipur", 
+        "Gopalganj", "Habiganj", "Jamalpur", "Jashore", "Jhalokathi", "Jhenaidah", "Joypurhat", "Khagrachari", "Khulna",
+        "Kishoreganj", "Kurigram", "Kushtia", "Lakshmipur", "Lalmonirhat", "Madaripur", "Magura", "Manikganj", "Meherpur",
+        "Moulvibazar", "Munshiganj", "Mymensingh", "Naogaon", "Narail", "Narayanganj", "Narsingdi", "Natore", "Netrokona", 
+        "Nilphamari", "Noakhali", "Pabna", "Panchagarh", "Patuakhali", "Pirojpur", "Rajbari", "Rajshahi", "Rangamati",
+        "Rangpur", "Satkhira", "Shariatpur", "Sherpur", "Sirajganj", "Sunamganj", "Sylhet", "Tangail", "Thakurgaon"
     ];
 
 
