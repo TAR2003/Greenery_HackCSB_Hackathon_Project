@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import styles from '../login/login.module.css';
 import Dropdown from './dropdown';
 
@@ -9,6 +9,13 @@ import Dropdown from './dropdown';
 
 export default function signin() {
 
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const email = searchParams.get('email');
+
+    
+
+    console.log('In signin email: ', email);
 
     const [formData, setFormData] = useState({
         name: '',

@@ -26,11 +26,22 @@ export async function GET(req) {
 
 export async function POST(request) {
   try {
-    // Fetch user data from the UserInfo table
-    const result = await pool.query("SELECT * FROM UserInfo");
-    const users = result.rows; // Get the rows from the result
+    const body = await request.json();
+    if(true) {
+      console.log('we are in backend');
+      const email = body.email;
+      console.log(email);
+      // const result = await pool.query("SELECT * FROM UserInfo");
+      // const users = result.rows; // Get the rows from the result
 
-    return NextResponse.json(users);
+      return NextResponse.json({success: true});
+    } else {
+      // Fetch user data from the UserInfo table
+      const result = await pool.query("SELECT * FROM UserInfo");
+      const users = result.rows; // Get the rows from the result
+
+      return NextResponse.json(users);
+    }
   } catch (error) {
     console.error("Database query error:", error);
     return NextResponse.json(

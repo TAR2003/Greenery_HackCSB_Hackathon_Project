@@ -31,26 +31,30 @@ export default function login() {
     };
 
 
-/*
+
     //sending data to backend for email and password verification
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
         try {
-            const response = await fetch('/api/login', {
+            const response = await fetch('/api', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
                 },
-                body: JSON.stringify({formData}),
+                body: JSON.stringify({
+                    email: formData.email, 
+                    password: formData.password}),
             });
-
+            
             const data = await response.json();
 
+            
+
             if(data.success) {
-                router.push({
-                    pathname: '/profile'
-                });
+                router.push(
+                    `/signin?email=${encodeURIComponent(formData.email)}`
+                );
             }
             else {
                 setShowInvalidPopup(true);
@@ -63,11 +67,11 @@ export default function login() {
 
         
     };
-*/
+
 
     return (
         <div className={styles.container}>
-            <form className={styles.loginForm}>
+            <form className={styles.loginForm} onSubmit={handleSubmit}>
                 <h1>Log in</h1>
                 <label className={styles.label} htmlfor="email">Email</label>
                 
