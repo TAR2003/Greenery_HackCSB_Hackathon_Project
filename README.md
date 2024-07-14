@@ -1,5 +1,4 @@
-# HackCSB-Hackathon-Project leader tawkir
-
+# HackCSB-Hackathon-Project
 Here is the two folders
 
 first is code of next js
