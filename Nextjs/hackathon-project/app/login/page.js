@@ -43,6 +43,7 @@ export default function login() {
                     'Content-type': 'application/json',
                 },
                 body: JSON.stringify({
+                    type: 'login',
                     email: formData.email, 
                     password: formData.password}),
             });
