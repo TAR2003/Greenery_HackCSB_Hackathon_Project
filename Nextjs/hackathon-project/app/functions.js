@@ -11,7 +11,8 @@ export async function getinfo() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        type: "helloworld",
+        type: "getuserinfo",
+        userid: 1,
       }),
     });
     const newData = await response.json();
