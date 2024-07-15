@@ -62,18 +62,69 @@ const ProfileID = ({ params }) => {
           </div>
         </div>
       </div>
-      <div
-        className="flex flex-wrap w-full bg-red-500 overflow-y-auto justify-center items-center"
-        style={{
-          maxHeight: "600px",
-        }}
-      >
-        <div className="bg-yellow-300 w-96 h-96 border border-white"></div>
-        <div className="bg-blue-300 w-96 h-96 border border-white"></div>
-        <div className="bg-yellow-300 w-96 h-96 border border-white"></div>
-        <div className="bg-blue-300 w-96 h-96 border border-white"></div>
-        <div className="bg-yellow-300 w-96 h-96 border border-white"></div>
-        <div className="bg-blue-300 w-96 h-96 border border-white"></div>
+      <div className="pl-20 pr-20">
+        <div
+          className="flex flex-wrap w-full h-full bg-black overflow-y-auto justify-center items-center"
+          style={{}}
+        >
+          {" "}
+          {/*started the list  from here */}
+          <div
+            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6"
+            style={{
+              backgroundImage: "url('/plantedtrees.png')",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          >
+            {/* Content inside the div */}
+          </div>
+          <div
+            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6"
+            style={{
+              backgroundImage: "url('/harvestedtimes.png')",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          >
+            {/* Content inside the div */}
+          </div>
+          <div
+            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6"
+            style={{
+              backgroundImage: "url('/answeredqueries.png')",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          >
+            {/* Content inside the div */}
+          </div>
+          <div
+            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6"
+            style={{
+              backgroundImage: "url('/communitypost.png')",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          >
+            {/* Content inside the div */}
+          </div>
+          <div
+            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6"
+            style={{
+              backgroundImage: "url('/earnedbadges.png')",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          >
+            {/* Content inside the div */}
+          </div>
+        </div>
       </div>
 
       <h1 className="text-base md:text-lg lg:text-xl xl:text-2xl">
