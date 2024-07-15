@@ -4,9 +4,13 @@ import { getUserInfo } from './getUserInfo';
 import { getUserPosts } from './getUserPosts';
 import { getUserPlants } from './getUserPlants';
 import { getPlantPosts } from './getPlantPosts';
-import { getHarvestByUser } from './getUserHarvests'; // Import the new function
+import { getHarvestByUser } from './getUserHarvests';
 import { getPlantHarvests } from './getPlantHarvests';
-import { userInfoSchema, userNameSchema, loginSchema, userPostsSchema, plantPostsSchema, harvestSchema, plantHarvestsSchema } from './validation';
+import { getUserQuestions } from './getUserQuestions'; 
+import { getQuestionsByPlantName } from './getQuestionsByPlantName'; // Import the new function
+import { getReactionNumber } from './getReactNumber'; // Import the new function
+import { getUserReaction } from './getUserReaction';
+import { userInfoSchema, loginSchema, userPostsSchema, plantPostsSchema, harvestSchema, plantHarvestsSchema, userQuestionsSchema, plantNameSchema, reactionsSchema, userReactSchema } from './validation';
 import { sanitizeInput } from './sanitization';
 
 // Define the POST function
@@ -47,20 +51,53 @@ export async function POST(request) {
         return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
       }
       return await getPlantPosts(info.userId);
-    } else if (type === 'getuserharvests') { // New case for getting harvests by user ID
+    } else if (type === 'getuserharvests') {
       info.userId = sanitizeInput(info.userId);
       const validationResult = harvestSchema.validate({ userId: info.userId });
       if (validationResult.error) {
         return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
       }
       return await getHarvestByUser(info.userId);
-    }  else if (type === 'getplantharvests') {
+    } else if (type === 'getplantharvests') {
       info.userId = sanitizeInput(info.userId);
       const validationResult = plantHarvestsSchema.validate({ userId: info.userId });
       if (validationResult.error) {
         return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
       }
       return await getPlantHarvests(info.userId);
+    } else if (type === 'getuserquestions') {
+      info.userId = sanitizeInput(info.userId);
+      const validationResult = userQuestionsSchema.validate({ userId: info.userId });
+      if (validationResult.error) {
+        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+      }
+      return await getUserQuestions(info.userId);
+    } else if (type === 'getquestionsbyplantname') {
+      info.plantName = sanitizeInput(info.plantName);
+      const validationResult = plantNameSchema.validate({ plantName: info.plantName });
+      if (validationResult.error) {
+        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+      }
+      return await getQuestionsByPlantName(info.plantName);
+    } else if (type === 'getreactionnumber') { // New case for getting reaction number
+      info.answerId = sanitizeInput(info.answerId);
+      const validationResult = reactionsSchema.validate({ answerId: info.answerId }); // Adjust as necessary
+      if (validationResult.error) {
+        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+      }
+      return await getReactionNumber(info.answerId);
+    } else if (type === 'getuserreaction') { // New case for getting user reaction
+      info.answerId = sanitizeInput(info.answerId);
+      info.userId = sanitizeInput(info.userId);
+      const validationResult = userReactSchema.validate({
+        answerId: info.answerId,
+        userId: info.userId
+      });
+      if (validationResult.error) {
+        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+      }
+      const reaction = await getUserReaction(info.answerId, info.userId);
+      return NextResponse.json({ reaction }); // Send the reaction or null
     }else if (type === 'login') {
       info.email = sanitizeInput(info.email);
       info.password = sanitizeInput(info.password);
@@ -72,7 +109,6 @@ export async function POST(request) {
       console.log('Login attempt for:', info.email);
 
       return await getId(info.email, info.password);
-
     } else {
       return NextResponse.json({ message: 'Invalid request type' }, { status: 400 });
     }
