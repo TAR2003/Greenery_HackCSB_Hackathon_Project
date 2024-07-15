@@ -1,15 +1,12 @@
 import { NextResponse } from "next/server";
-import { Pool } from "pg";
+import { getPool } from "./db";
 
-// Set up PostgreSQL connection pool
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Ensure your DATABASE_URL is set in .env.local
-});
 
 export async function getUserInfo(userid) {
+  const pool = getPool();
   try {
-    // Fetch user data from the UserInfo table
-    const result = await pool.query("SELECT * FROM UserInfo");
+    // Use parameterized query to fetch user data from the UserInfo table
+    const result = await pool.query("SELECT * FROM UserInfo WHERE id = $1", [userid]);
     const users = result.rows; // Get the rows from the result
 
     return NextResponse.json(users);
@@ -21,3 +18,7 @@ export async function getUserInfo(userid) {
     );
   }
 }
+
+
+
+
