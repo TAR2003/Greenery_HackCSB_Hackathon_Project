@@ -12,6 +12,7 @@ export async function getPlantPosts(plantId) {
     }
 
     // Use parameterized query to prevent SQL injection
+    //this will show the posts of a particular plant
     const result = await pool.query(
       `SELECT *
        FROM Post
