@@ -32,31 +32,49 @@ export async function POST(request) {
       return await getUserInfo(info.userid);
     } else if (type === "getuserposts") {
       info.userId = sanitizeInput(info.userId);
-      const validationResult = userPostsSchema.validate({ userId: info.userId });
+      const validationResult = userPostsSchema.validate({
+        userId: info.userId,
+      });
       if (validationResult.error) {
-        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+        return NextResponse.json(
+          { message: validationResult.error.details[0].message },
+          { status: 400 }
+        );
       }
       return await getUserPosts(info.userId);
     } else if (type === "getuserplants") {
       info.userId = sanitizeInput(info.userId);
-      const validationResult = userPostsSchema.validate({ userId: info.userId });
+      const validationResult = userPostsSchema.validate({
+        userId: info.userId,
+      });
       if (validationResult.error) {
-        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+        return NextResponse.json(
+          { message: validationResult.error.details[0].message },
+          { status: 400 }
+        );
       }
       return await getUserPlants(info.userId);
     } else if (type === "getplantposts") {
-      New case for getting posts by plant ID
+      //New case for getting posts by plant ID
       info.plantId = sanitizeInput(info.plantId);
-      const validationResult = userPostsSchema.validate({ userId: info.plantId }); // Use a specific schema if available
+      const validationResult = userPostsSchema.validate({
+        userId: info.plantId,
+      }); // Use a specific schema if available
       if (validationResult.error) {
-        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+        return NextResponse.json(
+          { message: validationResult.error.details[0].message },
+          { status: 400 }
+        );
       }
       return await getPlantPosts(info.plantId);
     } else if (type === "login") {
       info.email = sanitizeInput(info.email);
       const validationResult = loginSchema.validate(info);
       if (validationResult.error) {
-        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+        return NextResponse.json(
+          { message: validationResult.error.details[0].message },
+          { status: 400 }
+        );
       }
       console.log("Login attempt for:", info.email);
       return NextResponse.json({ success: true });
