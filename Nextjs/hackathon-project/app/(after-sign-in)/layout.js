@@ -35,7 +35,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <header
-        className="flex fixed justify-center items-center h-20 w-full rounded bg-cover bg-center"
+        className="flex fixed justify-center items-center h-20 w-full rounded bg-cover bg-center z-40"
         style={{ backgroundImage: "url('/green-green.png')" }}
       >
         <div className="flex items-center">
@@ -88,7 +88,7 @@ const Layout = ({ children }) => {
 
       {/* Menubar */}
       <div
-        className={`fixed top-0 left-0 h-full bg-gray-800 text-white transition-transform transform ${
+        className={`fixed top-0 left-0 z-50 h-full bg-gray-800 text-white transition-transform transform ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ width: "450px" }}

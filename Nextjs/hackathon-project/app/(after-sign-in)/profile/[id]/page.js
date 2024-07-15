@@ -70,7 +70,7 @@ const ProfileID = ({ params }) => {
           {" "}
           {/*started the list  from here */}
           <div
-            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6"
+            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6 transform transition-transform duration-300 hover:scale-110"
             style={{
               backgroundImage: "url('/plantedtrees.png')",
               backgroundSize: "cover",
@@ -78,6 +78,16 @@ const ProfileID = ({ params }) => {
               backgroundPosition: "center",
             }}
           >
+            <div className="flex flex-col h-full w-full  justify-end items-center">
+              <h1 className="text-3xl text-black py-8">Planted {} Trees</h1>
+              <a
+                onClick={""}
+                className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
+              >
+                Learn More
+              </a>
+            </div>
+
             {/* Content inside the div */}
           </div>
           <div
