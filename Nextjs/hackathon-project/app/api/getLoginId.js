@@ -1,7 +1,6 @@
 // getPlantPosts.js
 import { NextResponse } from "next/server";
 import { getPool } from "./db";
-import { sanitizeInput } from "./sanitization";
 
 const pool = getPool();
 

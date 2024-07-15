@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import styles from '../login/login.module.css';
 import Dropdown from './dropdown';
 
@@ -10,16 +10,9 @@ import Dropdown from './dropdown';
 export default function signin() {
 
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const email = searchParams.get('email');
-
-    
-
-    console.log('In signin email: ', email);
 
     const [formData, setFormData] = useState({
         name: '',
-        username: '',
         email: '',
         password: '',
         location: '',
@@ -42,6 +35,7 @@ export default function signin() {
     const handleSelectLocation = (value) => {
         setSelectedLocation(value);
         console.log('selected :', value);
+        setShowInvalidPopup(false);
         setFormData((prevData) => ({
             ...prevData,
             location: value,
@@ -60,9 +54,53 @@ export default function signin() {
 
 
 
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+    
+        try {
+            const response = await fetch('/api', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify({
+                    type: 'signup',
+                    email: formData.email, 
+                    password: formData.password,
+                    name: formData.name,
+                    location: formData.location,
+                }),
+            });
+
+            const data = await response.json();        
+
+            if(data.success) {
+                router.push(
+                    "/login"
+                );
+            }
+            else {
+                setShowInvalidPopup(true);
+                console.log('Login failed:', data.message);
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
+        
+    };
+
+
+
+
+
+
+
     return (
         <div className={styles.container2}>
-            <form className={styles.loginForm2}>
+            <form className={styles.loginForm2} onSubmit={handleSubmit}>
                 <h1>Sign Up</h1>
 
                 <label className={styles.label} htmlFor="name">Full Name</label>
@@ -71,15 +109,6 @@ export default function signin() {
                 placeholder="Enter your Full Name"
                 name="name"
                 value={formData.name}
-                onChange={handleInputChange}   
-                className={styles.inputField}></input>
-
-                <label className={styles.label} htmlFor="username">Username</label>
-                <input 
-                type="text" 
-                placeholder="Enter your Username"
-                name="username"
-                value={formData.username}
                 onChange={handleInputChange}   
                 className={styles.inputField}></input>
 
@@ -109,13 +138,13 @@ export default function signin() {
                 <button 
                 type="submit" 
                 className={styles.submitButton}
-                >Login</button>
+                >Sign Up</button>
                 <p align='center'>Already have an account? <br></br> 
                     <a href='/login' className={styles.link}>Log In</a></p>
             </form>
             {showInvalidPopup && (
-                <div className={styles.invalidPopup}>
-                    Invalid username or password
+                <div className={styles.invalidPopup1}>
+                    Another account for this email already exists
                 </div>
             )}
             

@@ -48,7 +48,7 @@ export default function login() {
                     email: formData.email, 
                     password: formData.password}),
             });
-           // `/signin?email=${encodeURIComponent(formData.email)}`
+           
             const data = await response.json();           
 
             if(data.success) {

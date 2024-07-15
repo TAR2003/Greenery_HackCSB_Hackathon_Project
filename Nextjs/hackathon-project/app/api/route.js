@@ -7,6 +7,7 @@ import { getPlantPosts } from "./getPlantPosts"; // Import the new function
 import { getId } from "./getLoginId";
 import { userInfoSchema, loginSchema, userPostsSchema } from "./validation";
 import { sanitizeInput } from "./sanitization"; 
+import { insertInfo } from "./signupInfo";
 
 // Define the POST function
 export async function POST(request) {
@@ -82,6 +83,14 @@ export async function POST(request) {
       console.log('Login attempt for:', info.email);
 
       return await getId(info.email, info.password);
+
+    } else if (type === "signup") {
+      info.email = sanitizeInput(info.email);
+      info.password = sanitizeInput(info.password);
+      info.name = sanitizeInput(info.name);
+      info.location = sanitizeInput(info.location);
+
+      return await insertInfo(info.email, info.password, info.name, info.location);
 
     } else {
       return NextResponse.json(
