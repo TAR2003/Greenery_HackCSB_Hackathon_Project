@@ -24,6 +24,7 @@ export async function getinfo() {
 }
 
 export async function getUserInfo(uid) {
+  console.log("find uid " + uid);
   try {
     const response = await fetch("/api", {
       method: "POST",

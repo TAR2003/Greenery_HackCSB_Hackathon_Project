@@ -35,17 +35,16 @@ const Layout = ({ children }) => {
   return (
     <>
       <header
-        className="flex fixed top-0 left-0 justify-between items-center h-20 w-full rounded bg-cover bg-center"
+        className="flex fixed justify-center items-center h-20 w-full rounded bg-cover bg-center"
         style={{ backgroundImage: "url('/green-green.png')" }}
       >
         <div className="flex items-center">
           <div className="pl-8">
-            {/* Adjust width and height of the Image component */}
             <button onClick={toggleMenu} className="focus:outline-none">
               <Image
                 src="/hamburger.png"
-                width={80} // Adjust width as needed
-                height={80} // Adjust height as needed
+                width={80}
+                height={80}
                 className="pl-0 hover:bg-gray-300"
                 alt="Menu"
               />
@@ -63,25 +62,25 @@ const Layout = ({ children }) => {
         </div>
 
         <div className="flex-1 text-right">
-          <div className="flex flex-row gap-2 justify-end items-end pr-4 md:pr-20">
+          <div className="flex flex-row gap-2 justify-end items-center pr-4 md:pr-20">
             <a
               href="/"
-              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10 text-center"
+              className="flex items-center justify-center bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10"
             >
               Notifications
             </a>
             <a
               href="/profile"
-              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10 text-center"
+              className="flex items-center justify-center bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10"
             >
               Profile
             </a>
             <a
               href="/login"
               onClick={handleLogOut}
-              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10 text-center"
+              className="flex items-center justify-center bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10"
             >
-              LOG OUT
+              Log Out
             </a>
           </div>
         </div>
