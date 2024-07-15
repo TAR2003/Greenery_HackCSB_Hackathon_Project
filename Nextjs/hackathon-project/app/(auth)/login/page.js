@@ -55,7 +55,7 @@ export default function login() {
                 const id = data.userid;
                 Cookies.set("userid", id);
                 router.push(
-                    `/profile/[id]`
+                    `/profile/${id}`
                 );
             }
             else {

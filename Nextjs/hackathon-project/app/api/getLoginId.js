@@ -14,7 +14,7 @@ export async function getId(email, password) {
     
     if(result.rowCount === 1) {
         const id = result.rows[0].id; // Get the rows from the result
-        return NextResponse.json({success: true },{userid: id});
+        return NextResponse.json({success: true, userid: id});
     }
     else {
         return NextResponse.json({ success: false });
