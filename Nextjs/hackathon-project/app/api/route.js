@@ -4,8 +4,10 @@ import { getUserInfo } from "./getUserInfo";
 import { getUserPosts } from "./getUserPosts";
 import { getUserPlants } from "./getUserPlants"; 
 import { getPlantPosts } from "./getPlantPosts"; // Import the new function
+import { getId } from "./getLoginId";
 import { userInfoSchema, loginSchema, userPostsSchema } from "./validation";
 import { sanitizeInput } from "./sanitization"; 
+import { string } from "joi";
 
 // Define the POST function
 export async function POST(request) {
@@ -51,12 +53,15 @@ export async function POST(request) {
       
     } else if (type === "login") {
       info.email = sanitizeInput(info.email);
+      info.password = sanitizeInput(info.password);
+
       const validationResult = loginSchema.validate(info);
       if (validationResult.error) {
         return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
       }
       console.log('Login attempt for:', info.email);
-      return NextResponse.json({ success: true });
+
+      return await getId(info.email, info.password);
 
     } else {
       return NextResponse.json({ message: "Invalid request type" }, { status: 400 });

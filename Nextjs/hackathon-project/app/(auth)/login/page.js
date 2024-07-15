@@ -1,5 +1,6 @@
 'use client';
 
+import Cookies from "js-cookie";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './login.module.css';
@@ -47,14 +48,14 @@ export default function login() {
                     email: formData.email, 
                     password: formData.password}),
             });
-            
-            const data = await response.json();
-
-            
+           // `/signin?email=${encodeURIComponent(formData.email)}`
+            const data = await response.json();           
 
             if(data.success) {
+                const id = data.userid;
+                Cookies.set("userid", id);
                 router.push(
-                    `/signin?email=${encodeURIComponent(formData.email)}`
+                    `/profile/[id]`
                 );
             }
             else {
