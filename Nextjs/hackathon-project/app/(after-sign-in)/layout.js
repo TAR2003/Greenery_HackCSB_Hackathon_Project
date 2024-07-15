@@ -1,8 +1,9 @@
 "use client"; // layout.js
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import MenuOptions from "./MenuOptions"; // Import menu options
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const Layout = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,6 +21,16 @@ const Layout = ({ children }) => {
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
+
+  const handleLogOut = () => {
+    Cookies.remove("userid");
+  };
+
+  useEffect(() => {
+    if (Cookies.get("userid") === undefined) {
+      router.push("/login");
+    }
+  }, []);
 
   return (
     <>
@@ -67,6 +78,7 @@ const Layout = ({ children }) => {
             </a>
             <a
               href="/login"
+              onClick={handleLogOut}
               className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10 text-center"
             >
               LOG OUT

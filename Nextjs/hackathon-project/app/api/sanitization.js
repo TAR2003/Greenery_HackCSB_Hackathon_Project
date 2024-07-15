@@ -1,8 +1,3 @@
-import DOMPurify from 'dompurify';
-
-
-
-
 export function sanitizeInput(input) {
   if (typeof input === 'string') {
     // Replace dangerous characters with their encoded versions

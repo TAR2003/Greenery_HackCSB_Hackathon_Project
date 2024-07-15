@@ -5,6 +5,7 @@ export async function getUserPosts(userId) {
   const pool = getPool(); // Get the singleton instance of the pool
   try {
     // Use a parameterized query to fetch posts for the specified user ID
+    //this will show the posts of a particular user in descending order of time
     const result = await pool.query(
       "SELECT * FROM Post WHERE user_id = $1 ORDER BY time DESC",
       [userId]
