@@ -1,3 +1,4 @@
+//this will give the info of the user of a particular id
 import { NextResponse } from "next/server";
 import { getPool } from "./db";
 
@@ -5,8 +6,12 @@ import { getPool } from "./db";
 export async function getUserInfo(userid) {
   const pool = getPool();
   try {
+     // Validate userId to ensure it's a number (optional but recommended)
+     if (typeof userId !== 'number' || userId <= 0) {
+      return NextResponse.json({ message: 'Invalid user ID' }, { status: 400 });
+    }
     // Use parameterized query to fetch user data from the UserInfo table
-    //this will give the info of the user of a particular id
+    
     const result = await pool.query("SELECT * FROM UserInfo WHERE id = $1", [userid]);
     const users = result.rows; // Get the rows from the result
 
@@ -19,6 +24,26 @@ export async function getUserInfo(userid) {
     );
   }
 }
+
+
+export async function getUserInfoByName(userName) {
+  const pool = getPool();
+  try {
+   
+    // Use parameterized query to fetch user data from the UserInfo table based on the name
+    const result = await pool.query("SELECT * FROM UserInfo WHERE name = $1", [userName]);
+    const users = result.rows; // Get the rows from the result
+
+    return NextResponse.json(users);
+  } catch (error) {
+    console.error("Database query error:", error);
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
 
 
 

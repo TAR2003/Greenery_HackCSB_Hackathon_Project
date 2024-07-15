@@ -1,4 +1,4 @@
-// getUserPlants.js
+// this will show the information of the plants that the user has 
 import { NextResponse } from "next/server";
 import { getPool } from "./db";
 
@@ -12,7 +12,6 @@ export async function getUserPlants(userId) {
     }
 
     // Use parameterized query to prevent SQL injection
-    //this will show the information of the plants that the user has
     const result = await pool.query(
       `SELECT p.id, p.name, p.image, p.description, up.no_of_plants
        FROM UserXPlant up

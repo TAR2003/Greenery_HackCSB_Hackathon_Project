@@ -1,10 +1,11 @@
-//THIS FILE IS FOR GETTING ALL POSTS RELATED TO A USER'S PLANTS NOT NECESSARILY THAT THE USER HAS POSTED THEM
+//THIS FILE IS FOR FETCHING ALL THE EXISTING HARVEST INFORMATION/POST OF THE PLANTS THAT A USER HAS
+
 import { NextResponse } from 'next/server';
 import { getPool } from './db';
 
 const pool = getPool();
 
-export async function getPlantPosts(userId) {
+export async function getPlantHarvests(userId) {
   try {
     // Validate userId to ensure it's a number (optional but recommended)
     if (typeof userId !== 'number' || userId <= 0) {
@@ -24,7 +25,7 @@ export async function getPlantPosts(userId) {
 
     // Then, get all posts related to these plants
     const result = await pool.query(
-      `SELECT * FROM Post WHERE plant_id = ANY($1) ORDER BY time DESC`,
+      `SELECT * FROM harvest WHERE plant_id = ANY($1) ORDER BY time DESC`,
       [plantIds]
     );
     const posts = result.rows;
