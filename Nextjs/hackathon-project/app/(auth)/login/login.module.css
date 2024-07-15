@@ -49,6 +49,7 @@
   .loginForm2 {
     background-color: #35898e;
     padding: 40px;
+    margin-top: 80px;
     border-radius: 8px;
     align-items: center;
     background-image: url('/7.jpg');
@@ -68,14 +69,27 @@
   }
 
   .invalidPopup {
-    background-color: red;
-    color:white;
+    
+    color:rgb(255, 0, 0);
     text-align: center;
-    font-size: small;
+    font-size:17px;
+    font-weight: bold;
     padding: 4px;
     border-radius: 4px;
     position: absolute;
-    top: 65px;
+    bottom: 120px;
+  }
+
+  .invalidPopup1 {
+    
+    color:rgb(255, 0, 0);
+    text-align: center;
+    font-size:13px;
+    font-weight: bold;
+    padding: 4px;
+    border-radius: 4px;
+    position: absolute;
+    bottom: 20px;
   }
   
   /* Input field styles */
@@ -114,7 +128,7 @@
     font-weight: bold;
     color: #333;
     text-align: center;
-    position: relative;
+    
     top: -30px;
   }
 
@@ -123,7 +137,7 @@
     font-weight: bold;
     color: #000000;
     text-align: center;
-    position: relative;
+    
     top: -15px;
   }
   

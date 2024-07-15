@@ -1,4 +1,7 @@
 // Import necessary functions
+
+import { getId } from "./getLoginId";
+import { insertInfo } from "./signupInfo";
 import { NextResponse } from 'next/server';
 import { getUserInfo } from './getUserInfo';
 import { getUserPosts } from './getUserPosts';
@@ -109,6 +112,15 @@ export async function POST(request) {
       console.log('Login attempt for:', info.email);
 
       return await getId(info.email, info.password);
+
+    } else if (type === "signup") {
+      info.email = sanitizeInput(info.email);
+      info.password = sanitizeInput(info.password);
+      info.name = sanitizeInput(info.name);
+      info.location = sanitizeInput(info.location);
+
+      return await insertInfo(info.email, info.password, info.name, info.location);
+
     } else {
       return NextResponse.json({ message: 'Invalid request type' }, { status: 400 });
     }
