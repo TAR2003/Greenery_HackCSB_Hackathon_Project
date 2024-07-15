@@ -17,7 +17,7 @@ export async function getinfo() {
     });
     const newData = await response.json();
     console.log("We are done in the funcrion js   === ");
-    return JSON.stringify(newData);
+    return newData;
   } catch (error) {
     console.error("Error posting data:", error);
   }

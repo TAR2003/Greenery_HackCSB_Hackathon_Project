@@ -29,10 +29,12 @@ export async function POST(request) {
   const info = await request.json();
   // info will held all the body of request
   const type = info.type;
-  // type will show what type of query we want to do, every post request body will have a type element
+  // type will show what type of query we want to do,
+  // every post request body will have a type element
   //Now we will use conitionals
   if (type == "getuserinfo") {
-    // if type matches this it will call the getUserInfo function from that js file and return await it
+    // if type matches this it will call the getUserInfo function
+    // from that js file and return await it
     // wait before return
     return await getUserInfo(info.userid);
   } else {
