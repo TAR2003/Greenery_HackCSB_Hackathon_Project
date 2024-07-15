@@ -63,12 +63,16 @@ export async function POST(request) {
       return await getPlantHarvests(info.userId);
     }else if (type === 'login') {
       info.email = sanitizeInput(info.email);
+      info.password = sanitizeInput(info.password);
+
       const validationResult = loginSchema.validate(info);
       if (validationResult.error) {
         return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
       }
       console.log('Login attempt for:', info.email);
-      return NextResponse.json({ success: true });
+
+      return await getId(info.email, info.password);
+
     } else {
       return NextResponse.json({ message: 'Invalid request type' }, { status: 400 });
     }
