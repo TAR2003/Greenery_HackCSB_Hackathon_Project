@@ -1,7 +1,6 @@
 "use client"; // layout.js
 import { useState } from "react";
 import Image from "next/image";
-import MenuOptions from "./MenuOptions"; // Import menu options
 import { useRouter } from "next/navigation";
 
 const Layout = ({ children }) => {
@@ -28,18 +27,6 @@ const Layout = ({ children }) => {
         style={{ backgroundImage: "url('/green-green.png')" }}
       >
         <div className="flex items-center">
-          <div className="pl-8">
-            {/* Adjust width and height of the Image component */}
-            <button onClick={toggleMenu} className="focus:outline-none">
-              <Image
-                src="/hamburger.png"
-                width={80} // Adjust width as needed
-                height={80} // Adjust height as needed
-                className="pl-0 hover:bg-gray-300"
-                alt="Menu"
-              />
-            </button>
-          </div>
           <div className="flex-1 flex justify-center md:justify-start mx-2 md:mx-4">
             <Image
               src="/logo.png"
@@ -57,68 +44,28 @@ const Layout = ({ children }) => {
               href="/"
               className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10 text-center"
             >
-              Notifications
+              DOCS
             </a>
             <a
-              href="/profile"
+              href="/signin"
               className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10 text-center"
             >
-              Profile
+              SIGN IN
             </a>
             <a
               href="/login"
               className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10 text-center"
             >
-              LOG OUT
+              LOG IN
             </a>
           </div>
         </div>
       </header>
 
-      {/* Menubar */}
-      <div
-        className={`fixed top-0 left-0 h-full bg-gray-800 text-white transition-transform transform ${
-          isMenuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-        style={{ width: "450px" }}
-      >
-        <button onClick={toggleMenu} className="pl-8 text-white">
-          <Image
-            src="/cross.png"
-            width={80}
-            height={80}
-            className="hover:bg-gray-300"
-            alt="Close"
-          />
-        </button>
-        <nav className="p-4">
-          <ul>
-            <li className="py-2 pl-20 text-black">
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="bg-gray-200 px-4 py-2 rounded w-full hover:scale-110 transition-transform duration-300"
-              />
-            </li>
-            {MenuOptions.map((option, index) => (
-              <li key={index} className="py-2">
-                <a
-                  href={option.href}
-                  className="block py-2 pl-20 hover:bg-blue-500 hover:scale-110 transform text-white hover:text-yellow-500 transition-transform duration-300"
-                  onClick={closeMenu}
-                >
-                  {option.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-
       {/* Main content */}
-      <div className="py-20 text-white">{children}</div>
+      <div className="py-20 text-white text-3xl text-center">
+        <h1>Sorry, the page you searched can not be found</h1>
+      </div>
 
       {/* Footer */}
       <footer>

@@ -13,7 +13,7 @@ const ChatAI = () => {
   const fetchData = async () => {
     try {
       const data = await getinfo(); // Call your async function
-      setName(data); // Update state with fetched data
+      setName(data[0].name); // Update state with fetched data
     } catch (error) {
       console.error("Error fetching data:", error);
       setName("Failed to fetch data"); // Update state on error

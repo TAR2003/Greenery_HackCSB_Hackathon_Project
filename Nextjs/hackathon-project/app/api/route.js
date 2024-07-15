@@ -12,6 +12,7 @@ export async function POST(request) {
   try {
     const info = await request.json();
     const type = info.type;
+<<<<<<< HEAD
 
     if (!type) {
       return NextResponse.json({ message: "Type is required" }, { status: 400 });
@@ -62,6 +63,29 @@ export async function POST(request) {
       return NextResponse.json({ message: "Invalid request type" }, { status: 400 });
     }
 
+=======
+    // type will show what type of query we want to do, every post request body will have a type element
+    //Now we will use conitionals
+    if (type == "getuserinfo") {
+      // if type matches this it will call the getUserInfo function from that js file and return await it
+      // wait before return
+      return await getUserInfo(info.userid);
+    } else if (type == "login") {
+      console.log("we are in backend");
+      const email = info.email;
+      console.log(email);
+      // const result = await pool.query("SELECT * FROM UserInfo");
+      // const users = result.rows; // Get the rows from the result
+
+      return NextResponse.json({ success: true });
+    } else {
+      // Fetch user data from the UserInfo table
+      const result = await pool.query("SELECT * FROM UserInfo");
+      const users = result.rows; // Get the rows from the result
+
+      return NextResponse.json(users);
+    }
+>>>>>>> 01a70834cb69e63d858687ecace3f518830b04c4
   } catch (error) {
     console.error("Error processing request:", error);
     return NextResponse.json(
