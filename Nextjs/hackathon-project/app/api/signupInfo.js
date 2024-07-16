@@ -12,10 +12,11 @@ export async function insertInfo(email, password, name, location) {
     const emailCheck = await pool.query("SELECT * FROM UserInfo WHERE email = $1", [email]);
 
     if(emailCheck.rowCount === 0) {
+        const image = '/user/masnoon.png';
         await pool.query(
-            `INSERT into UserInfo(email, password, name, location)
-            values($1, $2, $3, $4)`
-            ,[email, password, name, location]
+            `INSERT into UserInfo(email, password, name, location, image)
+            values($1, $2, $3, $4, $5)`
+            ,[email, password, name, location, image]
         );
 
         return NextResponse.json({ success: true });
