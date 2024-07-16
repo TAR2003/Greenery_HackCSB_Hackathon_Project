@@ -4,10 +4,12 @@ import Image from "next/image";
 import MenuOptions from "./MenuOptions"; // Import menu options
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { searchUserByPrefix } from "../functions";
 
 const Layout = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
   const router = useRouter();
 
   const toggleMenu = () => {
@@ -18,8 +20,17 @@ const Layout = ({ children }) => {
     setIsMenuOpen(false);
   };
 
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+  const handleSearchChange = async (event) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+    // Update suggestions based on the current input value
+    const searchRows = await searchUserByPrefix(value);
+    setSuggestions(searchRows);
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setSuggestions([]);
+    router.push(`/profile/${suggestion}`);
   };
 
   const handleLogOut = () => {
@@ -102,9 +113,9 @@ const Layout = ({ children }) => {
             alt="Close"
           />
         </button>
-        <nav className="p-4">
+        <nav className="p-4 relative">
           <ul>
-            <li className="py-2 pl-20 text-black">
+            <li className="py-2 pl-20 text-black relative">
               <input
                 type="text"
                 placeholder="Search..."
@@ -112,6 +123,30 @@ const Layout = ({ children }) => {
                 onChange={handleSearchChange}
                 className="bg-gray-200 px-4 py-2 rounded w-full hover:scale-110 transition-transform duration-300"
               />
+              {suggestions.length > 0 && (
+                <ul className="absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+                  {suggestions.map((suggestion, index) => (
+                    <li
+                      key={index}
+                      className="p-2 hover:bg-gray-800 hover:text-white cursor-pointer"
+                      onClick={() => handleSuggestionClick(suggestion.id)}
+                    >
+                      <div className="flex flex-row">
+                        <Image
+                          src={suggestion.image}
+                          alt="pic"
+                          className="rounded-full"
+                          height={40}
+                          width={40}
+                        />
+                        <h1 className="text-xl text-left pl-4">
+                          {suggestion.name}
+                        </h1>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
             {MenuOptions.map((option, index) => (
               <li key={index} className="py-2">

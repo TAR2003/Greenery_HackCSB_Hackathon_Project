@@ -86,7 +86,7 @@ export async function getUserPosts(uid) {
 }
 
 export async function getUserHarvests(uid) {
-  console.log("find uid " + uid);
+  // console.log("find uid " + uid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -96,6 +96,26 @@ export async function getUserHarvests(uid) {
       body: JSON.stringify({
         type: "getuserharvests",
         userId: uid,
+      }),
+    });
+    const newData = await response.json();
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function searchUserByPrefix(prefix) {
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "searchusersbyprefix",
+        prefix: prefix,
       }),
     });
     const newData = await response.json();
