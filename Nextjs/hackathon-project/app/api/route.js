@@ -4,8 +4,10 @@ import { getId } from "./getLoginId";
 import { insertInfo } from "./signupInfo";
 import { NextResponse } from "next/server";
 import { getUserInfo } from "./getUserInfo";
+import { searchUsersByPrefix } from "./searchUsersByPrefix";
 import { getUserPosts } from "./getUserPosts";
 import { getUserPlants } from "./getUserPlants";
+import { getTotalNoOfPlants } from "./getUserPlants";
 import { getPlantPosts } from "./getPlantPosts";
 import { getHarvestByUser } from "./getUserHarvests";
 import { getPlantHarvests } from "./getPlantHarvests";
@@ -25,6 +27,7 @@ import {
   reactionsSchema,
   userReactSchema,
   userAnswerSchema,
+  searchUserByPrefixSchema,
 } from "./validation";
 import { sanitizeInput } from "./sanitization";
 import { getUserAnswers } from "./getUserAnswers";
@@ -52,7 +55,20 @@ export async function POST(request) {
         );
       }
       return await getUserInfo(info.userid);
-    } else if (type === "getuserposts") {
+    } else if(type === "searchusersbyprefix"){
+      info.prefix = sanitizeInput(info.prefix);
+      const validationResult = searchUserByPrefixSchema.validate({
+        prefix: info.prefix,
+      });
+      if (validationResult.error) {
+        return NextResponse.json(
+          { message: validationResult.error.details[0].message },
+          { status: 400 }
+        );
+      }
+      return await searchUsersByPrefix(info.prefix);
+    }
+    else if (type === "getuserposts") {
       info.userId = sanitizeInput(info.userId);
       const validationResult = userPostsSchema.validate({
         userId: info.userId,
@@ -89,7 +105,20 @@ export async function POST(request) {
         );
       }
       return await getPlantPosts(info.userId);
-    } else if (type === "getuserharvests") {
+    }else if(type === "gettotalnoofplants"){
+      info.userId = sanitizeInput(info.userId);
+      const validationResult = userPostsSchema.validate({
+        userId: info.userId,
+      });
+      if (validationResult.error) {
+        return NextResponse.json(
+          { message: validationResult.error.details[0].message },
+          { status: 400 }
+        );
+      }
+      return await getTotalNoOfPlants(info.userId);
+    }
+     else if (type === "getuserharvests") {
       info.userId = sanitizeInput(info.userId);
       const validationResult = harvestSchema.validate({ userId: info.userId });
       if (validationResult.error) {

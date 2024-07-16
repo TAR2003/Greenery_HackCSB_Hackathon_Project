@@ -54,3 +54,7 @@ export const userReactSchema = Joi.object({
 export const userAnswerSchema = Joi.object({
   userId: Joi.number().integer().required(),
 }).unknown(); // Allows other fields like 'type'
+
+export const searchUserByPrefixSchema = Joi.object({
+  prefix: Joi.string().min(1).required(),
+}).unknown(); // Allows other fields like 'type'
