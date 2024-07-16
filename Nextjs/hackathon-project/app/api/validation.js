@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from "joi";
 
 // Schema for validating user info request
 export const userInfoSchema = Joi.object({
@@ -51,4 +51,6 @@ export const userReactSchema = Joi.object({
   userId: Joi.number().integer().required(),
 }).unknown(); // Allows other fields like 'type'
 
-
+export const userAnswerSchema = Joi.object({
+  userId: Joi.number().integer().required(),
+}).unknown(); // Allows other fields like 'type'

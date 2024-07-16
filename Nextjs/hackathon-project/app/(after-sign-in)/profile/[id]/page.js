@@ -1,6 +1,13 @@
 "use client";
-import { getUserInfo } from "@/app/functions";
+import {
+  getUserAnswers,
+  getUserHarvests,
+  getUserInfo,
+  getUserPlants,
+  getUserPosts,
+} from "@/app/functions";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const ProfileID = ({ params }) => {
@@ -9,6 +16,11 @@ const ProfileID = ({ params }) => {
   const [info, setinfo] = useState(null);
   const [username, setusername] = useState("Loading username....");
   const [image, setimage] = useState("/1.jpg");
+  const [userplants, setuserplants] = useState("...");
+  const [harvestedtimes, setharvestedtimes] = useState("...");
+  const [communitypost, setcommunitypost] = useState("...");
+  const [answeredqueries, setansweredqueries] = useState("...");
+  const [earnedbadges, setearnedbadges] = useState(5);
 
   const fetchData = async () => {
     setUserid(params.id);
@@ -19,7 +31,17 @@ const ProfileID = ({ params }) => {
       setusername(result[0].name);
     } else setusername("No user with this id");
     setimage(result[0].image);
-
+    const userplantrows = await getUserPlants(parseInt(params.id));
+    setuserplants(userplantrows.length);
+    const harvestedtimesrows = await getUserHarvests(parseInt(params.id));
+    setharvestedtimes(harvestedtimesrows.length);
+    const communitypostrows = await getUserPosts(parseInt(params.id));
+    setcommunitypost(communitypostrows.length);
+    const answeredqueriesrows = await getUserAnswers(parseInt(params.id));
+    setansweredqueries(answeredqueriesrows.length);
+    console.log(answeredqueriesrows);
+    setearnedbadges(1);
+    //console.log(userplantrows);
     setShowstring(JSON.stringify(result));
   };
 
@@ -47,7 +69,7 @@ const ProfileID = ({ params }) => {
             <div className="">
               <img
                 src={image}
-                className="rounded-full h-52 w-52"
+                className="rounded-full h-52 w-52  border-white border-8"
                 alt="Profile Picture"
               />
             </div>
@@ -57,7 +79,9 @@ const ProfileID = ({ params }) => {
                 paddingTop: "60px",
               }}
             >
-              <h1 className="lg:text-3xl sm:text-3xl">{username}</h1>
+              <h1 className="lg:text-3xl sm:text-3xl font-extrabold">
+                {username}
+              </h1>
             </div>
           </div>
         </div>
@@ -79,7 +103,101 @@ const ProfileID = ({ params }) => {
             }}
           >
             <div className="flex flex-col h-full w-full  justify-end items-center">
-              <h1 className="text-3xl text-black py-8">Planted {} Trees</h1>
+              <h1 className="text-3xl text-black py-8 text-center font-bold">
+                Planted {userplants} Trees
+              </h1>
+              <a
+                href="/greenery"
+                className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
+              >
+                Learn More
+              </a>
+            </div>
+
+            {/* Content inside the div */}
+          </div>
+          <div
+            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6 transform transition-transform duration-300 hover:scale-110"
+            style={{
+              backgroundImage: "url('/harvestedtimes.png')",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          >
+            <div className="flex flex-col h-full w-full  justify-end items-center">
+              <h1 className="text-3xl text-black py-8 text-center font-bold">
+                Harvested {harvestedtimes} Times
+              </h1>
+              <a
+                href={`/harvest/${params.id}`}
+                className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
+              >
+                Learn More
+              </a>
+            </div>
+
+            {/* Content inside the div */}
+          </div>
+          <div
+            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6 transform transition-transform duration-300 hover:scale-110"
+            style={{
+              backgroundImage: "url('/answeredqueries.png')",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          >
+            <div className="flex flex-col h-full w-full  justify-end items-center">
+              <h1 className="text-3xl text-black py-8 tet-center font-bold">
+                Answered {answeredqueries} Queries
+              </h1>
+              <a
+                href={"/forum"}
+                className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
+              >
+                Learn More
+              </a>
+            </div>
+
+            {/* Content inside the div */}
+          </div>
+          <div
+            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6 transform transition-transform duration-300 hover:scale-110"
+            style={{
+              backgroundImage: "url('/communitypost.png')",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          >
+            <div className="flex flex-col h-full w-full  justify-end items-center">
+              <h1 className="text-3xl text-black py-8 text-center font-bold">
+                Posted total {communitypost} Community Posts
+              </h1>
+              <a
+                href={`/community/${params.id}`}
+                className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
+              >
+                Learn More
+              </a>
+            </div>
+
+            {/* Content inside the div */}
+          </div>
+          <div
+            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6 transform transition-transform duration-300 hover:scale-110"
+            style={{
+              backgroundImage: "url('/earnedbadges.png')",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          >
+            <div className="flex flex-col h-full w-full  justify-end items-center">
+              <h1 className="text-3xl text-black py-8 text-center font-bold">
+                Earned {earnedbadges} Badges
+              </h1>
               <a
                 onClick={""}
                 className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
@@ -90,59 +208,8 @@ const ProfileID = ({ params }) => {
 
             {/* Content inside the div */}
           </div>
-          <div
-            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6"
-            style={{
-              backgroundImage: "url('/harvestedtimes.png')",
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-            }}
-          >
-            {/* Content inside the div */}
-          </div>
-          <div
-            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6"
-            style={{
-              backgroundImage: "url('/answeredqueries.png')",
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-            }}
-          >
-            {/* Content inside the div */}
-          </div>
-          <div
-            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6"
-            style={{
-              backgroundImage: "url('/communitypost.png')",
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-            }}
-          >
-            {/* Content inside the div */}
-          </div>
-          <div
-            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6"
-            style={{
-              backgroundImage: "url('/earnedbadges.png')",
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-            }}
-          >
-            {/* Content inside the div */}
-          </div>
         </div>
       </div>
-
-      <h1 className="text-base md:text-lg lg:text-xl xl:text-2xl">
-        {userid} this is the userid
-      </h1>
-      <h1 className="flex text-base md:text-lg lg:text-xl xl:text-2xl">
-        ans hererr if the info {showstring}
-      </h1>
     </>
   );
 };
