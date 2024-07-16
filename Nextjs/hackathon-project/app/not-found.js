@@ -1,35 +1,43 @@
-"use client";
+"use client"; // layout.js
+import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
 
-const layout = ({ children }) => {
+const Layout = ({ children }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
-  const gotohome = () => {
-    router.push("/");
-  };
-  const gotoSignin = () => {
-    router.push("/signin");
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
-  const goToLogin = () => {
-    router.push("/login");
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   return (
     <>
       <header
         className="flex fixed top-0 left-0 justify-between items-center h-20 w-full rounded bg-cover bg-center"
         style={{ backgroundImage: "url('/green-green.png')" }}
       >
-        <div className="flex-1 flex pl-4 md:pl-28">
-          <Image
-            src="/logo.png"
-            width={80}
-            height={80}
-            className="pl-0"
-            alt="Logo"
-          />
+        <div className="flex items-center">
+          <div className="flex-1 flex justify-center md:justify-start mx-2 md:mx-4">
+            <Image
+              src="/logo.png"
+              width={100}
+              height={80}
+              className="pl-8"
+              alt="Logo"
+            />
+          </div>
         </div>
+
         <div className="flex-1 text-right">
           <div className="flex flex-row gap-2 justify-end items-end pr-4 md:pr-20">
             <a
@@ -53,8 +61,13 @@ const layout = ({ children }) => {
           </div>
         </div>
       </header>
-      <div className="py-10">{children}</div>
 
+      {/* Main content */}
+      <div className="py-20 text-white text-3xl text-center">
+        <h1>Sorry, the page you searched can not be found</h1>
+      </div>
+
+      {/* Footer */}
       <footer>
         <div className="w-full bg-slate-500 text-white flex flex-col h-16">
           <div className="flex flex-col justify-center items-center h-full">
@@ -72,4 +85,5 @@ const layout = ({ children }) => {
     </>
   );
 };
-export default layout;
+
+export default Layout;
