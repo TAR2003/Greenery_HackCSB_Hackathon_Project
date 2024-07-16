@@ -18,6 +18,8 @@ export default function login() {
     });
 
 
+    const [showPassword, setShowPassword] = useState(false);
+
     const [showInvalidPopup, setShowInvalidPopup] = useState(false);
 
 
@@ -71,6 +73,12 @@ export default function login() {
     };
 
 
+    const changeView = () => {
+        setShowPassword(!showPassword);
+    }
+
+
+
     return (
         <div className={styles.container}>
             <form className={styles.loginForm} onSubmit={handleSubmit}>
@@ -88,12 +96,14 @@ export default function login() {
                 <label className={styles.label} htmlFor="password">Password</label>
                 
                 <input 
-                type="password" 
+                type= {showPassword ? "text" : "password"}
                 placeholder="Enter your password" 
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
                 className={styles.inputField}></input>
+
+                <p className={styles.showPass} onClick={changeView}>{showPassword ? 'hide password' : 'show password' }</p>
                 
                 <button 
                 type="submit" 

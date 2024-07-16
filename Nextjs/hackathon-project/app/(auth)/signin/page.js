@@ -11,11 +11,14 @@ export default function signin() {
 
     const router = useRouter();
 
+    const [showPassword, setShowPassword] = useState(false);
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
         location: '',
+        pass2: '',
     });
 
     const [selectedLocation, setSelectedLocation] = useState('');
@@ -60,33 +63,39 @@ export default function signin() {
     
         try {
 
-            const hashedPassword = await bcrypt.hash(formData.password, 10);
+            if(formData.password === formData.pass2) {
+                const hashedPassword = await bcrypt.hash(formData.password, 10);
 
-            const response = await fetch('/api', {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify({
-                    type: 'signup',
-                    email: formData.email, 
-                    password: hashedPassword,
-                    name: formData.name,
-                    location: formData.location,
-                }),
-            });
+                const response = await fetch('/api', {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        type: 'signup',
+                        email: formData.email, 
+                        password: hashedPassword,
+                        name: formData.name,
+                        location: formData.location,
+                    }),
+                });
 
-            const data = await response.json();        
+                const data = await response.json();        
 
-            if(data.success) {
-                router.push(
-                    "/login"
-                );
+                if(data.success) {
+                    router.push(
+                        "/login"
+                    );
+                }
+                else {
+                    setShowInvalidPopup(true);
+                    console.log('Login failed:', data.message);
+                }
             }
-            else {
-                setShowInvalidPopup(true);
-                console.log('Login failed:', data.message);
-            }
+            else 
+                window.alert('Check the passwords again!!');
+
+            
 
         } catch (error) {
             console.error('Error:', error);
@@ -96,7 +105,9 @@ export default function signin() {
     };
 
 
-
+    const changeView = () => {
+        setShowPassword(!showPassword);
+    }
 
 
 
@@ -126,17 +137,30 @@ export default function signin() {
 
                 <label className={styles.label} htmlFor="password">Password</label>
                 <input 
-                type="password" 
+                type= {showPassword ? "text" : "password"} 
                 placeholder="Enter your password" 
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
                 className={styles.inputField}></input>
 
+                <label className={styles.label} htmlFor="pass2">Confirm Password</label>
+                <input 
+                type= {showPassword ? "text" : "password"}
+                placeholder="Re-enter your password" 
+                name="pass2"
+                value={formData.pass2}
+                onChange={handleInputChange}
+                className={styles.inputField}></input>
+
+                <p className={styles.showPass} onClick={changeView}>{showPassword ? 'hide password' : 'show password' }</p>
+
                 <label className={styles.label} htmlFor="location">Location</label>
+                
                 <Dropdown options={districts} onSelect={handleSelectLocation} className={styles.dropdown}>
                     {selectedLocation}
                 </Dropdown>
+                
                 
                 <button 
                 type="submit" 
