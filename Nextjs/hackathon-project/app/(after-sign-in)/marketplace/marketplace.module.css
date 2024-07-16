@@ -1,0 +1,55 @@
+.container {
+    display: flex;
+    /* justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #79af14, #c3cfe2);
+    background-image: url('/2.jpg');
+    background-size: cover;
+    background-position: calc(25% - 20vw) center;;
+    font-family: Arial, sans-serif;
+    padding-left: 40%; */
+  }
+  .marketplaceContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  /* .sidebar {
+    width: 25%;
+    background-color: #d3d3d3; /* Light gray background *
+    padding: 4px;
+    
+  } */
+  .horizontalLine {
+    width: 100%;
+    border: 1px solid #d3d3d3;
+    margin: 20px 0;
+  }
+  .sidebar {
+    width: 20%;
+    background-color: #d3d3d3; /* Light gray background */
+    padding-left: 1px;
+    border-radius: 4px;
+    margin-right: 30px;
+    /* border-right: 1px solid #f80303; */
+  }
+  .content {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+  }
+  .productSection {
+    width: 75%;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    /* flex-wrap: wrap; */
+    gap: 10px;
+  }
+  
+.verticalLine {
+  border-left: 2px solid black; /* Thickness and color of the line */
+  height: 100px;                /* Height of the line */
+  margin: 0 10px;               /* Optional: margin around the line */
+}
