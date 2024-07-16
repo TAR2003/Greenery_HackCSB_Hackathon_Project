@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../login/login.module.css';
 import Dropdown from './dropdown';
-
+import bcrypt from 'bcryptjs';
 
 
 export default function signin() {
@@ -59,6 +59,9 @@ export default function signin() {
         event.preventDefault();
     
         try {
+
+            const hashedPassword = await bcrypt.hash(formData.password, 10);
+
             const response = await fetch('/api', {
                 method: 'POST',
                 headers: {
@@ -67,7 +70,7 @@ export default function signin() {
                 body: JSON.stringify({
                     type: 'signup',
                     email: formData.email, 
-                    password: formData.password,
+                    password: hashedPassword,
                     name: formData.name,
                     location: formData.location,
                 }),

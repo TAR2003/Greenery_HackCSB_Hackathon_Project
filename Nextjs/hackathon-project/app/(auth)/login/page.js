@@ -99,6 +99,7 @@ export default function login() {
                 type="submit" 
                 className={styles.submitButton}
                 >Login</button>
+                
                 <p align='center'>Don't have an account? <br></br> 
                     <a href='/signin' className={styles.link}>Sign up</a></p>
             </form>
