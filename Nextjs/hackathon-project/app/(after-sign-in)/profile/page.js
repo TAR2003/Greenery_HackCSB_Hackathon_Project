@@ -7,7 +7,7 @@ const RedirectComponent = () => {
   const router = useRouter();
 
   useEffect(() => {
-    Cookies.set("userid", "1");
+    // Cookies.set("userid", "1");
     router.push(`/profile/${Cookies.get("userid")}`);
   }, []);
 
