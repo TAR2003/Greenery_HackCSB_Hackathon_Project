@@ -10,6 +10,7 @@ const Layout = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [userid, setuserid] = useState(0);
   const router = useRouter();
 
   const toggleMenu = () => {
@@ -30,6 +31,8 @@ const Layout = ({ children }) => {
 
   const handleSuggestionClick = (suggestion) => {
     setSuggestions([]);
+    setIsMenuOpen(false);
+    setSearchTerm("");
     router.push(`/profile/${suggestion}`);
   };
 
@@ -38,6 +41,7 @@ const Layout = ({ children }) => {
   };
 
   useEffect(() => {
+    setuserid(Cookies.get("userid"));
     if (Cookies.get("userid") === undefined) {
       router.push("/login");
     }
@@ -81,7 +85,7 @@ const Layout = ({ children }) => {
               Notifications
             </a>
             <a
-              href="/profile"
+              href={userid == 0 ? "/profile" : `/profile/${userid}`}
               className="flex items-center justify-center bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10"
             >
               Profile
