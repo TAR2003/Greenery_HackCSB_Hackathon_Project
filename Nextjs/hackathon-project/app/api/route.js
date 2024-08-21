@@ -15,6 +15,8 @@ import { getUserQuestions } from "./getUserQuestions";
 import { getQuestionsByPlantName } from "./getQuestionsByPlantName"; // Import the new function
 import { getReactionNumber } from "./getReactNumber"; // Import the new function
 import { getUserReaction } from "./getUserReaction";
+import { getAllCommunityPosts } from "./getAllCommunityPosts";
+import { getAllHarvestPosts } from "./getAllHarvestPosts";
 import {
   userInfoSchema,
   loginSchema,
@@ -55,7 +57,7 @@ export async function POST(request) {
         );
       }
       return await getUserInfo(info.userid);
-    } else if(type === "searchusersbyprefix"){
+    } else if (type === "searchusersbyprefix") {
       info.prefix = sanitizeInput(info.prefix);
       const validationResult = searchUserByPrefixSchema.validate({
         prefix: info.prefix,
@@ -67,8 +69,7 @@ export async function POST(request) {
         );
       }
       return await searchUsersByPrefix(info.prefix);
-    }
-    else if (type === "getuserposts") {
+    } else if (type === "getuserposts") {
       info.userId = sanitizeInput(info.userId);
       const validationResult = userPostsSchema.validate({
         userId: info.userId,
@@ -92,6 +93,10 @@ export async function POST(request) {
         );
       }
       return await getUserPlants(info.userId);
+    } else if (type === "getAllCommunityPosts") {
+      return await getAllCommunityPosts();
+    } else if (type === "getAllHarvestPosts") {
+      return await getAllHarvestPosts();
     } else if (type === "getplantposts") {
       info.userId = sanitizeInput(info.userId);
       console.log(info.userId);
@@ -105,7 +110,7 @@ export async function POST(request) {
         );
       }
       return await getPlantPosts(info.userId);
-    }else if(type === "gettotalnoofplants"){
+    } else if (type === "gettotalnoofplants") {
       info.userId = sanitizeInput(info.userId);
       const validationResult = userPostsSchema.validate({
         userId: info.userId,
@@ -117,8 +122,7 @@ export async function POST(request) {
         );
       }
       return await getTotalNoOfPlants(info.userId);
-    }
-     else if (type === "getuserharvests") {
+    } else if (type === "getuserharvests") {
       info.userId = sanitizeInput(info.userId);
       const validationResult = harvestSchema.validate({ userId: info.userId });
       if (validationResult.error) {

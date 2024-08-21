@@ -1,9 +1,11 @@
-import React from 'react'
+"use client";
+import { getAllCommunityPosts } from "@/app/functions";
+import React, { useEffect, useState } from "react";
 
 const CommunityID = () => {
-    return (
-        <div>CommunityID</div>
-    )
-}
+  const [strings, getstrings] = useState();
+  useEffect(() => {}, []);
+  return <>{JSON.stringify(strings)}</>;
+};
 
-export default CommunityID
+export default CommunityID;

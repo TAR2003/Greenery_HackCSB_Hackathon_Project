@@ -127,7 +127,6 @@ export async function searchUserByPrefix(prefix) {
 }
 
 export async function getUserAnswers(uid) {
-  console.log("find uid " + uid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -140,7 +139,47 @@ export async function getUserAnswers(uid) {
       }),
     });
     const newData = await response.json();
-    console.log(newData);
+    //  console.log(newData);
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getAllCommunityPosts() {
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getAllCommunityPosts",
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(newData);
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getAllHarvestPosts() {
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getAllHarvestPosts",
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(newData);
     //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
