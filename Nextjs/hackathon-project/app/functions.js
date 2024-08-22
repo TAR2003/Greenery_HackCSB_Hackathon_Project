@@ -24,7 +24,6 @@ export async function getinfo() {
 }
 
 export async function getUserInfo(uid) {
-  console.log("find uid " + uid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -37,6 +36,7 @@ export async function getUserInfo(uid) {
       }),
     });
     const newData = await response.json();
+    //  console.log("the new data  for " + uid + " is " + JSON.stringify(newData));
     //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {

@@ -28,6 +28,12 @@ const CommunityID = () => {
   return (
     <>
       <div className="flex flex-wrap overflow-y-auto w-full">
+        <div
+          className={`border border-gray-300 bg-white w-96 h-92 p-4 rounded-3xl shadow-lg  m-4 transform transition-transform duration-300 hover:scale-110`}
+          style={{ animation: `zoomIn 1s ease-in-out ${0}ms` }}
+        >
+          <h1>Click here to create new Community Post</h1>
+        </div>
         {posts.slice(0, visiblePosts).map((post, index) => (
           <PostFrame
             key={index}

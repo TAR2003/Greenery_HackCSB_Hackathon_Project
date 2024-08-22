@@ -4,13 +4,15 @@ import Image from "next/image";
 import MenuOptions from "./MenuOptions"; // Import menu options
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { searchUserByPrefix } from "../functions";
+import { getUserInfo, searchUserByPrefix } from "../functions";
 
 const Layout = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [userid, setuserid] = useState(0);
+  const [newnotification, setnewnotification] = useState("/bell.png");
+  const [userinfo, setuserinfo] = useState([]);
   const router = useRouter();
 
   const toggleMenu = () => {
@@ -40,10 +42,18 @@ const Layout = ({ children }) => {
     Cookies.remove("userid");
   };
 
+  const fetchData = async () => {
+    const info = await getUserInfo(parseInt(Cookies.get("userid")));
+    setuserinfo(info[0]);
+    console.log("info we got == " + info[0].image);
+  };
+
   useEffect(() => {
     setuserid(Cookies.get("userid"));
     if (Cookies.get("userid") === undefined) {
       router.push("/login");
+    } else {
+      fetchData();
     }
   }, []);
 
@@ -65,11 +75,11 @@ const Layout = ({ children }) => {
               />
             </button>
           </div>
-          <div className="flex-1 flex justify-center md:justify-start mx-2 md:mx-4">
+          <div className="flex-1 flex justify-center md:justify-start mr-2 md:mx-4">
             <Image
               src="/logo.png"
-              width={100}
-              height={80}
+              width={70}
+              height={60}
               className="pl-0"
               alt="Logo"
             />
@@ -77,23 +87,37 @@ const Layout = ({ children }) => {
         </div>
 
         <div className="flex-1 text-right">
-          <div className="flex flex-row sm:gap-2 justify-end items-center md:pr-16">
+          <div className="flex flex-row sm:gap-2 justify-end items-center pr-4 md:pr-16">
             <a
               href="/"
-              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-1 sm:px-1 md:px-2 rounded w-24 h-8 sm:w-24 sm:h-10 md:w-28 md:h-12 lg:w-32 lg:h-12 text-center text-xs sm:text-sm md:text-lg"
+              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold p-2 sm:m-2 rounded-full flex items-center justify-center"
             >
-              Notifications
+              <Image
+                src={newnotification}
+                alt="Notification Bell"
+                width={44} // Adjust the width to match the height of the button
+                height={44} // Adjust the height to match the width
+                className="object-contain"
+              />
             </a>
+
             <a
               href={userid == 0 ? "/profile" : `/profile/${userid}`}
-              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-1 sm:px-1 md:px-2 rounded w-16 h-8 sm:w-24 sm:h-10 md:w-28 md:h-12 lg:w-32 lg:h-12 text-center text-xs sm:text-sm md:text-lg"
+              className="bg-blue-500 border border-spacing-12 border-black hover:bg-white p-1 text-white hover:text-black font-bold  sm:m-2 rounded-full flex items-center justify-center"
             >
-              Profile
+              <Image
+                src={userinfo.image}
+                alt="Profile Picture"
+                width={52} // Matches the height of the button
+                height={52} // Matches the width of the button
+                className="object-cover rounded-full"
+              />
             </a>
+
             <a
               href="/login"
               onClick={handleLogOut}
-              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-1 sm:px-1 md:px-2 rounded w-16 h-8 sm:w-24 sm:h-10 md:w-28 md:h-12 lg:w-32 lg:h-12 text-center text-xs sm:text-sm md:text-lg"
+              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-1 sm:px-1 md:px-2 rounded-3xl w-16 h-14 sm:w-24 md:w-28 lg:w-32 text-center text-sm md:text-lg flex items-center justify-center"
             >
               Log Out
             </a>
@@ -157,7 +181,7 @@ const Layout = ({ children }) => {
               )}
             </li>
             {MenuOptions.map((option, index) => (
-              <li key={index} className="py-2">
+              <li key={index} className="py-1 sm:py-2">
                 <a
                   href={option.href}
                   className="block py-2 pl-20 hover:bg-blue-500 hover:scale-110 transform text-white hover:text-yellow-500 transition-transform duration-300"
