@@ -86,7 +86,7 @@ const ProfileID = ({ params }) => {
           </div>
         </div>
       </div>
-      <div className="pl-20 pr-20">
+      <div className="sm:pl-20 sm:pr-20">
         <div
           className="flex flex-wrap w-full h-full bg-black overflow-y-auto justify-center items-center"
           style={{}}

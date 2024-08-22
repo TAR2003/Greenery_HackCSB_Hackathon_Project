@@ -54,7 +54,7 @@ const Layout = ({ children }) => {
         style={{ backgroundImage: "url('/green-green.png')" }}
       >
         <div className="flex items-center">
-          <div className="pl-8">
+          <div className="pl-0 sm:pl-8">
             <button onClick={toggleMenu} className="focus:outline-none">
               <Image
                 src="/hamburger.png"
@@ -70,30 +70,30 @@ const Layout = ({ children }) => {
               src="/logo.png"
               width={100}
               height={80}
-              className="pl-8"
+              className="pl-0"
               alt="Logo"
             />
           </div>
         </div>
 
         <div className="flex-1 text-right">
-          <div className="flex flex-row gap-2 justify-end items-center pr-4 md:pr-20">
+          <div className="flex flex-row sm:gap-2 justify-end items-center md:pr-16">
             <a
               href="/"
-              className="flex items-center justify-center bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10"
+              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-1 sm:px-1 md:px-2 rounded w-24 h-8 sm:w-24 sm:h-10 md:w-28 md:h-12 lg:w-32 lg:h-12 text-center text-xs sm:text-sm md:text-lg"
             >
               Notifications
             </a>
             <a
               href={userid == 0 ? "/profile" : `/profile/${userid}`}
-              className="flex items-center justify-center bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10"
+              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-1 sm:px-1 md:px-2 rounded w-16 h-8 sm:w-24 sm:h-10 md:w-28 md:h-12 lg:w-32 lg:h-12 text-center text-xs sm:text-sm md:text-lg"
             >
               Profile
             </a>
             <a
               href="/login"
               onClick={handleLogOut}
-              className="flex items-center justify-center bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10"
+              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-1 sm:px-1 md:px-2 rounded w-16 h-8 sm:w-24 sm:h-10 md:w-28 md:h-12 lg:w-32 lg:h-12 text-center text-xs sm:text-sm md:text-lg"
             >
               Log Out
             </a>
@@ -106,7 +106,11 @@ const Layout = ({ children }) => {
         className={`fixed top-0 left-0 z-50 h-full bg-gray-800 text-white transition-transform transform ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
-        style={{ width: "450px" }}
+        style={{
+          width: "80%", // Adjusted width for better responsiveness
+          maxWidth: "450px", // Ensure the menu doesn't get too wide
+          minWidth: "250px", // Ensure the menu doesn't get too narrow
+        }}
       >
         <button onClick={toggleMenu} className="pl-8 text-white">
           <Image

@@ -8,7 +8,7 @@ const formatDate = (dateString) => {
   return formatDistanceToNow(date, { addSuffix: true });
 };
 
-const PostFrame = ({ elem }) => {
+const PostFrame = ({ elem, className, style }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userinfo, setuserinfo] = useState("");
 
@@ -31,7 +31,10 @@ const PostFrame = ({ elem }) => {
 
   return (
     <>
-      <div className="border border-gray-300 bg-white w-96 h-auto p-4 rounded-3xl shadow-lg flex flex-col m-4 transform transition-transform duration-300 hover:scale-110">
+      <div
+        className={`border border-gray-300 bg-white w-96 h-auto p-4 rounded-3xl shadow-lg flex flex-col m-4 transform transition-transform duration-300 hover:scale-110 ${className}`}
+        style={style}
+      >
         {/* Poster Information */}
         <div className="flex items-center mb-2">
           {/* Profile Picture */}

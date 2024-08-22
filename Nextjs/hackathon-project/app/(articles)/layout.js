@@ -18,7 +18,7 @@ const layout = ({ children }) => {
   return (
     <>
       <header
-        className="flex fixed top-0 left-0 justify-between items-center h-20 w-full rounded bg-cover bg-center"
+        className="flex fixed top-0 left-0 justify-between items-center h-20 w-full bg-cover bg-center"
         style={{ backgroundImage: "url('/green-green.png')" }}
       >
         <div className="flex-1 flex pl-4 md:pl-28">
@@ -26,27 +26,27 @@ const layout = ({ children }) => {
             src="/logo.png"
             width={80}
             height={80}
-            className="pl-0"
+            className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
             alt="Logo"
           />
         </div>
         <div className="flex-1 text-right">
-          <div className="flex flex-row gap-2 justify-end items-end pr-4 md:pr-20">
+          <div className="flex flex-row gap-2 justify-end items-center pr-4 md:pr-20">
             <a
               href="/"
-              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10 text-center"
+              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-2 sm:px-3 md:px-4 rounded w-20 h-8 sm:w-24 sm:h-10 md:w-28 md:h-12 lg:w-32 lg:h-12 text-center text-xs sm:text-sm md:text-lg"
             >
               DOCS
             </a>
             <a
               href="/signin"
-              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10 text-center"
+              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-2 sm:px-3 md:px-4 rounded w-20 h-8 sm:w-24 sm:h-10 md:w-28 md:h-12 lg:w-32 lg:h-12 text-center text-xs sm:text-sm md:text-lg"
             >
               SIGN IN
             </a>
             <a
               href="/login"
-              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-4 rounded w-24 md:w-32 h-10 text-center"
+              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold py-2 px-2 sm:px-3 md:px-4 rounded w-20 h-8 sm:w-24 sm:h-10 md:w-28 md:h-12 lg:w-32 lg:h-12 text-center text-xs sm:text-sm md:text-lg"
             >
               LOG IN
             </a>

@@ -25,12 +25,7 @@ const temparaturecontrol = () => {
           >
             Temparature Control
           </h1>
-          <div
-            className="px-20"
-            style={{
-              fontSize: "1.5rem",
-            }}
-          >
+          <div className="px-20">
             <br></br>
             <br></br>
             <p>
