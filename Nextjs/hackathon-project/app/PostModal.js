@@ -8,14 +8,22 @@ const formatDate = (dateString) => {
 };
 
 const PostModal = ({ elem, userinfo, isOpen, onClose }) => {
+  const [comments, setComments] = useState([]);
+  const [visibleComments, setVisibleComments] = useState(0); // Track visible comments
   const modalRef = useRef(null);
-  const [comments, setcomments] = useState([]);
-  const [visibleComments, setVisibleComments] = useState(0);
 
+  // Fetch comments when the modal is opened
   const fetchData = async () => {
-    setcomments([1, 2, 3]);
-    //onsole.log(comments);
+    // Replace this with your actual data fetching logic
+    setComments([1, 2, 3, 4, 5]);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchData();
+      setVisibleComments(0); // Reset visible comments
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     // Function to handle clicks outside of the modal content
@@ -27,23 +35,22 @@ const PostModal = ({ elem, userinfo, isOpen, onClose }) => {
 
     // Add event listener for clicks outside the modal
     document.addEventListener("mousedown", handleClickOutside);
-    fetchData();
 
     // Manage visible comments increment
     if (visibleComments < comments.length) {
       const timeout = setTimeout(() => {
         setVisibleComments((prev) => prev + 1); // Increase visible comments one by one
       }, 200); // Delay before showing the next comment
+
       return () => {
         clearTimeout(timeout); // Clear the timeout on cleanup
-        document.removeEventListener("mousedown", handleClickOutside); // Remove event listener on cleanup
-      };
-    } else {
-      // Clean up the event listener on component unmount
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
       };
     }
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [onClose, visibleComments, comments.length]);
 
   if (!isOpen) return null;
@@ -51,7 +58,7 @@ const PostModal = ({ elem, userinfo, isOpen, onClose }) => {
   return (
     <div
       className="fixed inset-0 py-12 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50 overflow-auto"
-      style={{ animation: `zoomIn 1s ease-in-out ${0}ms` }}
+      style={{ animation: `zoomIn 0.5s ease-in-out ${0}ms` }}
     >
       <div
         ref={modalRef}
@@ -101,16 +108,14 @@ const PostModal = ({ elem, userinfo, isOpen, onClose }) => {
             Comment
           </button>
         </div>
-        <div className="bg-green-500 flex flex-col border-white text-white">
-          {comments.slice(0, visibleComments).map((comment, index) => (
-            <CommentFile
-              key={index}
-              elem={comment}
-              className="transform transition-transform"
-              style={{ animation: `zoomIn 1s ease-in-out ${0}ms` }} // Delay for each post
-            />
-          ))}
-        </div>
+        {comments.slice(0, visibleComments).map((comment, index) => (
+          <CommentFile
+            key={index}
+            elem={comment}
+            className="transform transition-transform"
+            style={{ animation: `zoomIn 1s ease-in-out ${0}ms` }} // Delay for each post
+          />
+        ))}
       </div>
     </div>
   );

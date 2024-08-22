@@ -7,7 +7,7 @@ const CommentFile = ({ elem, className, style }) => {
   }, []);
   return (
     <div
-      className={`bg-green-500 text-white border-red h-12 ${className}`}
+      className={`bg-green-500 text-white border-red h-12 m-8 ${className}`}
       style={style}
     >
       <h1>We are at the comment file </h1>
