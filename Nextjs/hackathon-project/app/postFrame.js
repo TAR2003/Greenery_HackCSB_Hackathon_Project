@@ -45,7 +45,7 @@ const PostFrame = ({ elem, className, style }) => {
           />
           <div className="ml-3">
             <h2 className="text-gray-800 font-semibold text-lg">
-              {userinfo.name}
+              <a href={`/profile/${userinfo.id}`}>{userinfo.name}</a>
             </h2>
             <p className="text-gray-500 text-sm">{formatDate(elem.time)}</p>
           </div>

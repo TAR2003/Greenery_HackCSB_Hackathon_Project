@@ -181,7 +181,7 @@ const Layout = ({ children }) => {
               )}
             </li>
             {MenuOptions.map((option, index) => (
-              <li key={index} className="py-1 sm:py-2">
+              <li key={index} className="py-1">
                 <a
                   href={option.href}
                   className="block py-2 pl-20 hover:bg-blue-500 hover:scale-110 transform text-white hover:text-yellow-500 transition-transform duration-300"

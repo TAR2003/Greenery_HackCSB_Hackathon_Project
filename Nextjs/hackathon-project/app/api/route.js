@@ -17,6 +17,7 @@ import { getReactionNumber } from "./getReactNumber"; // Import the new function
 import { getUserReaction } from "./getUserReaction";
 import { getAllCommunityPosts } from "./getAllCommunityPosts";
 import { getAllHarvestPosts } from "./getAllHarvestPosts";
+import { getPostComments } from "./getPostComments";
 import {
   userInfoSchema,
   loginSchema,
@@ -237,6 +238,11 @@ export async function POST(request) {
         info.name,
         info.location
       );
+    } else if (type === "getPostComments") {
+      //console.log("in the meantime " + info.postId);
+      info.postId = sanitizeInput(info.postId);
+
+      return await getPostComments(info.postId);
     } else {
       return NextResponse.json(
         { message: "Invalid request type" },
