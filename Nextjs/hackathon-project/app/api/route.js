@@ -57,6 +57,7 @@ export async function POST(request) {
           { status: 400 }
         );
       }
+      
       return await getUserInfo(info.userid);
     } else if (type === "searchusersbyprefix") {
       info.prefix = sanitizeInput(info.prefix);
