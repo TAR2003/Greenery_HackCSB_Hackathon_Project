@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getUserInfo } from "./functions";
+import { getHarvestComments, getPostComments, getUserInfo } from "./functions";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import PostModal from "./PostModal"; // Import the PostModal component
 
@@ -11,6 +11,21 @@ const formatDate = (dateString) => {
 const PostFrame = ({ elem, className, style, type }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userinfo, setuserinfo] = useState("");
+  const [liked, setliked] = useState(false);
+  const [disliked, setdisliked] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [likeNumber, setLikeNumber] = useState(0);
+  const [dislikeNumber, setDislikeNumber] = useState(0);
+
+  const handleLikeClick = () => {
+    setdisliked(false);
+    setliked(!liked);
+  };
+
+  const handleDislikeClick = () => {
+    setliked(false);
+    setdisliked(!disliked);
+  };
   const styles = {
     community: {
       background: "#E0F7FA",
@@ -30,7 +45,17 @@ const PostFrame = ({ elem, className, style, type }) => {
   const appliedStyle = type === "community" ? styles.community : styles.harvest;
   const fetchData = async () => {
     const info = await getUserInfo(elem.user_id);
+
     setuserinfo(info[0]);
+
+    if (type === "community") {
+      const commentInfo = await getPostComments(parseInt(elem.id));
+      setComments(commentInfo);
+    } else if (type === "harvest") {
+      // console.log(JSON.stringify(elem));
+      const commentInfo = await getHarvestComments(parseInt(elem.id));
+      setComments(commentInfo);
+    }
   };
 
   useEffect(() => {
@@ -99,16 +124,28 @@ const PostFrame = ({ elem, className, style, type }) => {
         {/* Buttons */}
         <div className="flex mt-4 space-x-4">
           <button
-            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 flex-1 transform transition-transform duration-300 hover:scale-110"
-            onClick={() => alert("React button clicked")}
+            onClick={handleLikeClick}
+            className={`${
+              liked ? "bg-blue-600" : "bg-blue-300"
+            } text-white flex justify-center border border-black items-center px-4 py-2 rounded-lg hover:bg-white flex-1 transform transition-transform duration-300 hover:scale-110`}
           >
-            React
+            <img src="/like.png" className="w-6 h-6" />
           </button>
+
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex-1 transform transition-transform duration-300 hover:scale-110"
+            onClick={handleDislikeClick}
+            className={` ${
+              disliked ? "bg-green-600" : "bg-green-300"
+            } text-white flex border border-black justify-center items-center px-4 py-2 rounded-lg hover:bg-white flex-1 transform transition-transform duration-300 hover:scale-110`}
+          >
+            <img src="/dislike.png" className="w-6 h-6" />
+          </button>
+
+          <button
+            className="bg-red-300 flex border gap-4 border-black justify-center text-black px-4 py-2 rounded-lg hover:bg-white flex-1 transform transition-transform duration-300 hover:scale-110"
             onClick={openModal}
           >
-            Comment
+            {comments.length} <img src="/chat.png" className="w-6 h-6" />
           </button>
         </div>
       </div>
