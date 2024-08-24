@@ -19,6 +19,7 @@ const PostModal = ({ elem, userinfo, isOpen, onClose }) => {
     // console.log(elem);
     const commentInfo = await getPostComments(parseInt(elem.id));
     setComments(commentInfo);
+    console.log(commentInfo);
   };
 
   useEffect(() => {
