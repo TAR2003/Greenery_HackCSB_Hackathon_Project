@@ -1,5 +1,6 @@
 // Import necessary functions
 
+
 import { getId } from "./getLoginId";
 import { insertInfo } from "./signupInfo";
 import { NextResponse } from "next/server";
@@ -17,7 +18,12 @@ import { getReactionNumber } from "./getReactNumber"; // Import the new function
 import { getUserReaction } from "./getUserReaction";
 import { getAllCommunityPosts } from "./getAllCommunityPosts";
 import { getAllHarvestPosts } from "./getAllHarvestPosts";
-import { getPostComments } from "./getPostComments";
+import { sanitizeInput } from "./sanitization";
+import { getUserAnswers } from "./getUserAnswers";
+import { insertHarvest } from "./insertNewHarvest";
+import { insertPost } from "./insertNewPost";
+import { insertCommentInPost } from "./insertCommentInPost";
+import { insertCommentInHarvest } from "./insertCommentInHarvest";
 import {
   userInfoSchema,
   loginSchema,
@@ -31,9 +37,12 @@ import {
   userReactSchema,
   userAnswerSchema,
   searchUserByPrefixSchema,
+  newHarvestSchema,
+  newPostSchema,
+  newCommentInPostSchema,
+  newCommentInHarvestSchema
 } from "./validation";
-import { sanitizeInput } from "./sanitization";
-import { getUserAnswers } from "./getUserAnswers";
+
 
 // Define the POST function
 export async function POST(request) {
@@ -47,7 +56,6 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-
     if (type === "getuserinfo") {
       info.userid = sanitizeInput(info.userid);
       const validationResult = userInfoSchema.validate({ userid: info.userid });
@@ -213,7 +221,73 @@ export async function POST(request) {
       }
       const reaction = await getUserAnswers(info.userId);
       return reaction; // Send the reaction or null
-    } else if (type === "login") {
+    } else if (type === "newharvest") {
+      info.userId = sanitizeInput(info.userId);
+      info.plantId = sanitizeInput(info.plantId);
+      info.image = sanitizeInput(info.image);
+      info.text = sanitizeInput(info.text);
+      const validationResult = newHarvestSchema.validate({
+        userId: info.userId,
+        plantId: info.plantId,
+        image: info.image,
+        text: info.text,
+      });
+      if (validationResult.error) {
+        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+      }
+      await insertHarvest(info.userId, info.plantId, info.image, info.text);
+      return NextResponse.json({ message: 'Harvest inserted successfully' }, { status: 200 });
+    } else if (type === "newpost") {
+      info.userId = sanitizeInput(info.userId);
+      info.plantId = sanitizeInput(info.plantId);
+      info.text = sanitizeInput(info.text);
+      info.image = sanitizeInput(info.image);
+      const validationResult = newPostSchema.validate({
+        userId: info.userId,
+        plantId: info.plantId,
+        text: info.text,
+        image: info.image,
+        advice_or_plantation: info.advice_or_plantation
+      });
+      if (validationResult.error) {
+        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+      }
+      await insertPost(info.userId, info.plantId, info.text, info.image, info.advice_or_plantation);
+      return NextResponse.json({ message: 'Post inserted successfully' }, { status: 200 });
+    } else if (type === "newcommentinpost") {
+      info.userId = sanitizeInput(info.userId);
+      info.postId = sanitizeInput(info.postId);
+      info.text = sanitizeInput(info.text);
+      info.image = sanitizeInput(info.image);
+      const validationResult = newCommentInPostSchema.validate({
+        userId: info.userId,
+        postId: info.postId,
+        text: info.text,
+        image: info.image,
+      });
+      if (validationResult.error) {
+        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+      }
+      await insertCommentInPost(info.userId, info.postId, info.text, info.image);
+      return NextResponse.json({ message: 'Comment inserted successfully' }, { status: 200 });
+    } else if (type === "newcommentinharvest") {
+      info.userId = sanitizeInput(info.userId);
+      info.harvestId = sanitizeInput(info.harvestId);
+      info.text = sanitizeInput(info.text);
+      info.image = sanitizeInput(info.image);
+      const validationResult = newCommentInHarvestSchema.validate({
+        userId: info.userId,
+        postId: info.harvestId,
+        text: info.text,
+        image: info.image,
+      });
+      if (validationResult.error) {
+        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+      }
+      await insertCommentInHarvest(info.userId, info.harvestId, info.text, info.image);
+      return NextResponse.json({ message: 'Comment inserted successfully' }, { status: 200 });
+    }
+     else if (type === "login") {
       info.email = sanitizeInput(info.email);
       info.password = sanitizeInput(info.password);
 

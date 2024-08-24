@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import { Pool } from 'pg';
 
 // Initialize a variable to hold the singleton instance
 let pool;
