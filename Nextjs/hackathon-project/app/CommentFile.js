@@ -1,17 +1,50 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { getUserInfo } from "./functions";
+import Image from "next/image";
+import { formatDistanceToNow, parseISO } from "date-fns";
+
+const formatDate = (dateString) => {
+  const date = parseISO(dateString);
+  return formatDistanceToNow(date, { addSuffix: true });
+};
 
 const CommentFile = ({ elem, className, style }) => {
+  const [userinfo, setuserinfo] = useState([]);
+
+  const fetchData = async () => {
+    const info = await getUserInfo(elem.user_id);
+    setuserinfo(info[0]);
+    console.log("the value " + info[0].image);
+  };
+
   useEffect(() => {
-    console.log("in the comment section " + elem);
+    fetchData();
   }, []);
+
   return (
     <div
-      className={`bg-green-500 text-white border-red h-12 m-8 ${className}`}
+      className={`bg-gradient-to-r from-blue-100 to-teal-100 text-gray-800 border border-gray-200 m-4 rounded-xl p-6 shadow-lg ${className}`}
       style={style}
     >
-      <h1>We are at the comment file </h1>
-      commentFile
+      <div className="flex items-center">
+        <Image
+          src={userinfo.image}
+          alt="profile picture of the commenter"
+          width={52}
+          height={52}
+          className="rounded-full"
+        />
+        <div className="ml-4">
+          <a href={`/profile/${userinfo.id}`}>
+            <h3 className="font-semibold text-lg">{userinfo.name}</h3>
+          </a>
+
+          <p className="text-sm text-gray-600">{formatDate(elem.time)}</p>
+        </div>
+      </div>
+
+      <p className="mt-4 text-base">{elem.text}</p>
     </div>
   );
 };

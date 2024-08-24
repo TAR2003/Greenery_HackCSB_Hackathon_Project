@@ -1,5 +1,3 @@
-
-
 import { Pool } from 'pg';
 
 // Initialize a variable to hold the singleton instance
@@ -21,4 +19,3 @@ export function getPool() {
   }
   return pool;
 }
-

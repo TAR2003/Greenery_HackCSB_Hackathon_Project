@@ -93,7 +93,9 @@ const Layout = ({ children }) => {
               className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold p-2 sm:m-2 rounded-full flex items-center justify-center"
             >
               <Image
-                src={newnotification}
+                src={
+                  "https://drive.google.com/uc?export=view&id=15AovQ3WFTa2fAFDbVi7qaKHnrV9r5JfW"
+                }
                 alt="Notification Bell"
                 width={44} // Adjust the width to match the height of the button
                 height={44} // Adjust the height to match the width
@@ -181,7 +183,7 @@ const Layout = ({ children }) => {
               )}
             </li>
             {MenuOptions.map((option, index) => (
-              <li key={index} className="py-1 sm:py-2">
+              <li key={index} className="py-1">
                 <a
                   href={option.href}
                   className="block py-2 pl-20 hover:bg-blue-500 hover:scale-110 transform text-white hover:text-yellow-500 transition-transform duration-300"

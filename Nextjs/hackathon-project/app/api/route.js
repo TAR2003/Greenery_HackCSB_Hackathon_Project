@@ -65,6 +65,7 @@ export async function POST(request) {
           { status: 400 }
         );
       }
+      
       return await getUserInfo(info.userid);
     } else if (type === "searchusersbyprefix") {
       info.prefix = sanitizeInput(info.prefix);
@@ -312,6 +313,11 @@ export async function POST(request) {
         info.name,
         info.location
       );
+    } else if (type === "getPostComments") {
+      //console.log("in the meantime " + info.postId);
+      info.postId = sanitizeInput(info.postId);
+
+      return await getPostComments(info.postId);
     } else {
       return NextResponse.json(
         { message: "Invalid request type" },

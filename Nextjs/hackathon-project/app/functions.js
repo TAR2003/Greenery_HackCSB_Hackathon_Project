@@ -186,3 +186,25 @@ export async function getAllHarvestPosts() {
     console.error("Error posting data:", error);
   }
 }
+
+export async function getPostComments(pId) {
+  // console.log("int the fintion " + pId);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getPostComments",
+        postId: pId,
+      }),
+    });
+    const newData = await response.json();
+    //console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}

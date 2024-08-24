@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import CommentFile from "./CommentFile";
+import { getPostComments } from "./functions";
 
 const formatDate = (dateString) => {
   const date = parseISO(dateString);
@@ -8,14 +9,16 @@ const formatDate = (dateString) => {
 };
 
 const PostModal = ({ elem, userinfo, isOpen, onClose }) => {
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState([]); //The comments
   const [visibleComments, setVisibleComments] = useState(0); // Track visible comments
-  const modalRef = useRef(null);
+  const modalRef = useRef(null); // for the current modal
 
   // Fetch comments when the modal is opened
   const fetchData = async () => {
     // Replace this with your actual data fetching logic
-    setComments([1, 2, 3, 4, 5]);
+    // console.log(elem);
+    const commentInfo = await getPostComments(parseInt(elem.id));
+    setComments(commentInfo);
   };
 
   useEffect(() => {
@@ -81,7 +84,7 @@ const PostModal = ({ elem, userinfo, isOpen, onClose }) => {
           />
           <div className="ml-4">
             <h2 className="text-gray-800 font-semibold text-lg">
-              {userinfo.name}
+              <a href={`/profile/${userinfo.id}`}>{userinfo.name}</a>
             </h2>
             <p className="text-gray-500 text-sm">{formatDate(elem.time)}</p>
           </div>
@@ -108,14 +111,15 @@ const PostModal = ({ elem, userinfo, isOpen, onClose }) => {
             Comment
           </button>
         </div>
-        {comments.slice(0, visibleComments).map((comment, index) => (
-          <CommentFile
-            key={index}
-            elem={comment}
-            className="transform transition-transform"
-            style={{ animation: `zoomIn 1s ease-in-out ${0}ms` }} // Delay for each post
-          />
-        ))}
+        {Array.isArray(comments) &&
+          comments.slice(0, visibleComments).map((comment, index) => (
+            <CommentFile
+              key={index}
+              elem={comment}
+              className="transform transition-transform"
+              style={{ animation: `zoomIn 1s ease-in-out ${0}ms` }} // Delay for each post
+            />
+          ))}
       </div>
     </div>
   );
