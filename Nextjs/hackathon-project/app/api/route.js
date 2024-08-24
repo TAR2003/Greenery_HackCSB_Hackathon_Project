@@ -306,10 +306,11 @@ export async function POST(request) {
       info.image = sanitizeInput(info.image);
       const validationResult = newCommentInHarvestSchema.validate({
         userId: info.userId,
-        postId: info.harvestId,
+        harvestId: info.harvestId,
         text: info.text,
         image: info.image,
       });
+      //console.log(JSON.stringify(info) + " is the info");
       if (validationResult.error) {
         return NextResponse.json(
           { message: validationResult.error.details[0].message },
@@ -317,8 +318,8 @@ export async function POST(request) {
         );
       }
       await insertCommentInHarvest(
-        info.userId,
         info.harvestId,
+        info.userId,
         info.text,
         info.image
       );

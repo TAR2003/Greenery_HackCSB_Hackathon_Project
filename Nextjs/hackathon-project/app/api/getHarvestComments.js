@@ -13,11 +13,13 @@ export async function getHarvestComments(postId) {
 
     // First, get all plants the user has
     const commentResult = await pool.query(
-      `SELECT * FROM commentxharvest WHERE harvest_id = $1`,
+      `SELECT * FROM commentxharvest WHERE harvest_id = $1 order by time desc`,
       [postId]
     );
     const comments = commentResult.rows;
-
+    console.log(
+      JSON.stringify(comments) + " is the qeusry from harvest comment"
+    );
     return NextResponse.json(comments);
   } catch (error) {
     console.error("Database query error:", error);

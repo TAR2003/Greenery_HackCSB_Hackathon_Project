@@ -11,7 +11,23 @@ const formatDate = (dateString) => {
 const PostFrame = ({ elem, className, style, type }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userinfo, setuserinfo] = useState("");
+  const styles = {
+    community: {
+      background: "#E0F7FA",
+      color: "#A8D5BA", // Pale Mint for primary text
+      secondaryColor: "#D1D5DB", // Light Gray for secondary text
+      buttonColor: "#D4AF37", // Muted Gold for buttons/links
+    },
+    harvest: {
+      background: "#F5F5DC",
+      color: "#FFD700", // Light Gold for primary text
+      secondaryColor: "#FFDAB9", // Light Peach for secondary text
+      buttonColor: "#FFA07A", // Soft Orange for buttons/links
+    },
+  };
 
+  // Determine which style to apply
+  const appliedStyle = type === "community" ? styles.community : styles.harvest;
   const fetchData = async () => {
     const info = await getUserInfo(elem.user_id);
     setuserinfo(info[0]);
@@ -32,8 +48,12 @@ const PostFrame = ({ elem, className, style, type }) => {
   return (
     <>
       <div
-        className={`border border-gray-300 bg-white w-96 h-auto p-4 rounded-3xl shadow-lg flex flex-col m-4 transform transition-transform duration-300 hover:scale-110 ${className}`}
-        style={style}
+        className={`border border-gray-300  w-96 h-auto p-4 rounded-3xl shadow-lg flex flex-col m-4 transform transition-transform duration-300 hover:scale-110 ${className}`}
+        style={{
+          ...style,
+          background: appliedStyle.background,
+          color: appliedStyle.buttonColor,
+        }}
       >
         {/* Poster Information */}
         <div className="flex items-center mb-2">

@@ -1,7 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import CommentFile from "./CommentFile";
-import { getHarvestComments, getPostComments } from "./functions";
+import {
+  getHarvestComments,
+  getPostComments,
+  insertNewCommentinHarvest,
+  insertNewCommentinPost,
+} from "./functions";
+import Cookies from "js-cookie";
 
 const formatDate = (dateString) => {
   const date = parseISO(dateString);
@@ -12,6 +18,7 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
   const [comments, setComments] = useState([]); //The comments
   const [visibleComments, setVisibleComments] = useState(0); // Track visible comments
   const modalRef = useRef(null); // for the current modal
+  const [writeComment, setwriteComment] = useState("");
 
   // Fetch comments when the modal is opened
   const fetchData = async () => {
@@ -22,12 +29,41 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
       const commentInfo = await getPostComments(parseInt(elem.id));
       setComments(commentInfo);
     } else if (type === "harvest") {
-      console.log("Harvest commentws");
+      // console.log(JSON.stringify(elem));
       const commentInfo = await getHarvestComments(parseInt(elem.id));
       setComments(commentInfo);
     }
 
     //console.log(commentInfo);
+  };
+
+  const handleInputChange = (e) => {
+    setwriteComment(e.target.value);
+    //console.log(writeComment + " is the writeten one ");
+  };
+
+  const handleAddComment = async () => {
+    //console.log("Write comment " + writeComment);
+    if (writeComment === "") return;
+    if (type == "community") {
+      await insertNewCommentinPost(
+        parseInt(Cookies.get("userid")),
+        parseInt(elem.id),
+        writeComment,
+        null
+      );
+    }
+    if (type == "harvest") {
+      await insertNewCommentinHarvest(
+        parseInt(Cookies.get("userid")),
+        parseInt(elem.id),
+        writeComment,
+        null
+      );
+    }
+    setwriteComment("");
+    fetchData();
+    setVisibleComments(0);
   };
 
   useEffect(() => {
@@ -118,6 +154,23 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
           </button>
           <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex-1">
             Comment
+          </button>
+        </div>
+        <div className="m-4 bg-gradient-to-r from-blue-100 to-teal-100 p-6 rounded-lg shadow-md">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+            Leave a Comment
+          </h2>
+          <textarea
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 text-gray-700"
+            placeholder="Write your comment..."
+            onChange={handleInputChange}
+            value={writeComment}
+          ></textarea>
+          <button
+            onClick={handleAddComment}
+            className="mt-4 w-full bg-indigo-700 text-white py-2 rounded-lg hover:bg-yellow-500 hover:text-black transition-all duration-300"
+          >
+            Submit
           </button>
         </div>
         {Array.isArray(comments) &&

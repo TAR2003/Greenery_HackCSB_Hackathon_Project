@@ -13,7 +13,7 @@ export async function getPostComments(postId) {
 
     // First, get all plants the user has
     const commentResult = await pool.query(
-      `SELECT * FROM commentxpost WHERE post_id = $1`,
+      `SELECT * FROM commentxpost WHERE post_id = $1 order by time desc`,
       [postId]
     );
     const comments = commentResult.rows;

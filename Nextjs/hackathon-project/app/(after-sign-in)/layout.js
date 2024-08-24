@@ -93,9 +93,7 @@ const Layout = ({ children }) => {
               className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold p-2 sm:m-2 rounded-full flex items-center justify-center"
             >
               <Image
-                src={
-                  "https://drive.google.com/uc?export=view&id=15AovQ3WFTa2fAFDbVi7qaKHnrV9r5JfW"
-                }
+                src={newnotification}
                 alt="Notification Bell"
                 width={44} // Adjust the width to match the height of the button
                 height={44} // Adjust the height to match the width
