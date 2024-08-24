@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import CommentFile from "./CommentFile";
-import { getHarvestComments, getPostComments } from "./functions";
+import { getPostComments } from "./functions";
 
 const formatDate = (dateString) => {
   const date = parseISO(dateString);
   return formatDistanceToNow(date, { addSuffix: true });
 };
 
-const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
+const PostModal = ({ elem, userinfo, isOpen, onClose }) => {
   const [comments, setComments] = useState([]); //The comments
   const [visibleComments, setVisibleComments] = useState(0); // Track visible comments
   const modalRef = useRef(null); // for the current modal
@@ -17,17 +17,9 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
   const fetchData = async () => {
     // Replace this with your actual data fetching logic
     // console.log(elem);
-    //console.log(type + " is the type of content");
-    if (type === "community") {
-      const commentInfo = await getPostComments(parseInt(elem.id));
-      setComments(commentInfo);
-    } else if (type === "harvest") {
-      console.log("Harvest commentws");
-      const commentInfo = await getHarvestComments(parseInt(elem.id));
-      setComments(commentInfo);
-    }
-
-    //console.log(commentInfo);
+    const commentInfo = await getPostComments(parseInt(elem.id));
+    setComments(commentInfo);
+    console.log(commentInfo);
   };
 
   useEffect(() => {

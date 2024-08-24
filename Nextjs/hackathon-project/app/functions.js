@@ -65,7 +65,7 @@ export async function getUserPlants(uid) {
 }
 
 export async function getUserPosts(uid) {
-  console.log("find uid " + uid);
+  //console.log("find uid " + uid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -198,6 +198,53 @@ export async function getPostComments(pId) {
       body: JSON.stringify({
         type: "getPostComments",
         postId: pId,
+      }),
+    });
+    const newData = await response.json();
+    //console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getHarvestComments(pId) {
+  // console.log("int the fintion " + pId);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getHarvestComments",
+        postId: pId,
+      }),
+    });
+    const newData = await response.json();
+    //console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function insertNewComment(uid, pid, text, image) {
+  // console.log("int the fintion " + pId);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "newcommentinpost",
+        postId: pid,
+        userID: uid,
+        text: text,
+        image: image,
       }),
     });
     const newData = await response.json();

@@ -8,7 +8,7 @@ const formatDate = (dateString) => {
   return formatDistanceToNow(date, { addSuffix: true });
 };
 
-const PostFrame = ({ elem, className, style }) => {
+const PostFrame = ({ elem, className, style, type }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userinfo, setuserinfo] = useState("");
 
@@ -98,6 +98,7 @@ const PostFrame = ({ elem, className, style }) => {
         elem={elem}
         userinfo={userinfo}
         isOpen={isModalOpen}
+        type={type}
         onClose={closeModal}
       />
     </>

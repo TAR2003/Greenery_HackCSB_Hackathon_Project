@@ -20,7 +20,7 @@ import { getAllHarvestPosts } from "./getAllHarvestPosts";
 import { sanitizeInput } from "./sanitization";
 import { getUserAnswers } from "./getUserAnswers";
 import { insertHarvest } from "./insertNewHarvest";
-import { insertPost } from "./insertNewPost";
+import { insertNewPost } from "./insertNewPost";
 import { insertCommentInPost } from "./insertCommentInPost";
 import { insertCommentInHarvest } from "./insertCommentInHarvest";
 import { getPostComments } from "./getPostComments";
@@ -42,6 +42,7 @@ import {
   newCommentInPostSchema,
   newCommentInHarvestSchema,
 } from "./validation";
+import { getHarvestComments } from "./getHarvestComments";
 
 // Define the POST function
 export async function POST(request) {
@@ -260,7 +261,7 @@ export async function POST(request) {
           { status: 400 }
         );
       }
-      await insertPost(
+      await insertNewPost(
         info.userId,
         info.plantId,
         info.text,
@@ -352,10 +353,15 @@ export async function POST(request) {
         info.location
       );
     } else if (type === "getPostComments") {
-      console.log("in the meantime " + info.postId);
+      //console.log("in the meantime " + info.postId);
       info.postId = sanitizeInput(info.postId);
 
       return await getPostComments(info.postId);
+    } else if (type === "getHarvestComments") {
+      //console.log("in the meantime " + info.postId);
+      info.postId = sanitizeInput(info.postId);
+
+      return await getHarvestComments(info.postId);
     } else {
       return NextResponse.json(
         { message: "Invalid request type" },
