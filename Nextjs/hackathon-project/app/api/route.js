@@ -1,6 +1,5 @@
 // Import necessary functions
 
-
 import { getId } from "./getLoginId";
 import { insertInfo } from "./signupInfo";
 import { NextResponse } from "next/server";
@@ -24,6 +23,7 @@ import { insertHarvest } from "./insertNewHarvest";
 import { insertPost } from "./insertNewPost";
 import { insertCommentInPost } from "./insertCommentInPost";
 import { insertCommentInHarvest } from "./insertCommentInHarvest";
+import { getPostComments } from "./getPostComments";
 import {
   userInfoSchema,
   loginSchema,
@@ -40,9 +40,8 @@ import {
   newHarvestSchema,
   newPostSchema,
   newCommentInPostSchema,
-  newCommentInHarvestSchema
+  newCommentInHarvestSchema,
 } from "./validation";
-
 
 // Define the POST function
 export async function POST(request) {
@@ -65,7 +64,7 @@ export async function POST(request) {
           { status: 400 }
         );
       }
-      
+
       return await getUserInfo(info.userid);
     } else if (type === "searchusersbyprefix") {
       info.prefix = sanitizeInput(info.prefix);
@@ -233,10 +232,16 @@ export async function POST(request) {
         text: info.text,
       });
       if (validationResult.error) {
-        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+        return NextResponse.json(
+          { message: validationResult.error.details[0].message },
+          { status: 400 }
+        );
       }
       await insertHarvest(info.userId, info.plantId, info.image, info.text);
-      return NextResponse.json({ message: 'Harvest inserted successfully' }, { status: 200 });
+      return NextResponse.json(
+        { message: "Harvest inserted successfully" },
+        { status: 200 }
+      );
     } else if (type === "newpost") {
       info.userId = sanitizeInput(info.userId);
       info.plantId = sanitizeInput(info.plantId);
@@ -247,13 +252,25 @@ export async function POST(request) {
         plantId: info.plantId,
         text: info.text,
         image: info.image,
-        advice_or_plantation: info.advice_or_plantation
+        advice_or_plantation: info.advice_or_plantation,
       });
       if (validationResult.error) {
-        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+        return NextResponse.json(
+          { message: validationResult.error.details[0].message },
+          { status: 400 }
+        );
       }
-      await insertPost(info.userId, info.plantId, info.text, info.image, info.advice_or_plantation);
-      return NextResponse.json({ message: 'Post inserted successfully' }, { status: 200 });
+      await insertPost(
+        info.userId,
+        info.plantId,
+        info.text,
+        info.image,
+        info.advice_or_plantation
+      );
+      return NextResponse.json(
+        { message: "Post inserted successfully" },
+        { status: 200 }
+      );
     } else if (type === "newcommentinpost") {
       info.userId = sanitizeInput(info.userId);
       info.postId = sanitizeInput(info.postId);
@@ -266,10 +283,21 @@ export async function POST(request) {
         image: info.image,
       });
       if (validationResult.error) {
-        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+        return NextResponse.json(
+          { message: validationResult.error.details[0].message },
+          { status: 400 }
+        );
       }
-      await insertCommentInPost(info.userId, info.postId, info.text, info.image);
-      return NextResponse.json({ message: 'Comment inserted successfully' }, { status: 200 });
+      await insertCommentInPost(
+        info.userId,
+        info.postId,
+        info.text,
+        info.image
+      );
+      return NextResponse.json(
+        { message: "Comment inserted successfully" },
+        { status: 200 }
+      );
     } else if (type === "newcommentinharvest") {
       info.userId = sanitizeInput(info.userId);
       info.harvestId = sanitizeInput(info.harvestId);
@@ -282,12 +310,22 @@ export async function POST(request) {
         image: info.image,
       });
       if (validationResult.error) {
-        return NextResponse.json({ message: validationResult.error.details[0].message }, { status: 400 });
+        return NextResponse.json(
+          { message: validationResult.error.details[0].message },
+          { status: 400 }
+        );
       }
-      await insertCommentInHarvest(info.userId, info.harvestId, info.text, info.image);
-      return NextResponse.json({ message: 'Comment inserted successfully' }, { status: 200 });
-    }
-     else if (type === "login") {
+      await insertCommentInHarvest(
+        info.userId,
+        info.harvestId,
+        info.text,
+        info.image
+      );
+      return NextResponse.json(
+        { message: "Comment inserted successfully" },
+        { status: 200 }
+      );
+    } else if (type === "login") {
       info.email = sanitizeInput(info.email);
       info.password = sanitizeInput(info.password);
 
@@ -314,7 +352,7 @@ export async function POST(request) {
         info.location
       );
     } else if (type === "getPostComments") {
-      //console.log("in the meantime " + info.postId);
+      console.log("in the meantime " + info.postId);
       info.postId = sanitizeInput(info.postId);
 
       return await getPostComments(info.postId);
