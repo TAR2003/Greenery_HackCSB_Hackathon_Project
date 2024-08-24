@@ -58,3 +58,34 @@ export const userAnswerSchema = Joi.object({
 export const searchUserByPrefixSchema = Joi.object({
   prefix: Joi.string().min(1).required(),
 }).unknown(); // Allows other fields like 'type'
+
+export const newHarvestSchema = Joi.object({
+  userId: Joi.number().integer().positive().required(),
+  plantId: Joi.number().integer().positive().required(),
+  image: Joi.string().allow(null, ''), // Allow null or empty string
+  text: Joi.string().allow(null, '')  // Allow null or empty string
+}).unknown(); // Allows other fields like 'type'
+
+
+export const newPostSchema = Joi.object({
+  userId: Joi.number().integer().required(),
+  plantId: Joi.number().integer().required(),
+  text: Joi.string().required(),
+  image: Joi.string().allow(null, ''),
+  advice_or_plantation: Joi.string().valid('advice', 'plantation').required(),
+}).unknown();
+
+export const newCommentInPostSchema = Joi.object({
+  userId: Joi.number().integer().required(),
+  postId: Joi.number().integer().required(),
+  text: Joi.string().required(),
+  image: Joi.string().allow(null, ''),
+}).unknown();
+
+export const newCommentInHarvestSchema = Joi.object({
+  userId: Joi.number().integer().required(),
+  harvestId: Joi.number().integer().required(),
+  text: Joi.string().required(),
+  image: Joi.string().allow(null, ''),
+}).unknown();
+
