@@ -24,6 +24,7 @@ import { insertNewPost } from "./insertNewPost";
 import { insertCommentInPost } from "./insertCommentInPost";
 import { insertCommentInHarvest } from "./insertCommentInHarvest";
 import { getPostComments } from "./getPostComments";
+import { getReactStatePost } from "./getReactStatePost";
 import {
   userInfoSchema,
   loginSchema,
@@ -43,6 +44,14 @@ import {
   newCommentInHarvestSchema,
 } from "./validation";
 import { getHarvestComments } from "./getHarvestComments";
+import { getReactState } from "./getReactStatePost";
+import { getLikeNumberPost } from "./getLikeNumberPost";
+import { getDislikeNumberPost } from "./getDislikeNumberPost";
+import { addReactPost } from "./addReactPost";
+import { removeReactPost } from "./removeReactPost";
+import { submitQuestion } from "./addForumQuestion";
+import { getForumInfo } from "./forumInfo";
+import { submitAnswer } from "./addForumAnswer";
 
 // Define the POST function
 export async function POST(request) {
@@ -353,16 +362,6 @@ export async function POST(request) {
         info.name,
         info.location
       );
-    } else if (type === "getPostComments") {
-      //console.log("in the meantime " + info.postId);
-      info.postId = sanitizeInput(info.postId);
-
-      return await getPostComments(info.postId);
-    } else if (type === "getHarvestComments") {
-      //console.log("in the meantime " + info.postId);
-      info.postId = sanitizeInput(info.postId);
-
-      return await getHarvestComments(info.postId);
     } else {
       return NextResponse.json(
         { message: "Invalid request type" },

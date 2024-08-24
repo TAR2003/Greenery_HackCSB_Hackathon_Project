@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import CommentFile from "./CommentFile";
 import {
+  getDislikeNumberPost,
   getHarvestComments,
+  getLikeNumberPost,
   getPostComments,
   insertNewCommentinHarvest,
   insertNewCommentinPost,
@@ -18,7 +20,25 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
   const [comments, setComments] = useState([]); //The comments
   const [visibleComments, setVisibleComments] = useState(0); // Track visible comments
   const modalRef = useRef(null); // for the current modal
+  const [liked, setliked] = useState(false);
+  const [disliked, setdisliked] = useState(false);
   const [writeComment, setwriteComment] = useState("");
+  const [likeNumber, setLikeNumber] = useState(0);
+  const [dislikeNumber, setDislikeNumber] = useState(0);
+
+  const handleLikeClick = () => {
+    setdisliked(false);
+    setliked(!liked);
+    if (liked) setLikeNumber(parseInt(likeNumber) - 1);
+    else setLikeNumber(parseInt(likeNumber) + 1);
+  };
+
+  const handleDislikeClick = () => {
+    setliked(false);
+    setdisliked(!disliked);
+    if (disliked) setDislikeNumber(parseInt(dislikeNumber) - 1);
+    else setDislikeNumber(parseInt(dislikeNumber) + 1);
+  };
 
   // Fetch comments when the modal is opened
   const fetchData = async () => {
@@ -33,7 +53,13 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
       const commentInfo = await getHarvestComments(parseInt(elem.id));
       setComments(commentInfo);
     }
+    setVisibleComments(0);
 
+    const likes = await getLikeNumberPost(parseInt(elem.id));
+    const dislikes = await getDislikeNumberPost(parseInt(elem.id));
+    // console.log(likes[0].count + " " + JSON.stringify(dislikes));
+    setLikeNumber(likes[0].count);
+    setDislikeNumber(dislikes[0].count);
     //console.log(commentInfo);
   };
 
@@ -63,7 +89,6 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
     }
     setwriteComment("");
     fetchData();
-    setVisibleComments(0);
   };
 
   useEffect(() => {
@@ -119,7 +144,6 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
         >
           &times;
         </button>
-
         {/* Profile Information */}
         <div className="flex items-center mb-4">
           <img
@@ -134,28 +158,43 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
             <p className="text-gray-500 text-sm">{formatDate(elem.time)}</p>
           </div>
         </div>
-
         {/* Full Caption */}
         <div className="mb-4">
           <h1 className="text-gray-800 text-xl">{elem.text}</h1>
         </div>
-
         {/* Image */}
         <img
           src={elem.image}
           alt={elem.text}
           className="w-full h-auto object-cover rounded-lg mb-4"
         />
-
         {/* Buttons */}
-        <div className="flex space-x-4">
-          <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 flex-1">
-            React
+        <div className="flex mt-4 space-x-4">
+          <button
+            onClick={handleLikeClick}
+            className={`${
+              liked ? "bg-blue-600" : "bg-blue-300"
+            }  flex justify-center border text-black gap-4 border-black items-center px-4 py-2 rounded-lg hover:bg-white flex-1 transform transition-transform duration-300 hover:scale-110`}
+          >
+            {likeNumber}
+            <img src="/like.png" className="w-6 h-6" />
           </button>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex-1">
-            Comment
+
+          <button
+            onClick={handleDislikeClick}
+            className={` ${
+              disliked ? "bg-green-600" : "bg-green-300"
+            } text-black flex border border-black gap-4 justify-center items-center px-4 py-2 rounded-lg hover:bg-white flex-1 transform transition-transform duration-300 hover:scale-110`}
+          >
+            {dislikeNumber}
+            <img src="/dislike.png" className="w-6 h-6" />
+          </button>
+
+          <button className="bg-red-300 flex gap-4 border border-black justify-center text-black px-4 py-2 rounded-lg hover:bg-white flex-1 transform transition-transform duration-300 hover:scale-110">
+            {comments.length} <img src="/chat.png" className="w-6 h-6" />
           </button>
         </div>
+
         <div className="m-4 bg-gradient-to-r from-blue-100 to-teal-100 p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold mb-4 text-gray-800">
             Leave a Comment

@@ -257,7 +257,7 @@ export async function insertNewCommentinPost(uid, pid, txt, img) {
 
 export async function insertNewCommentinHarvest(uid, pid, txt, img) {
   //console.log(uid, pid, text, image);
-  console.log("in harvest functin " + pid);
+  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -273,7 +273,126 @@ export async function insertNewCommentinHarvest(uid, pid, txt, img) {
       }),
     });
     const newData = await response.json();
-    console.log(JSON.stringify(newData) + "got back");
+    //console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getReactState(uid, pid) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getReactState",
+        postId: pid,
+        userId: uid,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getLikeNumberPost(pid) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getLikeNumberPost",
+        postId: pid,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getDislikeNumberPost(pid) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getDislikeNumberPost",
+        postId: pid,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function addReactPost(uid, pid, react) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "addReactPost",
+        postId: pid,
+        userId: uid,
+        react: react,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function removeReactPost(uid, pid) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "removeReactPost",
+        postId: pid,
+        userId: uid,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
     //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
