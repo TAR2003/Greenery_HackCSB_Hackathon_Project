@@ -46,7 +46,7 @@ import {
   newPostSchema,
   newCommentInPostSchema,
   newCommentInHarvestSchema,
-  getUserChatsSchema
+  getUserChatsSchema,
 } from "./validation";
 import { getHarvestComments } from "./getHarvestComments";
 import { getReactState } from "./getReactStatePost";
@@ -75,50 +75,50 @@ export async function POST(request) {
 
     if (type === "getuserinfo") {
       info.userId = sanitizeInput(info.userId);
-      const validationResult = userInfoSchema.validate({ userid: info.userId });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      //const validationResult = userInfoSchema.validate({ userid: info.userId });
+      //if (validationResult.error) {
+      //  return NextResponse.json(
+      //    { message: validationResult.error.details[0].message },
+      //    { status: 400 }
+      //  );
+      //}
 
       return await getUserInfo(info.userId);
     } else if (type === "searchusersbyprefix") {
       info.prefix = sanitizeInput(info.prefix);
-      const validationResult = searchUserByPrefixSchema.validate({
-        prefix: info.prefix,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      //const validationResult = searchUserByPrefixSchema.validate({
+      //  prefix: info.prefix,
+      //});
+      //if (validationResult.error) {
+      //  return NextResponse.json(
+      //    { message: validationResult.error.details[0].message },
+      //    { status: 400 }
+      //  );
+      //}
       return await searchUsersByPrefix(info.prefix);
     } else if (type === "getuserposts") {
       info.userId = sanitizeInput(info.userId);
-      const validationResult = userPostsSchema.validate({
-        userId: info.userId,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      //const validationResult = userPostsSchema.validate({
+      //  userId: info.userId,
+      //});
+      //if (validationResult.error) {
+      //  return NextResponse.json(
+      //    { message: validationResult.error.details[0].message },
+      //    { status: 400 }
+      //  );
+      //}
       return await getUserPosts(info.userId);
     } else if (type === "getuserplants") {
       info.userId = sanitizeInput(info.userId);
-      const validationResult = userPostsSchema.validate({
-        userId: info.userId,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      // const validationResult = userPostsSchema.validate({
+      //   userId: info.userId,
+      // });
+      // if (validationResult.error) {
+      //   return NextResponse.json(
+      //     { message: validationResult.error.details[0].message },
+      //     { status: 400 }
+      //   );
+      // }
       return await getUserPlants(info.userId);
     } else if (type === "getAllCommunityPosts") {
       return await getAllCommunityPosts();
@@ -126,116 +126,116 @@ export async function POST(request) {
       return await getAllHarvestPosts();
     } else if (type === "getplantposts") {
       info.userId = sanitizeInput(info.userId);
-      console.log(info.userId);
-      const validationResult = plantPostsSchema.validate({
-        userId: info.userId,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      // console.log(info.userId);
+      //  const validationResult = plantPostsSchema.validate({
+      //    userId: info.userId,
+      //  });
+      //  if (validationResult.error) {
+      //    return NextResponse.json(
+      //      { message: validationResult.error.details[0].message },
+      //      { status: 400 }
+      //    );
+      //  }
       return await getPlantPosts(info.userId);
     } else if (type === "gettotalnoofplants") {
       info.userId = sanitizeInput(info.userId);
-      const validationResult = userPostsSchema.validate({
-        userId: info.userId,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      // const validationResult = userPostsSchema.validate({
+      //   userId: info.userId,
+      // });
+      // if (validationResult.error) {
+      //   return NextResponse.json(
+      //     { message: validationResult.error.details[0].message },
+      //     { status: 400 }
+      //   );
+      // }
       return await getTotalNoOfPlants(info.userId);
     } else if (type === "getuserharvests") {
       info.userId = sanitizeInput(info.userId);
-      const validationResult = harvestSchema.validate({ userId: info.userId });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      //const validationResult = harvestSchema.validate({ userId: info.userId });
+      //if (validationResult.error) {
+      //  return NextResponse.json(
+      //    { message: validationResult.error.details[0].message },
+      //    { status: 400 }
+      //  );
+      //}
       return await getHarvestByUser(info.userId);
     } else if (type === "getplantharvests") {
       info.userId = sanitizeInput(info.userId);
-      const validationResult = plantHarvestsSchema.validate({
-        userId: info.userId,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      // const validationResult = plantHarvestsSchema.validate({
+      //   userId: info.userId,
+      // });
+      // if (validationResult.error) {
+      //   return NextResponse.json(
+      //     { message: validationResult.error.details[0].message },
+      //     { status: 400 }
+      //   );
+      // }
       return await getPlantHarvests(info.userId);
     } else if (type === "getuserquestions") {
       info.userId = sanitizeInput(info.userId);
-      const validationResult = userQuestionsSchema.validate({
-        userId: info.userId,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      // const validationResult = userQuestionsSchema.validate({
+      //   userId: info.userId,
+      // });
+      // if (validationResult.error) {
+      //   return NextResponse.json(
+      //     { message: validationResult.error.details[0].message },
+      //     { status: 400 }
+      //   );
+      // }
       return await getUserQuestions(info.userId);
     } else if (type === "getquestionsbyplantname") {
       info.plantName = sanitizeInput(info.plantName);
-      const validationResult = plantNameSchema.validate({
-        plantName: info.plantName,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      // const validationResult = plantNameSchema.validate({
+      //   plantName: info.plantName,
+      // });
+      // if (validationResult.error) {
+      //   return NextResponse.json(
+      //     { message: validationResult.error.details[0].message },
+      //     { status: 400 }
+      //   );
+      // }
       return await getQuestionsByPlantName(info.plantName);
     } else if (type === "getreactionnumber") {
       // New case for getting reaction number
       info.answerId = sanitizeInput(info.answerId);
-      const validationResult = reactionsSchema.validate({
-        answerId: info.answerId,
-      }); // Adjust as necessary
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      // const validationResult = reactionsSchema.validate({
+      //   answerId: info.answerId,
+      // }); // Adjust as necessary
+      // if (validationResult.error) {
+      //   return NextResponse.json(
+      //     { message: validationResult.error.details[0].message },
+      //     { status: 400 }
+      //   );
+      // }
       return await getReactionNumber(info.answerId);
     } else if (type === "getuserreaction") {
       // New case for getting user reaction
       info.answerId = sanitizeInput(info.answerId);
       info.userId = sanitizeInput(info.userId);
-      const validationResult = userReactSchema.validate({
-        answerId: info.answerId,
-        userId: info.userId,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      // const validationResult = userReactSchema.validate({
+      //   answerId: info.answerId,
+      //   userId: info.userId,
+      // });
+      // if (validationResult.error) {
+      //   return NextResponse.json(
+      //     { message: validationResult.error.details[0].message },
+      //     { status: 400 }
+      //   );
+      // }
       const reaction = await getUserReaction(info.answerId, info.userId);
       return reaction; // Send the reaction or null
     } else if (type === "getuseranswers") {
       // New case for getting user reaction
       info.userId = sanitizeInput(info.userId);
-      const validationResult = userAnswerSchema.validate({
-        userId: info.userId,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      //const validationResult = userAnswerSchema.validate({
+      //  userId: info.userId,
+      //});
+      //if (validationResult.error) {
+      //  return NextResponse.json(
+      //    { message: validationResult.error.details[0].message },
+      //    { status: 400 }
+      //  );
+      //}
       const answers = await getUserAnswers(info.userId);
       return answers; // Send the reaction or null
     } else if (type === "newharvest") {
@@ -243,18 +243,18 @@ export async function POST(request) {
       info.plantId = sanitizeInput(info.plantId);
       info.image = sanitizeInput(info.image);
       info.text = sanitizeInput(info.text);
-      const validationResult = newHarvestSchema.validate({
-        userId: info.userId,
-        plantId: info.plantId,
-        image: info.image,
-        text: info.text,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      // const validationResult = newHarvestSchema.validate({
+      //   userId: info.userId,
+      //   plantId: info.plantId,
+      //   image: info.image,
+      //   text: info.text,
+      // });
+      // if (validationResult.error) {
+      //   return NextResponse.json(
+      //     { message: validationResult.error.details[0].message },
+      //     { status: 400 }
+      //   );
+      // }
       await insertHarvest(info.userId, info.plantId, info.image, info.text);
       return NextResponse.json(
         { message: "Harvest inserted successfully" },
@@ -265,19 +265,19 @@ export async function POST(request) {
       info.plantId = sanitizeInput(info.plantId);
       info.text = sanitizeInput(info.text);
       info.image = sanitizeInput(info.image);
-      const validationResult = newPostSchema.validate({
-        userId: info.userId,
-        plantId: info.plantId,
-        text: info.text,
-        image: info.image,
-        advice_or_plantation: info.advice_or_plantation,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      // const validationResult = newPostSchema.validate({
+      //   userId: info.userId,
+      //   plantId: info.plantId,
+      //   text: info.text,
+      //   image: info.image,
+      //   advice_or_plantation: info.advice_or_plantation,
+      // });
+      // if (validationResult.error) {
+      //   return NextResponse.json(
+      //     { message: validationResult.error.details[0].message },
+      //     { status: 400 }
+      //   );
+      // }
       await insertNewPost(
         info.userId,
         info.plantId,
@@ -294,18 +294,18 @@ export async function POST(request) {
       info.postId = sanitizeInput(info.postId);
       info.text = sanitizeInput(info.text);
       info.image = sanitizeInput(info.image);
-      const validationResult = newCommentInPostSchema.validate({
-        userId: info.userId,
-        postId: info.postId,
-        text: info.text,
-        image: info.image,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      // const validationResult = newCommentInPostSchema.validate({
+      //   userId: info.userId,
+      //   postId: info.postId,
+      //   text: info.text,
+      //   image: info.image,
+      // });
+      // if (validationResult.error) {
+      //   return NextResponse.json(
+      //     { message: validationResult.error.details[0].message },
+      //     { status: 400 }
+      //   );
+      // }
       await insertCommentInPost(
         info.userId,
         info.postId,
@@ -321,19 +321,19 @@ export async function POST(request) {
       info.harvestId = sanitizeInput(info.harvestId);
       info.text = sanitizeInput(info.text);
       info.image = sanitizeInput(info.image);
-      const validationResult = newCommentInHarvestSchema.validate({
-        userId: info.userId,
-        harvestId: info.harvestId,
-        text: info.text,
-        image: info.image,
-      });
-      //console.log(JSON.stringify(info) + " is the info");
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      //  const validationResult = newCommentInHarvestSchema.validate({
+      //    userId: info.userId,
+      //    harvestId: info.harvestId,
+      //    text: info.text,
+      //    image: info.image,
+      //  });
+      //  //console.log(JSON.stringify(info) + " is the info");
+      //  if (validationResult.error) {
+      //    return NextResponse.json(
+      //      { message: validationResult.error.details[0].message },
+      //      { status: 400 }
+      //    );
+      //  }
       await insertCommentInHarvest(
         info.harvestId,
         info.userId,
@@ -346,40 +346,40 @@ export async function POST(request) {
       );
     } else if (type === "getchatparticipants") {
       info.userId = sanitizeInput(info.userId);
-      const validationResult = userInfoSchema.validate({ userId: info.userId });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      // const validationResult = userInfoSchema.validate({ userId: info.userId });
+      // if (validationResult.error) {
+      //   return NextResponse.json(
+      //     { message: validationResult.error.details[0].message },
+      //     { status: 400 }
+      //   );
+      // }
 
       return await getChatParticipants(info.userId);
     } else if (type === "getuserchats") {
       info.userId = sanitizeInput(info.userId);
       info.otherUserId = sanitizeInput(info.otherUserId);
-      const validationResult = getUserChatsSchema.validate({
-        userId: info.userId,
-        otherUserId: info.otherUserId,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      //  const validationResult = getUserChatsSchema.validate({
+      //    userId: info.userId,
+      //    otherUserId: info.otherUserId,
+      //  });
+      //  if (validationResult.error) {
+      //    return NextResponse.json(
+      //      { message: validationResult.error.details[0].message },
+      //      { status: 400 }
+      //    );
+      //  }
 
       return await getUserChats(info.userId, info.otherUserId);
     } else if (type === "recommendplants") {
       info.userId = sanitizeInput(info.userId);
-      const validationResult = userInfoSchema.validate({ userId: info.userId });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
-      
+      // const validationResult = userInfoSchema.validate({ userId: info.userId });
+      // if (validationResult.error) {
+      //   return NextResponse.json(
+      //     { message: validationResult.error.details[0].message },
+      //     { status: 400 }
+      //   );
+      // }
+
       // Fetch user location and then recommend plants
       const location = await getUserLocation(info.userId);
       if (!location) {
@@ -390,18 +390,17 @@ export async function POST(request) {
       }
       const recommendations = await recommendPlants(location);
       return NextResponse.json(recommendations, { status: 200 });
-    }
-    else if (type === "login") {
+    } else if (type === "login") {
       info.email = sanitizeInput(info.email);
       info.password = sanitizeInput(info.password);
 
-      const validationResult = loginSchema.validate(info);
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
-        );
-      }
+      //  const validationResult = loginSchema.validate(info);
+      //  if (validationResult.error) {
+      //    return NextResponse.json(
+      //      { message: validationResult.error.details[0].message },
+      //      { status: 400 }
+      //    );
+      //  }
       console.log("Login attempt for:", info.email);
 
       return await getId(info.email, info.password);
@@ -477,7 +476,12 @@ export async function POST(request) {
       info.ownPosts = sanitizeInput(info.ownPosts);
       info.userid = sanitizeInput(info.userid);
 
-      return await getForumInfo(info.userid, info.searchedText, info.order, info.ownPosts);
+      return await getForumInfo(
+        info.userid,
+        info.searchedText,
+        info.order,
+        info.ownPosts
+      );
     } else if (type === "submitAnswer") {
       info.userid = sanitizeInput(info.userid);
       info.answer = sanitizeInput(info.answer);

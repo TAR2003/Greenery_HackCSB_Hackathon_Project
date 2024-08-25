@@ -32,7 +32,7 @@ export async function getUserInfo(uid) {
       },
       body: JSON.stringify({
         type: "getuserinfo",
-        userid: uid,
+        userId: uid,
       }),
     });
     const newData = await response.json();
