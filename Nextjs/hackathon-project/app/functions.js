@@ -231,8 +231,7 @@ export async function getHarvestComments(pId) {
   }
 }
 
-export async function insertNewComment(uid, pid, text, image) {
-  // console.log("int the fintion " + pId);
+export async function insertNewCommentinPost(uid, pid, txt, img) {
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -242,13 +241,163 @@ export async function insertNewComment(uid, pid, text, image) {
       body: JSON.stringify({
         type: "newcommentinpost",
         postId: pid,
-        userID: uid,
-        text: text,
-        image: image,
+        userId: uid,
+        text: txt,
+        image: img,
       }),
     });
     const newData = await response.json();
     //console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function insertNewCommentinHarvest(uid, pid, txt, img) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "newcommentinharvest",
+        harvestId: pid,
+        userId: uid,
+        text: txt,
+        image: img,
+      }),
+    });
+    const newData = await response.json();
+    //console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getReactStatePost(uid, pid, kindof) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getReactStatePost",
+        postId: pid,
+        userId: uid,
+        kindof: kindof,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getLikeNumberPost(pid, kindof) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getLikeNumberPost",
+        postId: pid,
+        kindof: kindof,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getDislikeNumberPost(pid, kindof) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getDislikeNumberPost",
+        postId: pid,
+        kindof: kindof,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function addReactPost(uid, pid, react, kindof) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "addReactPost",
+        postId: pid,
+        userId: uid,
+        react: react,
+        kindof: kindof,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function removeReactPost(uid, pid, kindof) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "removeReactPost",
+        postId: pid,
+        userId: uid,
+        kindof: kindof,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
     //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {

@@ -15,7 +15,7 @@ const CommentFile = ({ elem, className, style }) => {
   const fetchData = async () => {
     const info = await getUserInfo(elem.user_id);
     setuserinfo(info[0]);
-    console.log("the value " + info[0].image);
+    //console.log("the value " + info[0].image);
   };
 
   useEffect(() => {
@@ -28,8 +28,10 @@ const CommentFile = ({ elem, className, style }) => {
       style={style}
     >
       <div className="flex items-center">
-        <Image
-          src={userinfo.image}
+        <img
+          src={
+            userinfo === undefined ? "/user/masnoon.png" : `${userinfo.image}`
+          }
           alt="profile picture of the commenter"
           width={52}
           height={52}

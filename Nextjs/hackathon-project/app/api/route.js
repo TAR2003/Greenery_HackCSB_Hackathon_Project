@@ -24,8 +24,12 @@ import { insertNewPost } from "./insertNewPost";
 import { insertCommentInPost } from "./insertCommentInPost";
 import { insertCommentInHarvest } from "./insertCommentInHarvest";
 import { getPostComments } from "./getPostComments";
+<<<<<<< HEAD
 import { getChatParticipants } from "./getChatParticipants";
 import { getUserChats } from "./getUserChats";
+=======
+import { getReactStatePost } from "./getReactStatePost";
+>>>>>>> a2eef7c329618ead6ca0fe725a3d1a552191f647
 import {
   userInfoSchema,
   loginSchema,
@@ -46,6 +50,14 @@ import {
   getUserChatsSchema
 } from "./validation";
 import { getHarvestComments } from "./getHarvestComments";
+import { getReactState } from "./getReactStatePost";
+import { getLikeNumberPost } from "./getLikeNumberPost";
+import { getDislikeNumberPost } from "./getDislikeNumberPost";
+import { addReactPost } from "./addReactPost";
+import { removeReactPost } from "./removeReactPost";
+import { submitQuestion } from "./addForumQuestion";
+import { getForumInfo } from "./forumInfo";
+import { submitAnswer } from "./addForumAnswer";
 
 // Define the POST function
 export async function POST(request) {
@@ -312,10 +324,11 @@ export async function POST(request) {
       info.image = sanitizeInput(info.image);
       const validationResult = newCommentInHarvestSchema.validate({
         userId: info.userId,
-        postId: info.harvestId,
+        harvestId: info.harvestId,
         text: info.text,
         image: info.image,
       });
+      //console.log(JSON.stringify(info) + " is the info");
       if (validationResult.error) {
         return NextResponse.json(
           { message: validationResult.error.details[0].message },
@@ -323,8 +336,8 @@ export async function POST(request) {
         );
       }
       await insertCommentInHarvest(
-        info.userId,
         info.harvestId,
+        info.userId,
         info.text,
         info.image
       );
@@ -394,6 +407,60 @@ export async function POST(request) {
       info.postId = sanitizeInput(info.postId);
 
       return await getHarvestComments(info.postId);
+    } else if (type === "getReactStatePost") {
+      //console.log("in the meantime " + info.postId);
+      info.postId = sanitizeInput(info.postId);
+      info.userId = sanitizeInput(info.userId);
+      info.kindof = sanitizeInput(info.kindof);
+
+      return await getReactStatePost(info.userId, info.postId, info.kindof);
+    } else if (type === "getLikeNumberPost") {
+      //console.log("in the meantime " + info.postId);
+      info.postId = sanitizeInput(info.postId);
+      info.kindof = sanitizeInput(info.kindof);
+
+      return await getLikeNumberPost(info.postId, info.kindof);
+    } else if (type === "getDislikeNumberPost") {
+      //console.log("in the meantime " + info.postId);
+      info.postId = sanitizeInput(info.postId);
+      info.kindof = sanitizeInput(info.kindof);
+
+      return await getDislikeNumberPost(info.postId, info.kindof);
+    } else if (type === "addReactPost") {
+      //console.log("in the meantime " + info.postId);
+      info.postId = sanitizeInput(info.postId);
+      info.userId = sanitizeInput(info.userId);
+      info.react = sanitizeInput(info.react);
+      info.kindof = sanitizeInput(info.kindof);
+
+      return await addReactPost(
+        info.userId,
+        info.postId,
+        info.react,
+        info.kindof
+      );
+    } else if (type === "removeReactPost") {
+      //console.log("in the meantime " + info.postId);
+      info.postId = sanitizeInput(info.postId);
+      info.userId = sanitizeInput(info.userId);
+      info.kindof = sanitizeInput(info.kindof);
+
+      return await removeReactPost(info.userId, info.postId, info.kindof);
+    } else if (type === "addQuestion") {
+      info.userid = sanitizeInput(info.userid);
+      info.question = sanitizeInput(info.question);
+
+      return await submitQuestion(info.userid, info.question);
+    } else if (type === "getForumInfo") {
+      info.searchedText = sanitizeInput(info.searchedText);
+
+      return await getForumInfo(info.searchedText);
+    } else if (type === "submitAnswer") {
+      info.userid = sanitizeInput(info.userid);
+      info.answer = sanitizeInput(info.answer);
+      info.qid = sanitizeInput(info.qid);
+
+      return await submitAnswer(info.userid, info.answer, info.qid);
     } else {
       return NextResponse.json(
         { message: "Invalid request type" },
