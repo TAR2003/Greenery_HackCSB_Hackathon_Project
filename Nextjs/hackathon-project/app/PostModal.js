@@ -2,12 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import CommentFile from "./CommentFile";
 import {
+  addReactPost,
   getDislikeNumberPost,
   getHarvestComments,
   getLikeNumberPost,
   getPostComments,
+  getReactStatePost,
   insertNewCommentinHarvest,
   insertNewCommentinPost,
+  removeReactPost,
 } from "./functions";
 import Cookies from "js-cookie";
 
@@ -26,18 +29,66 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
   const [likeNumber, setLikeNumber] = useState(0);
   const [dislikeNumber, setDislikeNumber] = useState(0);
 
-  const handleLikeClick = () => {
-    setdisliked(false);
-    setliked(!liked);
-    if (liked) setLikeNumber(parseInt(likeNumber) - 1);
-    else setLikeNumber(parseInt(likeNumber) + 1);
+  const handleLikeClick = async () => {
+    if (disliked) {
+      await removeReactPost(parseInt(Cookies.get("userid")), elem.id, type);
+      setdisliked(false);
+    }
+    if (liked) {
+      await removeReactPost(parseInt(Cookies.get("userid")), elem.id, type);
+      setliked(false);
+    } else {
+      await addReactPost(
+        parseInt(Cookies.get("userid")),
+        elem.id,
+        "like",
+        type
+      );
+      setliked(true);
+    }
+    await countNumbers();
   };
 
-  const handleDislikeClick = () => {
-    setliked(false);
-    setdisliked(!disliked);
-    if (disliked) setDislikeNumber(parseInt(dislikeNumber) - 1);
-    else setDislikeNumber(parseInt(dislikeNumber) + 1);
+  const handleDislikeClick = async () => {
+    if (liked) {
+      await removeReactPost(parseInt(Cookies.get("userid")), elem.id, type);
+      setliked(false);
+    }
+    if (disliked) {
+      await removeReactPost(parseInt(Cookies.get("userid")), elem.id, type);
+      setdisliked(false);
+    } else {
+      await addReactPost(
+        parseInt(Cookies.get("userid")),
+        elem.id,
+        "dislike",
+        type
+      );
+      setdisliked(true);
+    }
+
+    await countNumbers();
+  };
+
+  const countNumbers = async () => {
+    const likes = await getLikeNumberPost(parseInt(elem.id), type);
+    const dislikes = await getDislikeNumberPost(parseInt(elem.id), type);
+    // console.log(likes[0].count + " " + JSON.stringify(dislikes));
+    setLikeNumber(likes[0].count);
+    setDislikeNumber(dislikes[0].count);
+    const likeinfo = await getReactStatePost(
+      parseInt(Cookies.get("userid")),
+      elem.id,
+      type
+    );
+    if (likeinfo.length == 0) {
+      setliked(false);
+      setdisliked(false);
+    } else if (likeinfo[0].react === "like") {
+      setliked(true);
+    } else {
+      setdisliked(true);
+    }
   };
 
   // Fetch comments when the modal is opened
@@ -54,12 +105,7 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
       setComments(commentInfo);
     }
     setVisibleComments(0);
-
-    const likes = await getLikeNumberPost(parseInt(elem.id));
-    const dislikes = await getDislikeNumberPost(parseInt(elem.id));
-    // console.log(likes[0].count + " " + JSON.stringify(dislikes));
-    setLikeNumber(likes[0].count);
-    setDislikeNumber(dislikes[0].count);
+    await countNumbers();
     //console.log(commentInfo);
   };
 

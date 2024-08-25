@@ -2,17 +2,34 @@
 import { NextResponse } from "next/server";
 import { getPool } from "./db"; // Import the singleton pool
 
-export async function getReactStatePost(userId, postId) {
+export async function getReactStatePost(userId, postId, kindof) {
   const pool = getPool(); // Get the singleton instance of the pool
   try {
-    const result = await pool.query(
-      `
+    if (kindof === "community") {
+      const result = await pool.query(
+        `
       SELECT REACT FROM REACTXPOST WHERE POST_ID = $1 and USER_ID = $2
     `,
-      [postId, userId]
-    );
-
-    return NextResponse.json(result.rows);
+        [postId, userId]
+      );
+      return NextResponse.json(result.rows);
+    } else if (kindof === "harvest") {
+      const result = await pool.query(
+        `
+      SELECT REACT FROM REACTXharvest WHERE harvest_ID = $1 and USER_ID = $2
+    `,
+        [postId, userId]
+      );
+      return NextResponse.json(result.rows);
+    } else if (kindof === "answer") {
+      const result = await pool.query(
+        `
+      SELECT REACT FROM REACTXanswer WHERE answer_ID = $1 and USER_ID = $2
+    `,
+        [postId, userId]
+      );
+      return NextResponse.json(result.rows);
+    }
   } catch (error) {
     console.error("Database query error:", error);
     return NextResponse.json(

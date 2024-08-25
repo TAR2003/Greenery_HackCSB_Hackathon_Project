@@ -373,31 +373,41 @@ export async function POST(request) {
       //console.log("in the meantime " + info.postId);
       info.postId = sanitizeInput(info.postId);
       info.userId = sanitizeInput(info.userId);
+      info.kindof = sanitizeInput(info.kindof);
 
-      return await getReactStatePost(info.userId, info.postId);
+      return await getReactStatePost(info.userId, info.postId, info.kindof);
     } else if (type === "getLikeNumberPost") {
       //console.log("in the meantime " + info.postId);
       info.postId = sanitizeInput(info.postId);
+      info.kindof = sanitizeInput(info.kindof);
 
-      return await getLikeNumberPost(info.postId);
+      return await getLikeNumberPost(info.postId, info.kindof);
     } else if (type === "getDislikeNumberPost") {
       //console.log("in the meantime " + info.postId);
       info.postId = sanitizeInput(info.postId);
+      info.kindof = sanitizeInput(info.kindof);
 
-      return await getDislikeNumberPost(info.postId);
+      return await getDislikeNumberPost(info.postId, info.kindof);
     } else if (type === "addReactPost") {
       //console.log("in the meantime " + info.postId);
       info.postId = sanitizeInput(info.postId);
       info.userId = sanitizeInput(info.userId);
       info.react = sanitizeInput(info.react);
+      info.kindof = sanitizeInput(info.kindof);
 
-      return await addReactPost(info.userId, info.postId, info.react);
+      return await addReactPost(
+        info.userId,
+        info.postId,
+        info.react,
+        info.kindof
+      );
     } else if (type === "removeReactPost") {
       //console.log("in the meantime " + info.postId);
       info.postId = sanitizeInput(info.postId);
       info.userId = sanitizeInput(info.userId);
+      info.kindof = sanitizeInput(info.kindof);
 
-      return await removeReactPost(info.userId, info.postId);
+      return await removeReactPost(info.userId, info.postId, info.kindof);
     } else {
       return NextResponse.json(
         { message: "Invalid request type" },

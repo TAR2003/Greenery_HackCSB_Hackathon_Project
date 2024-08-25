@@ -281,7 +281,7 @@ export async function insertNewCommentinHarvest(uid, pid, txt, img) {
   }
 }
 
-export async function getReactState(uid, pid) {
+export async function getReactStatePost(uid, pid, kindof) {
   //console.log(uid, pid, text, image);
   // console.log("in harvest functin " + pid);
   try {
@@ -291,9 +291,10 @@ export async function getReactState(uid, pid) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        type: "getReactState",
+        type: "getReactStatePost",
         postId: pid,
         userId: uid,
+        kindof: kindof,
       }),
     });
     const newData = await response.json();
@@ -305,7 +306,7 @@ export async function getReactState(uid, pid) {
   }
 }
 
-export async function getLikeNumberPost(pid) {
+export async function getLikeNumberPost(pid, kindof) {
   //console.log(uid, pid, text, image);
   // console.log("in harvest functin " + pid);
   try {
@@ -317,6 +318,7 @@ export async function getLikeNumberPost(pid) {
       body: JSON.stringify({
         type: "getLikeNumberPost",
         postId: pid,
+        kindof: kindof,
       }),
     });
     const newData = await response.json();
@@ -328,7 +330,7 @@ export async function getLikeNumberPost(pid) {
   }
 }
 
-export async function getDislikeNumberPost(pid) {
+export async function getDislikeNumberPost(pid, kindof) {
   //console.log(uid, pid, text, image);
   // console.log("in harvest functin " + pid);
   try {
@@ -340,6 +342,7 @@ export async function getDislikeNumberPost(pid) {
       body: JSON.stringify({
         type: "getDislikeNumberPost",
         postId: pid,
+        kindof: kindof,
       }),
     });
     const newData = await response.json();
@@ -351,7 +354,7 @@ export async function getDislikeNumberPost(pid) {
   }
 }
 
-export async function addReactPost(uid, pid, react) {
+export async function addReactPost(uid, pid, react, kindof) {
   //console.log(uid, pid, text, image);
   // console.log("in harvest functin " + pid);
   try {
@@ -365,6 +368,7 @@ export async function addReactPost(uid, pid, react) {
         postId: pid,
         userId: uid,
         react: react,
+        kindof: kindof,
       }),
     });
     const newData = await response.json();
@@ -376,7 +380,7 @@ export async function addReactPost(uid, pid, react) {
   }
 }
 
-export async function removeReactPost(uid, pid) {
+export async function removeReactPost(uid, pid, kindof) {
   //console.log(uid, pid, text, image);
   // console.log("in harvest functin " + pid);
   try {
@@ -389,6 +393,7 @@ export async function removeReactPost(uid, pid) {
         type: "removeReactPost",
         postId: pid,
         userId: uid,
+        kindof: kindof,
       }),
     });
     const newData = await response.json();

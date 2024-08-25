@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { getHarvestComments, getPostComments, getUserInfo } from "./functions";
+import {
+  addReactPost,
+  getDislikeNumberPost,
+  getHarvestComments,
+  getLikeNumberPost,
+  getPostComments,
+  getReactStatePost,
+  getUserInfo,
+  removeReactPost,
+} from "./functions";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import PostModal from "./PostModal"; // Import the PostModal component
+import Cookies from "js-cookie";
 
 const formatDate = (dateString) => {
   const date = parseISO(dateString);
@@ -17,15 +27,68 @@ const PostFrame = ({ elem, className, style, type }) => {
   const [likeNumber, setLikeNumber] = useState(0);
   const [dislikeNumber, setDislikeNumber] = useState(0);
 
-  const handleLikeClick = () => {
-    setdisliked(false);
-    setliked(!liked);
+  const handleLikeClick = async () => {
+    if (disliked) {
+      await removeReactPost(parseInt(Cookies.get("userid")), elem.id, type);
+      setdisliked(false);
+    }
+    if (liked) {
+      await removeReactPost(parseInt(Cookies.get("userid")), elem.id, type);
+      setliked(false);
+    } else {
+      await addReactPost(
+        parseInt(Cookies.get("userid")),
+        elem.id,
+        "like",
+        type
+      );
+      setliked(true);
+    }
+    await countNumbers();
   };
 
-  const handleDislikeClick = () => {
-    setliked(false);
-    setdisliked(!disliked);
+  const handleDislikeClick = async () => {
+    if (liked) {
+      await removeReactPost(parseInt(Cookies.get("userid")), elem.id, type);
+      setliked(false);
+    }
+    if (disliked) {
+      await removeReactPost(parseInt(Cookies.get("userid")), elem.id, type);
+      setdisliked(false);
+    } else {
+      await addReactPost(
+        parseInt(Cookies.get("userid")),
+        elem.id,
+        "dislike",
+        type
+      );
+      setdisliked(true);
+    }
+
+    await countNumbers();
   };
+
+  const countNumbers = async () => {
+    const likes = await getLikeNumberPost(parseInt(elem.id), type);
+    const dislikes = await getDislikeNumberPost(parseInt(elem.id), type);
+    // console.log(likes[0].count + " " + JSON.stringify(dislikes));
+    setLikeNumber(likes[0].count);
+    setDislikeNumber(dislikes[0].count);
+    const likeinfo = await getReactStatePost(
+      parseInt(Cookies.get("userid")),
+      elem.id,
+      type
+    );
+    if (likeinfo.length == 0) {
+      setliked(false);
+      setdisliked(false);
+    } else if (likeinfo[0].react === "like") {
+      setliked(true);
+    } else {
+      setdisliked(true);
+    }
+  };
+
   const styles = {
     community: {
       background: "#E0F7FA",
@@ -56,6 +119,7 @@ const PostFrame = ({ elem, className, style, type }) => {
       const commentInfo = await getHarvestComments(parseInt(elem.id));
       setComments(commentInfo);
     }
+    await countNumbers();
   };
 
   useEffect(() => {
@@ -127,8 +191,9 @@ const PostFrame = ({ elem, className, style, type }) => {
             onClick={handleLikeClick}
             className={`${
               liked ? "bg-blue-600" : "bg-blue-300"
-            } text-white flex justify-center border border-black items-center px-4 py-2 rounded-lg hover:bg-white flex-1 transform transition-transform duration-300 hover:scale-110`}
+            } text-black flex justify-center border gap-4 border-black items-center px-4 py-2 rounded-lg hover:bg-white flex-1 transform transition-transform duration-300 hover:scale-110`}
           >
+            {likeNumber}
             <img src="/like.png" className="w-6 h-6" />
           </button>
 
@@ -136,9 +201,9 @@ const PostFrame = ({ elem, className, style, type }) => {
             onClick={handleDislikeClick}
             className={` ${
               disliked ? "bg-green-600" : "bg-green-300"
-            } text-white flex border border-black justify-center items-center px-4 py-2 rounded-lg hover:bg-white flex-1 transform transition-transform duration-300 hover:scale-110`}
+            } text-black flex border gap-4 border-black justify-center items-center px-4 py-2 rounded-lg hover:bg-white flex-1 transform transition-transform duration-300 hover:scale-110`}
           >
-            <img src="/dislike.png" className="w-6 h-6" />
+            {dislikeNumber} <img src="/dislike.png" className="w-6 h-6" />
           </button>
 
           <button
