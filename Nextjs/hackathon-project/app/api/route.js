@@ -412,7 +412,7 @@ export async function POST(request) {
       info.userId = sanitizeInput(info.userId);
       info.kindof = sanitizeInput(info.kindof);
 
-      return await removeReactPost(info.userId, info.postId);
+      return await removeReactPost(info.userId, info.postId, info.kindof);
     } else if (type === "addQuestion") {
       info.userid = sanitizeInput(info.userid);
       info.question = sanitizeInput(info.question);
