@@ -24,6 +24,8 @@ import { insertNewPost } from "./insertNewPost";
 import { insertCommentInPost } from "./insertCommentInPost";
 import { insertCommentInHarvest } from "./insertCommentInHarvest";
 import { getPostComments } from "./getPostComments";
+import { getChatParticipants } from "./getChatParticipants";
+import { getUserChats } from "./getUserChats";
 import {
   userInfoSchema,
   loginSchema,
@@ -41,6 +43,7 @@ import {
   newPostSchema,
   newCommentInPostSchema,
   newCommentInHarvestSchema,
+  getUserChatsSchema
 } from "./validation";
 import { getHarvestComments } from "./getHarvestComments";
 
@@ -50,15 +53,18 @@ export async function POST(request) {
     const info = await request.json();
     const type = info.type;
 
+    console.log("Received type:", type);
+
     if (!type) {
       return NextResponse.json(
         { message: "Type is required" },
         { status: 400 }
       );
     }
+
     if (type === "getuserinfo") {
-      info.userid = sanitizeInput(info.userid);
-      const validationResult = userInfoSchema.validate({ userid: info.userid });
+      info.userId = sanitizeInput(info.userId);
+      const validationResult = userInfoSchema.validate({ userid: info.userId });
       if (validationResult.error) {
         return NextResponse.json(
           { message: validationResult.error.details[0].message },
@@ -66,7 +72,7 @@ export async function POST(request) {
         );
       }
 
-      return await getUserInfo(info.userid);
+      return await getUserInfo(info.userId);
     } else if (type === "searchusersbyprefix") {
       info.prefix = sanitizeInput(info.prefix);
       const validationResult = searchUserByPrefixSchema.validate({
@@ -219,8 +225,8 @@ export async function POST(request) {
           { status: 400 }
         );
       }
-      const reaction = await getUserAnswers(info.userId);
-      return reaction; // Send the reaction or null
+      const answers = await getUserAnswers(info.userId);
+      return answers; // Send the reaction or null
     } else if (type === "newharvest") {
       info.userId = sanitizeInput(info.userId);
       info.plantId = sanitizeInput(info.plantId);
@@ -326,6 +332,32 @@ export async function POST(request) {
         { message: "Comment inserted successfully" },
         { status: 200 }
       );
+    } else if (type === "getchatparticipants") {
+      info.userId = sanitizeInput(info.userId);
+      const validationResult = userInfoSchema.validate({ userId: info.userId });
+      if (validationResult.error) {
+        return NextResponse.json(
+          { message: validationResult.error.details[0].message },
+          { status: 400 }
+        );
+      }
+
+      return await getChatParticipants(info.userId);
+    } else if (type === "getuserchats") {
+      info.userId = sanitizeInput(info.userId);
+      info.otherUserId = sanitizeInput(info.otherUserId);
+      const validationResult = getUserChatsSchema.validate({
+        userId: info.userId,
+        otherUserId: info.otherUserId,
+      });
+      if (validationResult.error) {
+        return NextResponse.json(
+          { message: validationResult.error.details[0].message },
+          { status: 400 }
+        );
+      }
+
+      return await getUserChats(info.userId, info.otherUserId);
     } else if (type === "login") {
       info.email = sanitizeInput(info.email);
       info.password = sanitizeInput(info.password);
