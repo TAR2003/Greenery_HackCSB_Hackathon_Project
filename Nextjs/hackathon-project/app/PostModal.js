@@ -194,7 +194,7 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
         <div className="flex items-center mb-4">
           <img
             src={
-              userinfo.image === undefined
+              userinfo === undefined
                 ? "/user/masnoon.png"
                 : `${userinfo.image}`
             }

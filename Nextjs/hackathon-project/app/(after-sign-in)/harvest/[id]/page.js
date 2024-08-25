@@ -37,19 +37,20 @@ const CommunityID = ({ params }) => {
 
   return (
     <>
-     
-
       {/* Posts Section */}
       <div className="flex flex-wrap justify-around w-full">
-        {posts.slice(0, visiblePosts).map((post, index) => (
-          <PostFrame
-            key={index}
-            elem={post}
-            type="harvest"
-            className="transform transition-transform m-4"
-            style={{ animation: `zoomIn 1s ease-in-out ${index * 0}ms` }}
-          />
-        ))}
+        {Array.isArray(posts) &&
+          posts
+            .slice(0, visiblePosts)
+            .map((post, index) => (
+              <PostFrame
+                key={index}
+                elem={post}
+                type="harvest"
+                className="transform transition-transform m-4"
+                style={{ animation: `zoomIn 1s ease-in-out ${index * 0}ms` }}
+              />
+            ))}
       </div>
     </>
   );

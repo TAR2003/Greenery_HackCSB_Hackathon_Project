@@ -149,7 +149,7 @@ const PostFrame = ({ elem, className, style, type }) => {
           {/* Profile Picture */}
           <img
             src={
-              userinfo.image === undefined
+              userinfo === undefined
                 ? "/user/masnoon.png"
                 : `${userinfo.image}`
             }
