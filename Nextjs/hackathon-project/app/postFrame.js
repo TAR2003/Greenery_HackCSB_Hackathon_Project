@@ -148,7 +148,11 @@ const PostFrame = ({ elem, className, style, type }) => {
         <div className="flex items-center mb-2">
           {/* Profile Picture */}
           <img
-            src={userinfo.image}
+            src={
+              userinfo.image === undefined
+                ? "/user/masnoon.png"
+                : `${userinfo.image}`
+            }
             alt="Profile Picture"
             className="w-12 h-12 object-cover rounded-full border-2 border-gray-300"
           />

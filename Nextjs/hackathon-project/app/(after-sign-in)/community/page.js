@@ -41,17 +41,18 @@ const CommunityID = () => {
         >
           <h1>Click here to create new Community Post</h1>
         </div>
-        {posts.slice(0, visiblePosts).map((post, index) => (
-          <PostFrame
-            key={index}
-            elem={post}
-            type="community"
-            className="transform transition-transform m-4"
-            style={{
-              animation: `zoomIn 1s ease-in-out ${index * 0}ms`,
-            }}
-          />
-        ))}
+        {Array.isArray(posts) &&
+          posts.slice(0, visiblePosts).map((post, index) => (
+            <PostFrame
+              key={index}
+              elem={post}
+              type="community"
+              className="transform transition-transform m-4"
+              style={{
+                animation: `zoomIn 1s ease-in-out ${index * 0}ms`,
+              }}
+            />
+          ))}
       </div>
     </>
   );

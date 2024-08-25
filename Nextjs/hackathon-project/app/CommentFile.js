@@ -29,7 +29,11 @@ const CommentFile = ({ elem, className, style }) => {
     >
       <div className="flex items-center">
         <img
-          src={userinfo.image}
+          src={
+            userinfo.image === undefined
+              ? "/user/masnoon.png"
+              : `${userinfo.image}`
+          }
           alt="profile picture of the commenter"
           width={52}
           height={52}

@@ -193,7 +193,11 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
         {/* Profile Information */}
         <div className="flex items-center mb-4">
           <img
-            src={userinfo.image}
+            src={
+              userinfo.image === undefined
+                ? "/user/masnoon.png"
+                : `${userinfo.image}`
+            }
             alt="Profile Picture"
             className="w-16 h-16 object-cover rounded-full border-2 border-gray-300"
           />
