@@ -45,7 +45,7 @@ const Layout = ({ children }) => {
   const fetchData = async () => {
     const info = await getUserInfo(parseInt(Cookies.get("userid")));
     setuserinfo(info[0]);
-    console.log("info we got == " + info[0].image);
+    //console.log("info we got == " + info[0].image);
   };
 
   useEffect(() => {
@@ -105,8 +105,12 @@ const Layout = ({ children }) => {
               href={userid == 0 ? "/profile" : `/profile/${userid}`}
               className="bg-blue-500 border border-spacing-12 border-black hover:bg-white p-1 text-white hover:text-black font-bold  sm:m-2 rounded-full flex items-center justify-center"
             >
-              <Image
-                src={userinfo.image}
+              <img
+                src={
+                  userinfo === undefined
+                    ? "/user/masnoon.png"
+                    : `${userinfo.image}`
+                }
                 alt="Profile Picture"
                 width={52} // Matches the height of the button
                 height={52} // Matches the width of the button
