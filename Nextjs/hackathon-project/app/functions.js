@@ -322,7 +322,7 @@ export async function getLikeNumberPost(pid, kindof) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log(JSON.stringify(newData) + "got back");
     //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {

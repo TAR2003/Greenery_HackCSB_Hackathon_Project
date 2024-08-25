@@ -418,8 +418,11 @@ export async function POST(request) {
       return await submitQuestion(info.userid, info.question);
     } else if (type === "getForumInfo") {
       info.searchedText = sanitizeInput(info.searchedText);
+      info.order = sanitizeInput(info.order);
+      info.ownPosts = sanitizeInput(info.ownPosts);
+      info.userid = sanitizeInput(info.userid);
 
-      return await getForumInfo(info.searchedText);
+      return await getForumInfo(info.userid, info.searchedText, info.order, info.ownPosts);
     } else if (type === "submitAnswer") {
       info.userid = sanitizeInput(info.userid);
       info.answer = sanitizeInput(info.answer);

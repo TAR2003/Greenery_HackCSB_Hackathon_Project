@@ -26,7 +26,7 @@ export async function getDislikeNumberPost(postId, kindof) {
     } else if (kindof === "answer") {
       const result = await pool.query(
         `
-      select count(*) from reactxanswer where react = 'dislike' and answer_id = $1
+      select count(*) AS count from reactxanswer where react = 'dislike' and answer_id = $1
     `,
         [postId]
       );

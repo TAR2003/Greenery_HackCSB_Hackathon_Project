@@ -26,7 +26,7 @@ export async function getLikeNumberPost(postId, kindof) {
     } else if (kindof === "answer") {
       const result = await pool.query(
         `
-      select count(*) from reactxanswer where react = 'like' and answer_id = $1
+      select count(*) AS count from reactxanswer where react = 'like' and answer_id = $1
     `,
         [postId]
       );
