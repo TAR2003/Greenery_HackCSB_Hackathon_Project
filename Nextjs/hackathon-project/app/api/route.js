@@ -24,12 +24,9 @@ import { insertNewPost } from "./insertNewPost";
 import { insertCommentInPost } from "./insertCommentInPost";
 import { insertCommentInHarvest } from "./insertCommentInHarvest";
 import { getPostComments } from "./getPostComments";
-<<<<<<< HEAD
 import { getChatParticipants } from "./getChatParticipants";
 import { getUserChats } from "./getUserChats";
-=======
 import { getReactStatePost } from "./getReactStatePost";
->>>>>>> a2eef7c329618ead6ca0fe725a3d1a552191f647
 import {
   userInfoSchema,
   loginSchema,
