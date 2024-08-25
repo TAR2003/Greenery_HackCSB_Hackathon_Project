@@ -43,20 +43,17 @@ import {
   newCommentInPostSchema,
   newCommentInHarvestSchema,
 } from "./validation";
-<<<<<<< Updated upstream
 import { getHarvestComments } from "./getHarvestComments";
 import { getReactState } from "./getReactStatePost";
 import { getLikeNumberPost } from "./getLikeNumberPost";
 import { getDislikeNumberPost } from "./getDislikeNumberPost";
 import { addReactPost } from "./addReactPost";
 import { removeReactPost } from "./removeReactPost";
-=======
 import { sanitizeInput } from "./sanitization";
 import { getUserAnswers } from "./getUserAnswers";
 import { submitQuestion } from "./addForumQuestion";
 import { getForumInfo } from "./forumInfo";
 import { submitAnswer } from "./addForumAnswer";
->>>>>>> Stashed changes
 
 // Define the POST function
 export async function POST(request) {
