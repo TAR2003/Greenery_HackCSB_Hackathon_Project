@@ -27,6 +27,8 @@ import { getPostComments } from "./getPostComments";
 import { getChatParticipants } from "./getChatParticipants";
 import { getUserChats } from "./getUserChats";
 import { getReactStatePost } from "./getReactStatePost";
+import { getUserLocation } from "./getUserLocation";
+import { recommendPlants } from "./recommendPlants";
 import {
   userInfoSchema,
   loginSchema,
@@ -368,7 +370,28 @@ export async function POST(request) {
       }
 
       return await getUserChats(info.userId, info.otherUserId);
-    } else if (type === "login") {
+    } else if (type === "recommendplants") {
+      info.userId = sanitizeInput(info.userId);
+      const validationResult = userInfoSchema.validate({ userId: info.userId });
+      if (validationResult.error) {
+        return NextResponse.json(
+          { message: validationResult.error.details[0].message },
+          { status: 400 }
+        );
+      }
+      
+      // Fetch user location and then recommend plants
+      const location = await getUserLocation(info.userId);
+      if (!location) {
+        return NextResponse.json(
+          { message: "Unable to determine user location" },
+          { status: 404 }
+        );
+      }
+      const recommendations = await recommendPlants(location);
+      return NextResponse.json(recommendations, { status: 200 });
+    }
+    else if (type === "login") {
       info.email = sanitizeInput(info.email);
       info.password = sanitizeInput(info.password);
 
