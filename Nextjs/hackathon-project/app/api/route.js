@@ -43,7 +43,20 @@ import {
   newCommentInPostSchema,
   newCommentInHarvestSchema,
 } from "./validation";
+<<<<<<< Updated upstream
 import { getHarvestComments } from "./getHarvestComments";
+import { getReactState } from "./getReactStatePost";
+import { getLikeNumberPost } from "./getLikeNumberPost";
+import { getDislikeNumberPost } from "./getDislikeNumberPost";
+import { addReactPost } from "./addReactPost";
+import { removeReactPost } from "./removeReactPost";
+=======
+import { sanitizeInput } from "./sanitization";
+import { getUserAnswers } from "./getUserAnswers";
+import { submitQuestion } from "./addForumQuestion";
+import { getForumInfo } from "./forumInfo";
+import { submitAnswer } from "./addForumAnswer";
+>>>>>>> Stashed changes
 
 // Define the POST function
 export async function POST(request) {
@@ -364,6 +377,54 @@ export async function POST(request) {
       info.postId = sanitizeInput(info.postId);
 
       return await getHarvestComments(info.postId);
+    } else if (type === "getReactStatePost") {
+      //console.log("in the meantime " + info.postId);
+      info.postId = sanitizeInput(info.postId);
+      info.userId = sanitizeInput(info.userId);
+
+      return await getReactStatePost(info.userId, info.postId);
+    } else if (type === "getLikeNumberPost") {
+      //console.log("in the meantime " + info.postId);
+      info.postId = sanitizeInput(info.postId);
+
+      return await getLikeNumberPost(info.postId);
+    } else if (type === "getDislikeNumberPost") {
+      //console.log("in the meantime " + info.postId);
+      info.postId = sanitizeInput(info.postId);
+
+      return await getDislikeNumberPost(info.postId);
+    } else if (type === "addReactPost") {
+      //console.log("in the meantime " + info.postId);
+      info.postId = sanitizeInput(info.postId);
+      info.userId = sanitizeInput(info.userId);
+      info.react = sanitizeInput(info.react);
+
+      return await addReactPost(info.userId, info.postId, info.react);
+    } else if (type === "removeReactPost") {
+      //console.log("in the meantime " + info.postId);
+      info.postId = sanitizeInput(info.postId);
+      info.userId = sanitizeInput(info.userId);
+
+      return await removeReactPost(info.userId, info.postId);
+    } else if (type === "addQuestion") {
+      info.userid = sanitizeInput(info.userid);
+      info.question = sanitizeInput(info.question);
+
+      return await submitQuestion(info.userid, info.question);
+
+    } else if (type === "getForumInfo") {
+      info.searchedText = sanitizeInput(info.searchedText);
+
+      return await getForumInfo(info.searchedText);
+
+    } else if (type === "submitAnswer") {
+
+      info.userid = sanitizeInput(info.userid);
+      info.answer = sanitizeInput(info.answer);
+      info.qid = sanitizeInput(info.qid);
+
+      return await submitAnswer(info.userid, info.answer, info.qid);
+
     } else {
       return NextResponse.json(
         { message: "Invalid request type" },
