@@ -49,8 +49,6 @@ import { getLikeNumberPost } from "./getLikeNumberPost";
 import { getDislikeNumberPost } from "./getDislikeNumberPost";
 import { addReactPost } from "./addReactPost";
 import { removeReactPost } from "./removeReactPost";
-import { sanitizeInput } from "./sanitization";
-import { getUserAnswers } from "./getUserAnswers";
 import { submitQuestion } from "./addForumQuestion";
 import { getForumInfo } from "./forumInfo";
 import { submitAnswer } from "./addForumAnswer";
