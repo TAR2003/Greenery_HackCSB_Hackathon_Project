@@ -6,10 +6,6 @@ export async function getUserQuestions(userId) {
   const pool = getPool();
 
   try {
-    // Validate userId to ensure it's a number (optional but recommended)
-    if (typeof userId !== 'number' || userId <= 0) {
-      return NextResponse.json({ message: 'Invalid user ID' }, { status: 400 });
-    }
 
     // Query to get all questions asked by the user
     const result = await pool.query(
