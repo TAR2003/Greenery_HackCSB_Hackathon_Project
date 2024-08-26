@@ -58,6 +58,17 @@ import { submitQuestion } from "./addForumQuestion";
 import { getForumInfo } from "./forumInfo";
 import { submitAnswer } from "./addForumAnswer";
 
+//added image handling functionality
+import cloudinary from "cloudinary";
+import message from "../(after-sign-in)/message/page";
+
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+// ended image handling functionality
+
 // Define the POST function
 export async function POST(request) {
   try {
@@ -264,31 +275,60 @@ export async function POST(request) {
       info.userId = sanitizeInput(info.userId);
       info.plantId = sanitizeInput(info.plantId);
       info.text = sanitizeInput(info.text);
-      info.image = sanitizeInput(info.image);
-      const validationResult = newPostSchema.validate({
-        userId: info.userId,
-        plantId: info.plantId,
-        text: info.text,
-        image: info.image,
-        advice_or_plantation: info.advice_or_plantation,
-      });
-      if (validationResult.error) {
+      //info.image = sanitizeInput(info.image);
+      info.advice_or_plantation = sanitizeInput(info.advice_or_plantation);
+      const image = info.image; // Parse the JSON request body
+      if (!image) {
         return NextResponse.json(
-          { message: validationResult.error.details[0].message },
+          { error: "No image data provided" },
           { status: 400 }
         );
       }
-      await insertNewPost(
-        info.userId,
-        info.plantId,
-        info.text,
-        info.image,
-        info.advice_or_plantation
-      );
-      return NextResponse.json(
-        { message: "Post inserted successfully" },
-        { status: 200 }
-      );
+
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.v2.uploader.upload_stream(
+          { folder: "default" }, // Specify the folder or use 'default'
+          (error, result) => {
+            if (error) {
+              console.error("Error uploading to Cloudinary:", error);
+              return resolve(
+                NextResponse.json(
+                  { error: "Error uploading to Cloudinary" },
+                  { status: 500 }
+                )
+              );
+            }
+            const validationResult = newPostSchema.validate({
+              userId: info.userId,
+              plantId: info.plantId,
+              text: info.text,
+              image: result.secure_url,
+              advice_or_plantation: info.advice_or_plantation,
+            });
+            if (validationResult.error) {
+              return NextResponse.json(
+                { message: validationResult.error.details[0].message },
+                { status: 400 }
+              );
+            }
+            insertNewPost(
+              info.userId,
+              info.plantId,
+              info.text,
+              result.secure_url,
+              info.advice_or_plantation
+            );
+            return NextResponse.json(
+              { message: "Post inserted successfully" },
+              { status: 200 }
+            );
+          }
+        );
+
+        // Convert base64 to buffer and upload
+        const buffer = Buffer.from(image, "base64");
+        uploadStream.end(buffer);
+      });
     } else if (type === "newcommentinpost") {
       info.userId = sanitizeInput(info.userId);
       info.postId = sanitizeInput(info.postId);

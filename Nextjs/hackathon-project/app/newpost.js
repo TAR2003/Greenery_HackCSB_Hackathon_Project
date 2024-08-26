@@ -31,12 +31,19 @@ const Newpost = ({ isOpen, onClose, type }) => {
     const base64String = await convertImageToBase64(file);
     const base64Data = base64String.split(",")[1]; // Remove the data URL part
 
-    const response = await fetch("/api/upload-image", {
+    const response = await fetch("/api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ image: base64Data }),
+      body: JSON.stringify({
+        image: base64Data,
+        type: "newpost",
+        userId: 6,
+        text: "A new post insertion",
+        advice_or_plantation: "advice",
+        plantId: 1,
+      }),
     });
 
     if (!response.ok) {
@@ -44,7 +51,7 @@ const Newpost = ({ isOpen, onClose, type }) => {
     }
 
     const result = await response.json();
-    console.log("Image URL: " + JSON.stringify(result)); // Log the image URL from Cloudinary
+    // console.log("Image URL: " + JSON.stringify(result)); // Log the image URL from Cloudinary
   }
   const handleSubmit = async () => {
     await uploadImage(file);
