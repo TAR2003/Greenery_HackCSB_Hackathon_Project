@@ -29,20 +29,10 @@ export async function getForumInfo(userid, searchedText, order, ownPostsOnly) {
       );
     
 
-    
-
-    const ans = await pool.query(
-        `SELECT ForumAnswer.id AS aid, user_id, time, name, ForumAnswer.text AS text, image, question_id
-        FROM ForumAnswer JOIN UserInfo
-        ON UserInfo.id = user_id`
-    );
-
     const questions = ownPostsOnly ? ques.rows : ques2.rows;
-    const answers = ans.rows;
 
     return NextResponse.json({
-        questions: questions,
-        answers: answers
+        questions: questions
     });
         
     
