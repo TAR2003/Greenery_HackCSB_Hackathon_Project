@@ -4,10 +4,6 @@ export async function insertCommentInHarvest(harvest_id, user_id, text, image) {
   const pool = getPool(); // Get the singleton instance of the pool
 
   try {
-    // Validate userId to ensure it's a number (optional but recommended)
-    if (typeof harvest_id !== "number" || harvest_id <= 0 || typeof user_id !== "number" ||user_id <= 0) {
-      return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
-    }
     // Use parameterized query to prevent SQL injection
     //console.log(" till now ");
     const queryText = `

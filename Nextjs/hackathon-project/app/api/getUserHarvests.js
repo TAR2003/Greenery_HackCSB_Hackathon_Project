@@ -6,10 +6,6 @@ const pool = getPool();
 
 export async function getHarvestByUser(userId) {
   try {
-    // Validate userId to ensure it's a number (optional but recommended)
-    if (typeof userId !== 'number' || userId <= 0) {
-      return NextResponse.json({ message: 'Invalid user ID' }, { status: 400 });
-    }
 
     // Use parameterized query to prevent SQL injection
     const result = await pool.query(
