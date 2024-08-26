@@ -57,6 +57,7 @@ import { removeReactPost } from "./removeReactPost";
 import { submitQuestion } from "./addForumQuestion";
 import { getForumInfo } from "./forumInfo";
 import { submitAnswer } from "./addForumAnswer";
+import { getAnswers } from "./getAnswer";
 
 //added image handling functionality
 import cloudinary from "cloudinary";
@@ -528,6 +529,11 @@ export async function POST(request) {
       info.qid = sanitizeInput(info.qid);
 
       return await submitAnswer(info.userid, info.answer, info.qid);
+    } else if (type === "getAnswers") {
+      
+      info.qid = sanitizeInput(info.qid);
+
+      return await getAnswers(info.qid);
     } else {
       return NextResponse.json(
         { message: "Invalid request type" },
