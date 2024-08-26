@@ -7,7 +7,7 @@ const pool = getPool();
 export async function getAllHarvestPosts() {
   try {
     // Use parameterized query to prevent SQL injection
-    const result = await pool.query(`SELECT * FROM Harvest`);
+    const result = await pool.query(`SELECT * FROM Harvest ORDER BY TIME DESC`);
 
     const harvests = result.rows;
     return NextResponse.json(harvests);

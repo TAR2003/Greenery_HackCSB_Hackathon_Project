@@ -27,7 +27,7 @@ const Newpost = ({ isOpen, onClose, type }) => {
     });
   }
 
-  async function uploadImage(file) {
+  async function uploadImagePost(file) {
     const base64String = await convertImageToBase64(file);
     const base64Data = base64String.split(",")[1]; // Remove the data URL part
 
@@ -40,8 +40,34 @@ const Newpost = ({ isOpen, onClose, type }) => {
         image: base64Data,
         type: "newpost",
         userId: 6,
-        text: "A new post insertion",
-        advice_or_plantation: "advice",
+        text: "A brand new post insertion",
+        plantId: 1,
+        advice_or_plantation: "plantation",
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to upload image");
+    }
+
+    const result = await response.json();
+    // console.log("Image URL: " + JSON.stringify(result)); // Log the image URL from Cloudinary
+  }
+
+  async function uploadImageHarvest(file) {
+    const base64String = await convertImageToBase64(file);
+    const base64Data = base64String.split(",")[1]; // Remove the data URL part
+
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        image: base64Data,
+        type: "newharvest",
+        userId: 6,
+        text: "A brand new  harvest post insertion",
         plantId: 1,
       }),
     });
@@ -54,7 +80,8 @@ const Newpost = ({ isOpen, onClose, type }) => {
     // console.log("Image URL: " + JSON.stringify(result)); // Log the image URL from Cloudinary
   }
   const handleSubmit = async () => {
-    await uploadImage(file);
+    if (type === "community") await uploadImagePost(file);
+    else if (type === "harvest") await uploadImageHarvest(file);
   };
   const checkit = () => {
     if (file === null) return <h1 className="text-black">IMage no got</h1>;

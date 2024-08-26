@@ -6,10 +6,9 @@ const pool = getPool();
 
 export async function getHarvestByUser(userId) {
   try {
-
     // Use parameterized query to prevent SQL injection
     const result = await pool.query(
-      `SELECT * FROM Harvest WHERE user_id = $1`,
+      `SELECT * FROM Harvest WHERE user_id = $1 ORDER BY TIME DESC`,
       [userId]
     );
 

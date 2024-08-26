@@ -253,25 +253,50 @@ export async function POST(request) {
     } else if (type === "newharvest") {
       info.userId = sanitizeInput(info.userId);
       info.plantId = sanitizeInput(info.plantId);
-      info.image = sanitizeInput(info.image);
       info.text = sanitizeInput(info.text);
-      const validationResult = newHarvestSchema.validate({
-        userId: info.userId,
-        plantId: info.plantId,
-        image: info.image,
-        text: info.text,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
+      const image = info.image;
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.v2.uploader.upload_stream(
+          { folder: "default" }, // Specify the folder or use 'default'
+          (error, result) => {
+            if (error) {
+              console.error("Error uploading to Cloudinary:", error);
+              return resolve(
+                NextResponse.json(
+                  { error: "Error uploading to Cloudinary" },
+                  { status: 500 }
+                )
+              );
+            }
+            const validationResult = newHarvestSchema.validate({
+              userId: info.userId,
+              plantId: info.plantId,
+              image: result.secure_url,
+              text: info.text,
+            });
+            if (validationResult.error) {
+              return NextResponse.json(
+                { message: validationResult.error.details[0].message },
+                { status: 400 }
+              );
+            }
+            insertHarvest(
+              info.userId,
+              info.plantId,
+              result.secure_url,
+              info.text
+            );
+            return NextResponse.json(
+              { message: "Harvest inserted successfully" },
+              { status: 200 }
+            );
+          }
         );
-      }
-      await insertHarvest(info.userId, info.plantId, info.image, info.text);
-      return NextResponse.json(
-        { message: "Harvest inserted successfully" },
-        { status: 200 }
-      );
+
+        // Convert base64 to buffer and upload
+        const buffer = Buffer.from(image, "base64");
+        uploadStream.end(buffer);
+      });
     } else if (type === "newpost") {
       info.userId = sanitizeInput(info.userId);
       info.plantId = sanitizeInput(info.plantId);
@@ -530,7 +555,6 @@ export async function POST(request) {
 
       return await submitAnswer(info.userid, info.answer, info.qid);
     } else if (type === "getAnswers") {
-      
       info.qid = sanitizeInput(info.qid);
 
       return await getAnswers(info.qid);
