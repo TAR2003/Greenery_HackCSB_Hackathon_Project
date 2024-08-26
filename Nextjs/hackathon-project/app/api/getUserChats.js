@@ -5,6 +5,12 @@ const pool = getPool();
 
 export async function getUserChats(userId, otherUserId) {
   try {
+
+    // Validate userId and otherUserId to ensure they are numbers (optional but recommended)
+    if (typeof userId !== "number" || userId <= 0 || typeof otherUserId !== "number" || otherUserId <= 0) {
+      return NextResponse.json({ message: "Invalid user ID" }, { status: 400 });
+    }
+
     // Query to retrieve all chat messages between two users, sorted by time
     const result = await pool.query(
       `SELECT c.id, c.sender, c.receiver, c.text, c.time

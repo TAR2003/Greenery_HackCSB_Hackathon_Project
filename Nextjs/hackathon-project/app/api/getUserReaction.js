@@ -5,6 +5,12 @@ export async function getUserReaction(answerId, userId) {
   const pool = getPool();
 
   try {
+
+    // Validate userId and answerId to ensure they're numbers (optional but recommended)
+    if (typeof userId !== 'number' || userId <= 0 || typeof answerId !== 'number' || answerId <= 0) {
+      return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
+    }
+
     const result = await pool.query(
       'SELECT react FROM ReactXAnswer WHERE answer_id = $1 AND user_id = $2',
       [answerId, userId]
