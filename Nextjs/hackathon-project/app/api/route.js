@@ -46,7 +46,7 @@ import {
   newPostSchema,
   newCommentInPostSchema,
   newCommentInHarvestSchema,
-  getUserChatsSchema
+  getUserChatsSchema,
 } from "./validation";
 import { getHarvestComments } from "./getHarvestComments";
 import { getReactState } from "./getReactStatePost";
@@ -76,7 +76,7 @@ export async function POST(request) {
 
     if (type === "getuserinfo") {
       info.userId = sanitizeInput(info.userId);
-      const validationResult = userInfoSchema.validate({ userid: info.userId });
+      const validationResult = userInfoSchema.validate({ userId: info.userId });
       if (validationResult.error) {
         return NextResponse.json(
           { message: validationResult.error.details[0].message },
@@ -380,7 +380,7 @@ export async function POST(request) {
           { status: 400 }
         );
       }
-      
+
       // Fetch user location and then recommend plants
       const location = await getUserLocation(info.userId);
       if (!location) {
@@ -391,8 +391,7 @@ export async function POST(request) {
       }
       const recommendations = await recommendPlants(location);
       return NextResponse.json(recommendations, { status: 200 });
-    }
-    else if (type === "login") {
+    } else if (type === "login") {
       info.email = sanitizeInput(info.email);
       info.password = sanitizeInput(info.password);
 
@@ -478,7 +477,12 @@ export async function POST(request) {
       info.ownPosts = sanitizeInput(info.ownPosts);
       info.userid = sanitizeInput(info.userid);
 
-      return await getForumInfo(info.userid, info.searchedText, info.order, info.ownPosts);
+      return await getForumInfo(
+        info.userid,
+        info.searchedText,
+        info.order,
+        info.ownPosts
+      );
     } else if (type === "submitAnswer") {
       info.userid = sanitizeInput(info.userid);
       info.answer = sanitizeInput(info.answer);

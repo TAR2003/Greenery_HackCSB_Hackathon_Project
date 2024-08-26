@@ -5,6 +5,7 @@ const pool = getPool();
 
 export async function getUserChats(userId, otherUserId) {
   try {
+
     // Query to retrieve all chat messages between two users, sorted by time
     const result = await pool.query(
       `SELECT c.id, c.sender, c.receiver, c.text, c.time

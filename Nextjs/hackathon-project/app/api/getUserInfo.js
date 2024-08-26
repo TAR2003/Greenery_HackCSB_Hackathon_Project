@@ -6,10 +6,6 @@ export async function getUserInfo(userId) {
   const pool = getPool();
   console.log(userId + " -- " + typeof userId);
   try {
-    // Validate userId to ensure it's a number (optional but recommended)
-    if (typeof userId !== "number" || userId <= 0) {
-      return NextResponse.json({ message: "Invalid user ID" }, { status: 400 });
-    }
     // Use parameterized query to fetch user data from the UserInfo table
 
     const result = await pool.query("SELECT * FROM UserInfo WHERE id = $1", [

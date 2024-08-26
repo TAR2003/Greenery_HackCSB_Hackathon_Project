@@ -6,10 +6,6 @@ const pool = getPool();
 
 export async function getPostComments(postId) {
   try {
-    // Validate userId to ensure it's a number (optional but recommended)
-    if (typeof postId !== "number" || postId <= 0) {
-      return NextResponse.json({ message: "Invalid Post ID" }, { status: 400 });
-    }
 
     // First, get all plants the user has
     const commentResult = await pool.query(

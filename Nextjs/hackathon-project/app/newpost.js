@@ -1,13 +1,67 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { formatDistanceToNow, parseISO } from "date-fns";
+import { getUserInfo } from "./functions";
+import Cookies from "js-cookie";
 
 const formatDate = (dateString) => {
   const date = parseISO(dateString);
   return formatDistanceToNow(date, { addSuffix: true });
 };
 
-const PostModal = ({ userinfo, isOpen, onClose }) => {
+const Newpost = ({ isOpen, onClose, type }) => {
   const modalRef = useRef(null);
+  const [userinfo, setuserinfo] = useState([]);
+  const [image, setimage] = useState(null);
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  async function convertImageToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function uploadImage(file) {
+    const base64String = await convertImageToBase64(file);
+    const base64Data = base64String.split(",")[1]; // Remove the data URL part
+
+    const response = await fetch("/api/upload-image", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ image: base64Data }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to upload image");
+    }
+
+    const result = await response.json();
+    console.log("Image URL: " + JSON.stringify(result)); // Log the image URL from Cloudinary
+  }
+  const handleSubmit = async () => {
+    await uploadImage(file);
+  };
+  const checkit = () => {
+    if (file === null) return <h1 className="text-black">IMage no got</h1>;
+    else return <h1 className="text-black">IMage got</h1>;
+  };
+
+  const fetchData = async () => {
+    const info = await getUserInfo(parseInt(Cookies.get("userid")));
+    setuserinfo(info[0]);
+  };
+
+  const printUserInfo = () => {
+    console.log(JSON.stringify(userinfo));
+  };
 
   useEffect(() => {
     // Function to handle clicks outside of the modal content
@@ -16,7 +70,7 @@ const PostModal = ({ userinfo, isOpen, onClose }) => {
         onClose();
       }
     };
-
+    fetchData();
     // Add event listener for clicks outside the modal
     document.addEventListener("mousedown", handleClickOutside);
 
@@ -53,24 +107,35 @@ const PostModal = ({ userinfo, isOpen, onClose }) => {
             <h2 className="text-gray-800 font-semibold text-lg">
               {userinfo.name}
             </h2>
-            <p className="text-gray-500 text-sm">{formatDate(elem.time)}</p>
+            <p className="text-gray-500 text-sm">{`new ${type} post`}</p>
           </div>
         </div>
 
         {/* Full Caption */}
         <div className="mb-4">
-          <h1 className="text-gray-800 text-xl">{elem.text}</h1>
+          <h1 className="text-gray-800 text-xl">{"text box"}</h1>
+          <input
+            className="rounded-3xl w-full min-h-16 border border-gray-500 p-4 text-black"
+            type="text"
+            placeholder={`Type your ${type} post please`}
+          ></input>
         </div>
 
         {/* Image */}
-        <img
-          src={elem.image}
-          alt={elem.text}
-          className="w-full h-auto object-cover rounded-lg mb-4"
-        />
+
+        <input type="file" onChange={handleFileChange} />
+        <button
+          type="submit"
+          className="text-black border border-black"
+          onClick={handleSubmit}
+        >
+          Upload Image
+        </button>
+
+        {checkit()}
       </div>
     </div>
   );
 };
 
-export default PostModal;
+export default Newpost;
