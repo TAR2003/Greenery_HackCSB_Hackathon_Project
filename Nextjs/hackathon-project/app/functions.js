@@ -1,3 +1,5 @@
+//mport fetch from 'node-fetch';
+
 export async function getname() {
   console.log("We are done in the funcrion js mmm");
   return "Miraj";
@@ -402,5 +404,22 @@ export async function removeReactPost(uid, pid, kindof) {
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
+  }
+}
+
+export async function getPlantInfo(plantName) {
+  try {
+    const response = await fetch("/api/plantinfo", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ plantName }),
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.log("Error posting data " + err);
   }
 }
