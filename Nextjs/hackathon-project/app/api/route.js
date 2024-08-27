@@ -292,9 +292,11 @@ export async function POST(request) {
               text: info.text,
             });
             if (validationResult.error) {
-              return NextResponse.json(
-                { message: validationResult.error.details[0].message },
-                { status: 400 }
+              return resolve(
+                NextResponse.json(
+                  { message: validationResult.error.details[0].message },
+                  { status: 400 }
+                )
               );
             }
             insertHarvest(
@@ -303,9 +305,11 @@ export async function POST(request) {
               result.secure_url,
               info.text
             );
-            return NextResponse.json(
-              { message: "Harvest inserted successfully" },
-              { status: 200 }
+            return resolve(
+              NextResponse.json(
+                { message: "Post inserted successfully" },
+                { status: 200 }
+              )
             );
           }
         );
@@ -354,9 +358,11 @@ export async function POST(request) {
               advice_or_plantation: info.advice_or_plantation,
             });
             if (validationResult.error) {
-              return NextResponse.json(
-                { message: validationResult.error.details[0].message },
-                { status: 400 }
+              return resolve(
+                NextResponse.json(
+                  { message: validationResult.error.details[0].message },
+                  { status: 400 }
+                )
               );
             }
             insertNewPost(
@@ -366,9 +372,11 @@ export async function POST(request) {
               result.secure_url,
               info.advice_or_plantation
             );
-            return NextResponse.json(
-              { message: "Post inserted successfully" },
-              { status: 200 }
+            return resolve(
+              NextResponse.json(
+                { message: "Post inserted successfully" },
+                { status: 200 }
+              )
             );
           }
         );

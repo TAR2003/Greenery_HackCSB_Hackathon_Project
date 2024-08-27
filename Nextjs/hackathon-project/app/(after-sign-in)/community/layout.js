@@ -11,6 +11,11 @@ const layout = ({ children }) => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  // const closeModalandReload = () => {
+  //   setIsModalOpen(false);
+  //   window.location.reload();
+  // };
   return (
     <>
       {" "}
