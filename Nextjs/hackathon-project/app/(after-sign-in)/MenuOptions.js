@@ -3,7 +3,7 @@ const MenuOptions = [
   { href: "/community", label: "Community" },
   { href: "/forum", label: "Forum" },
   { href: "/harvest", label: "Harvest" },
-  { href: "/plant-suggestion", label: "Plant Suggestion" },
+  { href: "/plant-exploration", label: "Plant Exploration" },
   { href: "/message", label: "Message" },
   { href: "/marketplace", label: "Marketplace" },
   { href: "/exchange", label: "Exchange" },
