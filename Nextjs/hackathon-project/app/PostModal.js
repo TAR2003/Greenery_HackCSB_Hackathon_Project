@@ -12,12 +12,13 @@ import {
   insertNewCommentinHarvest,
   insertNewCommentinPost,
   removeReactPost,
+  timeAgo,
 } from "./functions";
 import Cookies from "js-cookie";
 
 const formatDate = (dateString) => {
-  const date = parseISO(dateString);
-  return formatDistanceToNow(date, { addSuffix: true });
+  const date = timeAgo(parseISO(dateString));
+  return date;
 };
 
 const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {

@@ -9,14 +9,15 @@ import {
   getReactStatePost,
   getUserInfo,
   removeReactPost,
+  timeAgo,
 } from "./functions";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import PostModal from "./PostModal"; // Import the PostModal component
 import Cookies from "js-cookie";
 
 const formatDate = (dateString) => {
-  const date = parseISO(dateString);
-  return formatDistanceToNow(date, { addSuffix: true });
+  const date = timeAgo(parseISO(dateString));
+  return date;
 };
 
 const PostFrame = ({ elem, className, style, type }) => {

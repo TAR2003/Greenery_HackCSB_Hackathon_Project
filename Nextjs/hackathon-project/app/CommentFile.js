@@ -1,12 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getUserInfo } from "./functions";
+import { getUserInfo, timeAgo } from "./functions";
 import Image from "next/image";
 import { formatDistanceToNow, parseISO } from "date-fns";
 
 const formatDate = (dateString) => {
-  const date = parseISO(dateString);
-  return formatDistanceToNow(date, { addSuffix: true });
+  const date = timeAgo(parseISO(dateString));
+  return date;
 };
 
 const CommentFile = ({ elem, className, style }) => {

@@ -606,3 +606,38 @@ export async function getPlantName(pid) {
     console.error("Error posting data:", error);
   }
 }
+
+
+export function timeAgo(timestamp) {
+  // Convert the timestamp to a Date object
+  const originalDate = new Date(timestamp);
+
+  // Adjust for Bangladesh Time (UTC+6)
+  const bangladeshOffset = 6 * 60; // 6 hours in minutes
+  const localTime = new Date(
+    originalDate.getTime() + bangladeshOffset * 60 * 1000
+  );
+
+  // Calculate the difference between now and the adjusted timestamp
+  const now = new Date();
+  const diff = Math.floor((now - localTime) / 1000); // difference in seconds
+
+  const units = [
+    { label: "year", seconds: 31536000 }, // 60 * 60 * 24 * 365
+    { label: "month", seconds: 2592000 }, // 60 * 60 * 24 * 30
+    { label: "week", seconds: 604800 }, // 60 * 60 * 24 * 7
+    { label: "day", seconds: 86400 }, // 60 * 60 * 24
+    { label: "hour", seconds: 3600 }, // 60 * 60
+    { label: "minute", seconds: 60 },
+    { label: "second", seconds: 1 },
+  ];
+
+  for (let unit of units) {
+    const interval = Math.floor(diff / unit.seconds);
+    if (interval >= 1) {
+      return `${interval} ${unit.label}${interval > 1 ? "s" : ""} ago`;
+    }
+  }
+
+  return "just now"; // in case the difference is less than a second
+}
