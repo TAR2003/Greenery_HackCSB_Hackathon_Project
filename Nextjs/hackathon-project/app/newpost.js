@@ -175,7 +175,15 @@ const Newpost = ({ isOpen, onClose, type }) => {
       console.error(error);
     } finally {
       setIsSubmitting(false);
+      setCaption("");
+      setFile(null);
+      setPlantName("");
+      setPlantationChecked(true);
+      setAdviceChecked(false);
+      onClose();
     }
+    console.log("posting done ");
+    window.location.reload();
   };
 
   const fetchData = async () => {
