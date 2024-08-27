@@ -63,7 +63,7 @@ import { getAnswers } from "./getAnswer";
 import cloudinary from "cloudinary";
 import message from "../(after-sign-in)/message/page";
 import { insertPlant } from "./insertPlant";
-import { insertUserXPlant } from "./insertUserXPlant";
+import { insertUserXPlant, insertUserXPlant2 } from "./insertUserXPlant";
 import {
   getAllPlantNames,
   getPlantName,
@@ -270,7 +270,7 @@ export async function POST(request) {
       info.userId = sanitizeInput(info.userId);
       info.plantId = sanitizeInput(info.plantId);
       info.text = sanitizeInput(info.text);
-
+      insertUserXPlant2(info.userId, info.plantId);
       const image = info.image;
       return new Promise((resolve, reject) => {
         const uploadStream = cloudinary.v2.uploader.upload_stream(
