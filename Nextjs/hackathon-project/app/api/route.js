@@ -1,5 +1,5 @@
 // Import necessary functions
-
+import axios from 'axios';
 import { getId } from "./getLoginId";
 import { insertInfo } from "./signupInfo";
 import { NextResponse } from "next/server";
@@ -29,6 +29,8 @@ import { getUserChats } from "./getUserChats";
 import { getReactStatePost } from "./getReactStatePost";
 import { getUserLocation } from "./getUserLocation";
 import { recommendPlants } from "./recommendPlants";
+import { fetchAllPlantScientificNames } from "./fetchPlantData";
+import { fetchPlantScientificNamesByPage } from "./fetchPlantData";
 import {
   userInfoSchema,
   loginSchema,
@@ -486,7 +488,56 @@ export async function POST(request) {
       }
       const recommendations = await recommendPlants(location);
       return NextResponse.json(recommendations, { status: 200 });
-    } else if (type === "login") {
+    } else if (type === "getPlant") {
+      const trefleToken = process.env.TREFLE_API_KEY;
+      const zoneCode = 'BAN'; // WGSRPD code for Bangladesh
+  
+      console.log('Fetching species data for Bangladesh...');
+  
+      try {
+          // Ensure the token is available
+          if (!trefleToken) {
+              throw new Error('Trefle API token is not set');
+          }
+  
+          const response = await axios.get(`https://trefle.io/api/v1/distributions/${zoneCode}/plants`, {
+              headers: {
+                  Authorization: `Bearer ${trefleToken}`
+              }
+          });
+  
+          // Return the response data to the client
+          console.log(response.data);
+          return NextResponse.json(response.data, { status: 200 });
+  
+      } catch (error) {
+          console.error('Error fetching species:', error.message);
+  
+           // Return the error to the client
+        return NextResponse.json({ error: 'Failed to fetch species data', message: error.message }, { status: 500 });
+      }
+  }
+
+  else if (type === "getallplants") {
+    const page = info.page || 1; // Default to page 1 if no page is provided
+    const { scientificNames, plantDetailsFromWikipedia, currentPage, totalPages} = await fetchPlantScientificNamesByPage(page);
+
+    console.log(`Fetched page ${currentPage} of plant scientific names`);
+    //console.log(scientificNames);
+    //console.log(`Total pages: ${totalPages}`);
+
+    return NextResponse.json(
+      {
+        scientificNames,
+        plantDetailsFromWikipedia,
+        currentPage,
+        totalPages
+      },
+      { status: 200 }
+    );
+  }
+  
+    else if (type === "login") {
       info.email = sanitizeInput(info.email);
       info.password = sanitizeInput(info.password);
 
