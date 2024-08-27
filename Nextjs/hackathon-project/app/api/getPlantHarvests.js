@@ -1,15 +1,16 @@
 //THIS FILE IS FOR FETCHING ALL THE EXISTING HARVEST INFORMATION/POST OF THE PLANTS THAT A USER HAS
 
-import { NextResponse } from 'next/server';
-import { getPool } from './db';
+import { NextResponse } from "next/server";
+import { getPool } from "./db";
 
 const pool = getPool();
 
 export async function getPlantHarvests(userId) {
   try {
+    console.log("hre ar hrh plant hardsrn relevant =------------------------");
     // Validate userId to ensure it's a number (optional but recommended)
-    if (typeof userId !== 'number' || userId <= 0) {
-      return NextResponse.json({ message: 'Invalid user ID' }, { status: 400 });
+    if (typeof userId !== "number" || userId <= 0) {
+      return NextResponse.json({ message: "Invalid user ID" }, { status: 400 });
     }
 
     // First, get all plants the user has
@@ -17,7 +18,8 @@ export async function getPlantHarvests(userId) {
       `SELECT plant_id FROM UserXPlant WHERE user_id = $1`,
       [userId]
     );
-    const plantIds = plantResult.rows.map(row => row.plant_id);
+    const plantIds = plantResult.rows.map((row) => row.plant_id);
+    console.log(JSON.stringify(plantIds));
 
     if (plantIds.length === 0) {
       return NextResponse.json([], { status: 200 });
@@ -32,9 +34,9 @@ export async function getPlantHarvests(userId) {
 
     return NextResponse.json(posts);
   } catch (error) {
-    console.error('Database query error:', error);
+    console.error("Database query error:", error);
     return NextResponse.json(
-      { message: 'Internal Server Error' },
+      { message: "Internal Server Error" },
       { status: 500 }
     );
   }

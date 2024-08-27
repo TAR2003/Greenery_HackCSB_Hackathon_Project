@@ -17,9 +17,7 @@ export async function getHarvestComments(postId) {
       [postId]
     );
     const comments = commentResult.rows;
-    console.log(
-      JSON.stringify(comments) + " is the qeusry from harvest comment"
-    );
+
     return NextResponse.json(comments);
   } catch (error) {
     console.error("Database query error:", error);

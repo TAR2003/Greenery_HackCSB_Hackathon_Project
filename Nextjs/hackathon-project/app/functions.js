@@ -423,3 +423,186 @@ export async function getPlantInfo(plantName) {
     console.log("Error posting data " + err);
   }
 }
+
+export async function getPlantPosts(uid) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getplantposts",
+        userId: uid,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getPlantHarvests(uid) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getplantharvests",
+        userId: uid,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function insertPlant(name) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "insertPlant",
+        name: name,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getTotalNoOfPlants(uId) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "gettotalnoofplants",
+        userId: uId,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getAllPlantNames() {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getAllPlantNames",
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getPlantNamesStartingWith(name) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getPlantNamesStartingWith",
+        plantName: name,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function findPlant(name) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "findPlant",
+        plantName: name,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getPlantName(pid) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getPlantName",
+        plantId: pid,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}

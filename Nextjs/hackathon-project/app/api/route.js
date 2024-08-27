@@ -62,6 +62,14 @@ import { getAnswers } from "./getAnswer";
 //added image handling functionality
 import cloudinary from "cloudinary";
 import message from "../(after-sign-in)/message/page";
+import { insertPlant } from "./insertPlant";
+import { insertUserXPlant } from "./insertUserXPlant";
+import {
+  getAllPlantNames,
+  getPlantName,
+  getPlantNamesStartingWith,
+} from "./getPlantNames";
+import { findPlant } from "./findPlant";
 
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -76,7 +84,7 @@ export async function POST(request) {
     const info = await request.json();
     const type = info.type;
 
-    console.log("Received type:", type);
+    // console.log("Received type:", type);
 
     if (!type) {
       return NextResponse.json(
@@ -161,6 +169,11 @@ export async function POST(request) {
         );
       }
       return await getTotalNoOfPlants(info.userId);
+    } else if (type === "getAllPlantNames") {
+      return await getAllPlantNames();
+    } else if (type === "getPlantNamesStartingWith") {
+      info.plantName = sanitizeInput(info.plantName);
+      return await getPlantNamesStartingWith(info.plantName);
     } else if (type === "getuserharvests") {
       info.userId = sanitizeInput(info.userId);
       const validationResult = harvestSchema.validate({ userId: info.userId });
@@ -171,6 +184,9 @@ export async function POST(request) {
         );
       }
       return await getHarvestByUser(info.userId);
+    } else if (type === "getPlantName") {
+      info.plantId = sanitizeInput(info.plantId);
+      return await getPlantName(info.plantId);
     } else if (type === "getplantharvests") {
       info.userId = sanitizeInput(info.userId);
       const validationResult = plantHarvestsSchema.validate({
@@ -254,6 +270,7 @@ export async function POST(request) {
       info.userId = sanitizeInput(info.userId);
       info.plantId = sanitizeInput(info.plantId);
       info.text = sanitizeInput(info.text);
+
       const image = info.image;
       return new Promise((resolve, reject) => {
         const uploadStream = cloudinary.v2.uploader.upload_stream(
@@ -303,6 +320,11 @@ export async function POST(request) {
       info.text = sanitizeInput(info.text);
       //info.image = sanitizeInput(info.image);
       info.advice_or_plantation = sanitizeInput(info.advice_or_plantation);
+      if (info.advice_or_plantation === "plantation") {
+        // console.log("in the conditional of post");
+        insertUserXPlant(info.userId, info.plantId);
+      }
+      console.log("after use x lant happened");
       const image = info.image; // Parse the JSON request body
       if (!image) {
         return NextResponse.json(
@@ -482,6 +504,12 @@ export async function POST(request) {
         info.name,
         info.location
       );
+    } else if (type === "insertPlant") {
+      info.name = sanitizeInput(info.name);
+      return await insertPlant(info.name);
+    } else if (type === "findPlant") {
+      info.plantName = sanitizeInput(info.plantName);
+      return await findPlant(info.plantName);
     } else if (type === "getPostComments") {
       //console.log("in the meantime " + info.postId);
       info.postId = sanitizeInput(info.postId);

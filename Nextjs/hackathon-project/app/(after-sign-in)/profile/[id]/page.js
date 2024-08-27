@@ -1,5 +1,6 @@
 "use client";
 import {
+  getTotalNoOfPlants,
   getUserAnswers,
   getUserHarvests,
   getUserInfo,
@@ -31,8 +32,8 @@ const ProfileID = ({ params }) => {
       setusername(result[0].name);
     } else setusername("No user with this id");
     setimage(result[0].image);
-    const userplantrows = await getUserPlants(parseInt(params.id));
-    setuserplants(userplantrows.length);
+    const userplantrows = await getTotalNoOfPlants(parseInt(params.id));
+    setuserplants(userplantrows);
     const harvestedtimesrows = await getUserHarvests(parseInt(params.id));
     setharvestedtimes(harvestedtimesrows.length);
     const communitypostrows = await getUserPosts(parseInt(params.id));
