@@ -1,5 +1,5 @@
 "use client";
-import Newpost from "@/app/Newpost";
+import Newpost from "@/app/newpost";
 import React, { useState } from "react";
 
 const layout = ({ children }) => {

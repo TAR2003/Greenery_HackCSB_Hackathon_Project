@@ -80,6 +80,11 @@ cloudinary.v2.config({
 });
 // ended image handling functionality
 
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
 // Define the POST function
 export async function POST(request) {
   try {
@@ -546,6 +551,29 @@ export async function POST(request) {
         },
         { status: 200 }
       );
+    } else if (type === "chat-ai") {
+      const { prompt } = info;
+
+      if (!prompt) {
+        return NextResponse.json(
+          { message: "Prompt is required" },
+          { status: 400 }
+        );
+      }
+
+      // Generate content using the Gemini API
+      try {
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = await response.text();
+
+        return NextResponse.json({ text });
+      } catch (error) {
+        return NextResponse.json(
+          { message: "Error generating content" },
+          { status: 500 }
+        );
+      }
     } else if (type === "login") {
       info.email = sanitizeInput(info.email);
       info.password = sanitizeInput(info.password);
