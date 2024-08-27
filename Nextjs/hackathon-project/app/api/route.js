@@ -59,6 +59,26 @@ import { removeReactPost } from "./removeReactPost";
 import { submitQuestion } from "./addForumQuestion";
 import { getForumInfo } from "./forumInfo";
 import { submitAnswer } from "./addForumAnswer";
+import { getAnswers } from "./getAnswer";
+
+//added image handling functionality
+import cloudinary from "cloudinary";
+import message from "../(after-sign-in)/message/page";
+import { insertPlant } from "./insertPlant";
+import { insertUserXPlant } from "./insertUserXPlant";
+import {
+  getAllPlantNames,
+  getPlantName,
+  getPlantNamesStartingWith,
+} from "./getPlantNames";
+import { findPlant } from "./findPlant";
+
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+// ended image handling functionality
 
 // Define the POST function
 export async function POST(request) {
@@ -66,7 +86,7 @@ export async function POST(request) {
     const info = await request.json();
     const type = info.type;
 
-    console.log("Received type:", type);
+    // console.log("Received type:", type);
 
     if (!type) {
       return NextResponse.json(
@@ -151,6 +171,11 @@ export async function POST(request) {
         );
       }
       return await getTotalNoOfPlants(info.userId);
+    } else if (type === "getAllPlantNames") {
+      return await getAllPlantNames();
+    } else if (type === "getPlantNamesStartingWith") {
+      info.plantName = sanitizeInput(info.plantName);
+      return await getPlantNamesStartingWith(info.plantName);
     } else if (type === "getuserharvests") {
       info.userId = sanitizeInput(info.userId);
       const validationResult = harvestSchema.validate({ userId: info.userId });
@@ -161,6 +186,9 @@ export async function POST(request) {
         );
       }
       return await getHarvestByUser(info.userId);
+    } else if (type === "getPlantName") {
+      info.plantId = sanitizeInput(info.plantId);
+      return await getPlantName(info.plantId);
     } else if (type === "getplantharvests") {
       info.userId = sanitizeInput(info.userId);
       const validationResult = plantHarvestsSchema.validate({
@@ -243,54 +271,122 @@ export async function POST(request) {
     } else if (type === "newharvest") {
       info.userId = sanitizeInput(info.userId);
       info.plantId = sanitizeInput(info.plantId);
-      info.image = sanitizeInput(info.image);
       info.text = sanitizeInput(info.text);
-      const validationResult = newHarvestSchema.validate({
-        userId: info.userId,
-        plantId: info.plantId,
-        image: info.image,
-        text: info.text,
-      });
-      if (validationResult.error) {
-        return NextResponse.json(
-          { message: validationResult.error.details[0].message },
-          { status: 400 }
+
+      const image = info.image;
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.v2.uploader.upload_stream(
+          { folder: "default" }, // Specify the folder or use 'default'
+          (error, result) => {
+            if (error) {
+              console.error("Error uploading to Cloudinary:", error);
+              return resolve(
+                NextResponse.json(
+                  { error: "Error uploading to Cloudinary" },
+                  { status: 500 }
+                )
+              );
+            }
+            const validationResult = newHarvestSchema.validate({
+              userId: info.userId,
+              plantId: info.plantId,
+              image: result.secure_url,
+              text: info.text,
+            });
+            if (validationResult.error) {
+              return resolve(
+                NextResponse.json(
+                  { message: validationResult.error.details[0].message },
+                  { status: 400 }
+                )
+              );
+            }
+            insertHarvest(
+              info.userId,
+              info.plantId,
+              result.secure_url,
+              info.text
+            );
+            return resolve(
+              NextResponse.json(
+                { message: "Post inserted successfully" },
+                { status: 200 }
+              )
+            );
+          }
         );
-      }
-      await insertHarvest(info.userId, info.plantId, info.image, info.text);
-      return NextResponse.json(
-        { message: "Harvest inserted successfully" },
-        { status: 200 }
-      );
+
+        // Convert base64 to buffer and upload
+        const buffer = Buffer.from(image, "base64");
+        uploadStream.end(buffer);
+      });
     } else if (type === "newpost") {
       info.userId = sanitizeInput(info.userId);
       info.plantId = sanitizeInput(info.plantId);
       info.text = sanitizeInput(info.text);
-      info.image = sanitizeInput(info.image);
-      const validationResult = newPostSchema.validate({
-        userId: info.userId,
-        plantId: info.plantId,
-        text: info.text,
-        image: info.image,
-        advice_or_plantation: info.advice_or_plantation,
-      });
-      if (validationResult.error) {
+      //info.image = sanitizeInput(info.image);
+      info.advice_or_plantation = sanitizeInput(info.advice_or_plantation);
+      if (info.advice_or_plantation === "plantation") {
+        // console.log("in the conditional of post");
+        insertUserXPlant(info.userId, info.plantId);
+      }
+      console.log("after use x lant happened");
+      const image = info.image; // Parse the JSON request body
+      if (!image) {
         return NextResponse.json(
-          { message: validationResult.error.details[0].message },
+          { error: "No image data provided" },
           { status: 400 }
         );
       }
-      await insertNewPost(
-        info.userId,
-        info.plantId,
-        info.text,
-        info.image,
-        info.advice_or_plantation
-      );
-      return NextResponse.json(
-        { message: "Post inserted successfully" },
-        { status: 200 }
-      );
+
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.v2.uploader.upload_stream(
+          { folder: "default" }, // Specify the folder or use 'default'
+          (error, result) => {
+            if (error) {
+              console.error("Error uploading to Cloudinary:", error);
+              return resolve(
+                NextResponse.json(
+                  { error: "Error uploading to Cloudinary" },
+                  { status: 500 }
+                )
+              );
+            }
+            const validationResult = newPostSchema.validate({
+              userId: info.userId,
+              plantId: info.plantId,
+              text: info.text,
+              image: result.secure_url,
+              advice_or_plantation: info.advice_or_plantation,
+            });
+            if (validationResult.error) {
+              return resolve(
+                NextResponse.json(
+                  { message: validationResult.error.details[0].message },
+                  { status: 400 }
+                )
+              );
+            }
+            insertNewPost(
+              info.userId,
+              info.plantId,
+              info.text,
+              result.secure_url,
+              info.advice_or_plantation
+            );
+            return resolve(
+              NextResponse.json(
+                { message: "Post inserted successfully" },
+                { status: 200 }
+              )
+            );
+          }
+        );
+
+        // Convert base64 to buffer and upload
+        const buffer = Buffer.from(image, "base64");
+        uploadStream.end(buffer);
+      });
     } else if (type === "newcommentinpost") {
       info.userId = sanitizeInput(info.userId);
       info.postId = sanitizeInput(info.postId);
@@ -467,6 +563,12 @@ export async function POST(request) {
         info.name,
         info.location
       );
+    } else if (type === "insertPlant") {
+      info.name = sanitizeInput(info.name);
+      return await insertPlant(info.name);
+    } else if (type === "findPlant") {
+      info.plantName = sanitizeInput(info.plantName);
+      return await findPlant(info.plantName);
     } else if (type === "getPostComments") {
       //console.log("in the meantime " + info.postId);
       info.postId = sanitizeInput(info.postId);
@@ -539,6 +641,10 @@ export async function POST(request) {
       info.qid = sanitizeInput(info.qid);
 
       return await submitAnswer(info.userid, info.answer, info.qid);
+    } else if (type === "getAnswers") {
+      info.qid = sanitizeInput(info.qid);
+
+      return await getAnswers(info.qid);
     } else {
       return NextResponse.json(
         { message: "Invalid request type" },

@@ -32,6 +32,10 @@ const forum = () => {
 
     const [selectedOption, setSelectedOption] = useState('latest');
 
+    const [quesId, setQuesId] = useState(0);
+
+    const [expand, setExpand] = useState(false);
+
     const userid = Cookies.get("userid");
 
     const fetchData = async() => {
@@ -52,7 +56,6 @@ const forum = () => {
             const data = await response.json();
 
             setQuestions(data.questions);
-            setAnswers(data.answers);
 
           } catch (error) {
             console.error("Error posting data:", error);
@@ -61,7 +64,7 @@ const forum = () => {
 
     useEffect(() => {
         fetchData();
-    }, [newQuestion, ans, searchedText, isOn, selectedOption]);
+    }, [newQuestion, searchedText, isOn, selectedOption]);
 
 
     const handleInputChange = (event) => {
@@ -112,14 +115,49 @@ const forum = () => {
         return "just now"; // in case the difference is less than a second
     }
 
-    const toggleView = (qid) => {
-        setShowAnswers((prev) => ({
-            ...prev,
-            [qid]: !prev[qid]
-        }));
+    const fetchAnswers = async(qid) => {
+        try {
+            const response = await fetch("/api", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                type: "getAnswers",
+                qid: qid
+              }),
+            });
+
+            const data = await response.json();
+
+            console.log(data.answers);
+
+            setAnswers(data.answers);
+
+          } catch (error) {
+            console.error("Error posting data:", error);
+          }
+    } 
+
+    useEffect(() => {
+        fetchAnswers(quesId);
+    }, [quesId, expand]);
+
+    const toggleView = async(qid) => {
+    
+        if(quesId === qid)
+            setExpand(!expand);
+        else 
+            setExpand(true);
+        setQuesId(qid);
+        
+
+        if(expand)
+            await fetchAnswers(qid);
+
     };
 
-    const submitAnswer = async(question, event) => {
+    const submitAnswer = async(event) => {
         try{
             const response = await fetch('/api',{
                 method: 'POST',
@@ -130,7 +168,7 @@ const forum = () => {
                     type: 'submitAnswer',
                     userid: userid,
                     answer: ans,
-                    qid: question.qid,
+                    qid: quesId,
                 }),
             });
 
@@ -139,6 +177,7 @@ const forum = () => {
             if(data.success) {
                 alert('Answer submitted successfully');
                 setAns('');
+                await fetchAnswers(quesId);
             }
 
         }catch{
@@ -260,14 +299,16 @@ const forum = () => {
     }; 
 
     useEffect(() => {
-        answers && answers.forEach((answer) => {
-            fetchReactions(answer.aid).then((reactionData) => {
-                setReactions((prevData) => ({
-                    ...prevData,
-                    [answer.aid]: reactionData,
-                }));
+        if(Array.isArray(answers)) {
+            answers.forEach((answer) => {
+                fetchReactions(answer.aid).then((reactionData) => {
+                    setReactions((prevData) => ({
+                        ...prevData,
+                        [answer.aid]: reactionData,
+                    }));
+                });
             });
-        });
+        }
     }, [answers]);
 
     
@@ -391,15 +432,13 @@ const forum = () => {
 
                                 <button className='bg-yellow-500 rounded w-15 h-4 p-3 m-3 flex items-center hover:scale-110 transition-transform duration-300'
                                 onClick={() => toggleView(question.qid)}>
-                                    {showAnswers[question.qid] ? 'hide answers' : 'show answers'}
+                                    {(expand && quesId === question.qid) ? 'hide answers' : 'show answers'}
                                 </button>
 
-                                {showAnswers[question.qid] && (
+                                { (expand && quesId === question.qid) && (
                                     <div>
                                         <div className='ml-40 mt-12 text-right'>
-                                            {answers
-                                            .filter((answer) => answer.question_id === question.qid)
-                                            .map((answer) => (
+                                            {Array.isArray(answers) && answers.length > 0 && answers.map((answer) => (
                                                 <div>
                                                     <div className='flex flex-row items-center justify-end'> 
                                                         <div>{answer.name}</div>
@@ -418,7 +457,7 @@ const forum = () => {
                                                             `}
                                                             onClick={() => handleLikeClick(answer.aid)}
                                                             >
-                                                                <h5 className='p-1'> {reactions[answer.aid].likeCount === undefined ? 0 : reactions[answer.aid].likeCount} </h5>
+                                                                { reactions[answer.aid] && <h5 className='p-1'> {reactions[answer.aid].likeCount} </h5> }
                                                                 <img src="/like.png" className="w-4 h-4" />
                                                             </button>
 
@@ -428,7 +467,7 @@ const forum = () => {
                                                             `}
                                                             onClick={() => handleDislikeClick(answer.aid)}
                                                             >
-                                                                <h5 className='p-1'> {reactions[answer.aid].dislikeCount === undefined ? 0 : reactions[answer.aid].dislikeCount} </h5>
+                                                                {reactions[answer.aid] && <h5 className='p-1'> {reactions[answer.aid].dislikeCount === undefined ? 0 : reactions[answer.aid].dislikeCount} </h5>}
                                                                 <img src="/dislike.png" className="w-4 h-4" />
                                                             </button>
 

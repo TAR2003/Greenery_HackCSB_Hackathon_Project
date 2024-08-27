@@ -4,6 +4,7 @@ import {
   getDislikeNumberPost,
   getHarvestComments,
   getLikeNumberPost,
+  getPlantName,
   getPostComments,
   getReactStatePost,
   getUserInfo,
@@ -26,6 +27,7 @@ const PostFrame = ({ elem, className, style, type }) => {
   const [comments, setComments] = useState([]);
   const [likeNumber, setLikeNumber] = useState(0);
   const [dislikeNumber, setDislikeNumber] = useState(0);
+  const [plantName, setPlantName] = useState("");
 
   const handleLikeClick = async () => {
     if (disliked) {
@@ -110,6 +112,8 @@ const PostFrame = ({ elem, className, style, type }) => {
     const info = await getUserInfo(elem.user_id);
 
     setuserinfo(info[0]);
+    const nm = await getPlantName(elem.plant_id);
+    setPlantName(nm[0].name);
 
     if (type === "community") {
       const commentInfo = await getPostComments(parseInt(elem.id));
@@ -149,9 +153,7 @@ const PostFrame = ({ elem, className, style, type }) => {
           {/* Profile Picture */}
           <img
             src={
-              userinfo === undefined
-                ? "/user/masnoon.png"
-                : `${userinfo.image}`
+              userinfo === undefined ? "/user/masnoon.png" : `${userinfo.image}`
             }
             alt="Profile Picture"
             className="w-12 h-12 object-cover rounded-full border-2 border-gray-300"
@@ -161,6 +163,29 @@ const PostFrame = ({ elem, className, style, type }) => {
               <a href={`/profile/${userinfo.id}`}>{userinfo.name}</a>
             </h2>
             <p className="text-gray-500 text-sm">{formatDate(elem.time)}</p>
+          </div>
+          <div
+            className={`flex flex-row justify-center items-center text-black p-2 rounded-lg ml-auto ${
+              type === "community"
+                ? "bg-gradient-to-r from-green-300 to-green-500"
+                : "bg-gradient-to-r from-amber-400 to-amber-600"
+            } shadow-lg`}
+          >
+            <div className="bg-white rounded-xl p-2 shadow-sm flex items-center">
+              <h1 className="text-black text-sm font-serif font-semibold">
+                {plantName}
+              </h1>
+            </div>
+            <img
+              src={
+                type === "harvest"
+                  ? "wheat.png"
+                  : elem.advice_or_plantation === "plantation"
+                  ? `tree.png`
+                  : "idea.png"
+              }
+              className="w-auto h-12 ml-4 rounded-full shadow-md"
+            />
           </div>
         </div>
 
