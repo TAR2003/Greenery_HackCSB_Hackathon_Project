@@ -6,9 +6,10 @@ const pool = getPool();
 
 export async function findPlant(plantname) {
   try {
-    const result = await pool.query(`SELECT * FROM plantinfo where name = $1`, [
-      plantname,
-    ]);
+    const result = await pool.query(
+      `SELECT * FROM plantinfo where name ilike  $1`,
+      [plantname]
+    );
     const posts = result.rows;
 
     return NextResponse.json(posts);
