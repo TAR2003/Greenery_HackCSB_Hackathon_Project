@@ -72,13 +72,16 @@ const Greenery = () => {
 
     const sortedPlants = pinfo.sort((a, b) => a.name.localeCompare(b.name));
 
+    const lowercasedSearchText = searchText.toLowerCase();
+
     const startsWithMan = sortedPlants.filter((plant) =>
-      plant.name.startsWith(searchText)
+      plant.name.toLowerCase().startsWith(lowercasedSearchText)
     );
 
     const containsMan = sortedPlants.filter(
       (plant) =>
-        plant.name.includes(searchText) && !plant.name.startsWith(searchText)
+        plant.name.toLowerCase().includes(lowercasedSearchText) &&
+        !plant.name.toLowerCase().startsWith(lowercasedSearchText)
     );
 
     // Step 4: Combine the two arrays, with 'startsWithMan' elements first
@@ -132,7 +135,7 @@ const Greenery = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center mb-8 space-x-4">
+      <div className="flex flex-row items-center flex-wrap justify-center mb-8 gap-8">
         <button
           className={`${
             myPlantsChecked

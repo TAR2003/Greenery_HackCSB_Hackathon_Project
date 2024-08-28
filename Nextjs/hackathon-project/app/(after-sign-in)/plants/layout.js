@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
           us every day.
         </p>
       </div>
-      <div className="w-full px-4 mt-12 flex-grow">{children}</div>
+      <div className="w-full px-4 mt-6 flex-grow">{children}</div>
     </div>
   );
 };

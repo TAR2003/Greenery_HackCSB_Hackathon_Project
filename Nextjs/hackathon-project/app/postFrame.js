@@ -173,9 +173,11 @@ const PostFrame = ({ elem, className, style, type }) => {
             } shadow-lg`}
           >
             <div className="bg-white rounded-xl p-2 shadow-sm flex items-center">
-              <h1 className="text-black text-sm font-serif font-semibold">
-                {plantName}
-              </h1>
+              <a href={`/plants/${elem.plant_id}`}>
+                <h1 className="text-black text-sm font-serif font-semibold">
+                  {plantName}
+                </h1>
+              </a>
             </div>
             <img
               src={

@@ -132,7 +132,7 @@ const CommunityID = () => {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-center gap-8">
+      <div className="flex flex-row items-center flex-wrap justify-center gap-8">
         <button
           onClick={handleClickRelevant}
           className={
