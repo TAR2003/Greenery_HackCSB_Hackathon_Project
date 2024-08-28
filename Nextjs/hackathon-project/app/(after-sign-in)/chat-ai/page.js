@@ -1,92 +1,115 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 
 const ChatAI = () => {
-  const [userInput, setUserInput] = useState(""); // Stores the user's input
-  const [chatHistory, setChatHistory] = useState([]); // Stores the conversation history
-  const [loading, setLoading] = useState(false); // Loading state for the button
+  const [userInput, setUserInput] = useState("");
+  const [chatHistory, setChatHistory] = useState([]);
+  const [loading, setLoading] = useState(false);
+  
+  // Ref to the chat container
+  const chatContainerRef = useRef(null);
+
+  // Smooth scroll to bottom function
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: "smooth", // Smooth scrolling
+      });
+    }
+  };
+
+  // Automatically scroll to the bottom whenever chatHistory changes
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatHistory]);
 
   const sendQuery = async () => {
-    if (userInput.trim() === "") return; // If user input is empty, don't send the query
+    if (userInput.trim() === "") return;
 
     setLoading(true);
     try {
-      // Send the user's query to the backend
       const response = await axios.post("/api", {
-        type: "chat-ai", // Specify the type here
-        prompt: userInput, // Send the user's input as the prompt
+        type: "chat-ai",
+        prompt: userInput,
       });
 
-      // Update chat history with both user and AI responses
       setChatHistory((prev) => [
         ...prev,
-        { user: userInput, bot: response.data.text }, // Make sure the field names match
+        { user: userInput, bot: response.data.text },
       ]);
 
-      setUserInput(""); // Clear the input field after sending
+      setUserInput("");
     } catch (error) {
       console.error("Error interacting with chatbot:", error);
-      // If there is an error, add an error message to the chat history
       setChatHistory((prev) => [
         ...prev,
         { user: userInput, bot: "Something went wrong. Please try again." },
       ]);
     }
-    setLoading(false); // Set loading state to false after the query is sent
+    setLoading(false);
   };
 
   return (
-    <div className="chat-container p-4 max-w-2xl mx-auto">
-      {/* Chat History */}
-      <div className="chat-box mb-4 bg-gray-100 p-4 rounded-lg shadow-lg h-80 overflow-y-auto">
-        {chatHistory.map((chat, index) => (
-          <div key={index} className="chat-message mb-4">
-            {/* User Message */}
-            <div className="user-message text-blue-500 font-semibold bg-blue-100 p-2 rounded-lg mb-2">
-              You: {chat.user}
-            </div>
-            {/* AI Message */}
-            <div className="bot-message flex items-start text-green-600 font-semibold bg-green-100 p-2 rounded-lg">
-              <img
-                src="/robot-assistant.jpg"
-                alt="AI Avatar"
-                className="w-8 h-8 rounded-full mr-2"
-              />
-              <div
-                dangerouslySetInnerHTML={{ __html: sanitizeBotResponse(chat.bot) }}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Input Field and Send Button */}
-      <div className="flex">
-        <input
-          type="text"
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          className="input-field border p-2 w-full text-black bg-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-          placeholder="Ask about your plant..."
-          onKeyDown={(e) => {
-            if (e.key === "Enter") sendQuery(); // Send the query on pressing Enter
-          }}
-        />
-        <button
-          onClick={sendQuery}
-          className="send-btn bg-green-500 text-white px-4 py-2 rounded-lg ml-2 shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
-          disabled={loading}
+    <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 p-4">
+      {/* Chat Box */}
+      <div className="chat-container w-full max-w-3xl bg-white bg-opacity-90 p-6 rounded-3xl shadow-2xl">
+        <h1 className="text-2xl font-bold mb-4 text-center text-gray-800">
+          Chat with AI
+        </h1>
+        <div
+          ref={chatContainerRef}
+          className="chat-box h-[400px] md:h-[500px] bg-gray-100 p-4 rounded-lg shadow-inner overflow-y-auto"
         >
-          {loading ? (
-            <span className="animate-grow">Thinking...</span>
-          ) : (
-            "Send"
-          )}
-        </button>
+          {chatHistory.map((chat, index) => (
+            <div key={index} className="chat-message mb-4 animate-fade-in">
+              {/* User Message */}
+              <div className="user-message bg-blue-200 p-3 rounded-xl mb-2 text-black">
+                <strong>You:</strong> {chat.user}
+              </div>
+              {/* AI Message */}
+              <div className="bot-message flex items-start p-3 bg-green-200 rounded-xl">
+                <img
+                  src="/robot-assistant.jpg"
+                  alt="AI Avatar"
+                  className="w-10 h-10 rounded-full mr-3"
+                />
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: sanitizeBotResponse(chat.bot),
+                  }}
+                  className="text-black"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Input Field and Send Button */}
+        <div className="mt-4 flex space-x-2">
+          <input
+            type="text"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            className="input-field w-full p-3 rounded-xl shadow-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Ask about your plant..."
+            onKeyDown={(e) => {
+              if (e.key === "Enter") sendQuery();
+            }}
+          />
+
+          <button
+            onClick={sendQuery}
+            className="send-btn bg-green-600 text-white px-6 py-3 rounded-xl shadow-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition-transform transform hover:scale-105"
+            disabled={loading}
+          >
+            {loading ? "Thinking..." : "Send"}
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -94,9 +117,7 @@ const ChatAI = () => {
 
 // Function to sanitize and convert markdown to HTML
 const sanitizeBotResponse = (response) => {
-  // Convert markdown to HTML
-  const html = marked(response); // Convert markdown to HTML
-  // Sanitize HTML to prevent XSS attacks
+  const html = marked(response);
   return DOMPurify.sanitize(html);
 };
 
