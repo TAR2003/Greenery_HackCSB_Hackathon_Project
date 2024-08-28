@@ -18,15 +18,16 @@ const Greenery = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [visibleplants, setvisibleplants] = useState(0);
+  const [loading, setloading] = useState(true);
 
-  useEffect(() => {
-    if (visibleplants < plants.length) {
-      const timeout = setTimeout(() => {
-        setvisibleplants((prev) => prev + 1);
-      }, 200);
-      return () => clearTimeout(timeout);
-    }
-  }, [visibleplants, plants.length]);
+  // useEffect(() => {
+  //   if (visibleplants < plants.length) {
+  //     const timeout = setTimeout(() => {
+  //       setvisibleplants((prev) => prev + 1);
+  //     }, 200);
+  //     return () => clearTimeout(timeout);
+  //   }
+  // }, [visibleplants, plants.length]);
 
   const handleSearchChange = async (e) => {
     setShowSuggestions(true);
@@ -34,12 +35,14 @@ const Greenery = () => {
       setSuggestions([]);
       setSearchText("");
       setShowSuggestions(false);
+      await handleCLickAdvanced("");
       return;
     }
 
     setSearchText(e.target.value);
     const sg = await getPlantNamesStartingWith(e.target.value);
     setSuggestions(sg);
+    await handleCLickAdvanced(e.target.value);
   };
 
   const handleSuggestionClick = (suggestion) => {
@@ -47,16 +50,11 @@ const Greenery = () => {
     setShowSuggestions(false);
   };
 
-  const handleSearchClick = async () => {
+  const handleCLickAdvanced = async (searchText) => {
+    setloading(true);
     setPlants([]);
     setSuggestions(false);
-    //setfilter(true);
-    const p = await findPlant(searchText);
-    if (p.length == 0) {
-      //setplantid(0);
-      return;
-    }
-    //console.log(JSON.stringify(p[0]));
+
     let pinfo;
     if (myPlantsChecked) {
       pinfo = await getUserPlants(parseInt(Cookies.get("userid")));
@@ -64,37 +62,68 @@ const Greenery = () => {
       pinfo = await getAllPlantNames();
     }
     //setplantid(p[0].id);
-    let arr = [];
-    for (let i = 0; i < pinfo.length; i++) {
-      if (pinfo[i].id == p[0].id) arr.push(pinfo[i]);
+    if (searchText === "") {
+      setPlants(pinfo);
+      setloading(false);
+      return;
     }
-    setPlants(arr);
-    setvisibleplants(0);
+
+    //starts
+
+    const sortedPlants = pinfo.sort((a, b) => a.name.localeCompare(b.name));
+
+    const startsWithMan = sortedPlants.filter((plant) =>
+      plant.name.startsWith(searchText)
+    );
+
+    const containsMan = sortedPlants.filter(
+      (plant) =>
+        plant.name.includes(searchText) && !plant.name.startsWith(searchText)
+    );
+
+    // Step 4: Combine the two arrays, with 'startsWithMan' elements first
+    const result = [...startsWithMan, ...containsMan];
+
+    //ends
+
+    setPlants(result);
+    setloading(false);
+    //console.log(JSON.stringify(result));
+  };
+
+  const handleSearchClick = async () => {
+    await handleCLickAdvanced(searchText);
   };
 
   const handleShowMyPlants = async () => {
+    setloading(true);
     setSearchText("");
     setPlants([]);
     setMyPlantsChecked(true);
     setAllPlantsChecked(false);
     const userPlants = await getUserPlants(parseInt(Cookies.get("userid")));
     setPlants(userPlants);
-    setvisibleplants(0);
+    setloading(false);
+    //setvisibleplants(0);
   };
 
   const handleShowAllPlants = async () => {
+    setloading(true);
     setSearchText("");
     setPlants([]);
     setAllPlantsChecked(true);
     setMyPlantsChecked(false);
     const allPlants = await getAllPlantNames();
     setPlants(allPlants);
-    setvisibleplants(0);
+    setloading(false);
+    //setvisibleplants(0);
   };
 
   const fetchData = async () => {
+    setloading(true);
     const allPlants = await getAllPlantNames();
     setPlants(allPlants);
+    setloading(false);
   };
 
   useEffect(() => {
@@ -102,7 +131,7 @@ const Greenery = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center py-10">
+    <>
       <div className="flex items-center justify-center mb-8 space-x-4">
         <button
           className={`${
@@ -132,23 +161,6 @@ const Greenery = () => {
             onChange={handleSearchChange}
             className="border border-gray-300 p-2 rounded w-full"
           />
-          {Array.isArray(suggestions) && showSuggestions && (
-            <div className="absolute border border-gray-300 bg-white w-full mt-12 rounded shadow-lg z-10">
-              {suggestions.length > 0 ? (
-                suggestions.map((suggestion, index) => (
-                  <div
-                    key={index}
-                    className="p-2 hover:bg-gray-200 cursor-pointer text-black"
-                    onClick={() => handleSuggestionClick(suggestion)}
-                  >
-                    {suggestion.name}
-                  </div>
-                ))
-              ) : (
-                <div className="p-2 text-gray-500">No suggestions</div>
-              )}
-            </div>
-          )}
         </div>
         <button
           onClick={handleSearchClick}
@@ -157,25 +169,37 @@ const Greenery = () => {
           Search
         </button>
       </div>
-      <h1 className="text-3xl text-bold mb-2">
-        We have found {plants.length} plants{" "}
-      </h1>
-      <div className="flex flex-wrap justify-center gap-4 w-full">
-        {Array.isArray(plants) && plants.length > 0 ? (
-          plants.slice(0, visibleplants).map((plantName, index) => (
-            <PlantFrame
-              key={index}
-              plantName={plantName}
-              style={{
-                animation: `zoomIn 1s ease-in-out ${index * 0}ms`,
-              }}
-            />
-          ))
+
+      <div className="flex flex-col items-center py-10">
+        {loading ? (
+          <div className="text-center mb-8">
+            <div className="spinner-border animate-spin inline-block w-12 h-12 border-4 rounded-full  border-t-white"></div>
+            <p className="text-white text-xl mt-4">Searching plants...</p>
+          </div>
         ) : (
-          <p className="text-gray-300 text-lg">No plants available</p>
+          <>
+            <h1 className="text-3xl font-bold mb-2">
+              We have found {plants.length} plants
+            </h1>
+            <div className="flex flex-wrap justify-center gap-4 w-full">
+              {Array.isArray(plants) && plants.length > 0 ? (
+                plants.map((plantName, index) => (
+                  <PlantFrame
+                    key={index}
+                    plantName={plantName}
+                    style={{
+                      animation: `zoomIn 1s ease-in-out ${index * 0}ms`,
+                    }}
+                  />
+                ))
+              ) : (
+                <p className="text-gray-300 text-lg">No plants available</p>
+              )}
+            </div>
+          </>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

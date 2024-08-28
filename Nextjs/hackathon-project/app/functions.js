@@ -607,7 +607,6 @@ export async function getPlantName(pid) {
   }
 }
 
-
 export function timeAgo(timestamp) {
   // Convert the timestamp to a Date object
   const originalDate = new Date(timestamp);
