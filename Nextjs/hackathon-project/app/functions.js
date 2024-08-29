@@ -640,3 +640,145 @@ export function timeAgo(timestamp) {
 
   return "just now"; // in case the difference is less than a second
 }
+
+export async function getUserJournals(uid) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getUserJournals",
+        userId: uid,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getJournalMessages(jid) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getJournalMessages",
+        journalId: jid,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function getReminders(uid) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "getReminders",
+        userId: uid,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function addReminder(jid, msg, time) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "addReminder",
+        journalId: jid,
+        msg: msg,
+        time: time,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function addUserJournal(uid, journalName) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "addUserJournal",
+        userId: uid,
+        journalName: journalName,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}
+
+export async function addJournalMessage(jid, msg) {
+  //console.log(uid, pid, text, image);
+  // console.log("in harvest functin " + pid);
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "addJournalMessage",
+        journalId: jid,
+        msg: msg,
+      }),
+    });
+    const newData = await response.json();
+    //  console.log(JSON.stringify(newData) + "got back");
+    //console.log("We are done in the funcrion js   === ");
+    return newData;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+}

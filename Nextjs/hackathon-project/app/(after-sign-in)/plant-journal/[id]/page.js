@@ -1,63 +1,71 @@
 "use client";
+import {
+  addJournalMessage,
+  addReminder,
+  getJournalMessages,
+  getUserJournals,
+  addUserJournal,
+  timeAgo, // Import the function to add a journal
+} from "@/app/functions";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 
 const JournalList = ({ params }) => {
-  // Sample data
-  // const sampleJournals = [
-  //   { id: 1, journalname: "Spring Planting" },
-  //   { id: 2, journalname: "Summer Growth" },
-  //   { id: 3, journalname: "Autumn Harvest" },
-  // ];
-
-  // const sampleMessages = {
-  //   1: [
-  //     { message: "Started planting tomatoes." },
-  //     { message: "Added fertilizer to the soil." },
-  //   ],
-  //   2: [
-  //     { message: "Tomatoes are growing well." },
-  //     { message: "Need to water daily." },
-  //   ],
-  //   3: [
-  //     { message: "Harvested the first batch." },
-  //     { message: "Prepared for winter planting." },
-  //   ],
-  // };
-
   const [selectedJournal, setSelectedJournal] = useState(null);
   const [sampleJournals, setsampleJournals] = useState([]);
-  const [journals, setjournals] = useState([]);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [reminderDate, setReminderDate] = useState("");
+  const [reminderText, setReminderText] = useState(""); // New state for reminder text
+  const [newJournalName, setNewJournalName] = useState(""); // New state for journal name
   const [uid, setuid] = useState(0);
 
   const fetchData = async () => {
-    setuid(parseInt(Cookies.get("userid")));
-    //setMessages(messages)
+    setuid(parseInt(params.id));
+    let d = await getUserJournals(parseInt(params.id));
+    setsampleJournals(d);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const handleJournalClick = (journalId) => {
+  const handleJournalClick = async (journalId) => {
     setSelectedJournal(journalId);
+    let d = await getJournalMessages(journalId);
+    setMessages(d);
   };
 
-  const handleAddMessage = () => {
+  const handleAddMessage = async () => {
     if (selectedJournal) {
-      setMessages([...messages, { message: newMessage }]);
+      await addJournalMessage(selectedJournal, newMessage);
+      let d = await getJournalMessages(selectedJournal);
+      setMessages(d);
       setNewMessage("");
     }
   };
 
-  const handleSetReminder = () => {
-    console.log(
-      `Reminder set for journal ${selectedJournal} on ${reminderDate}`
-    );
-    // Here you would make an API call to set the reminder
+  const handleSetReminder = async () => {
+    if (reminderDate !== "" && reminderText !== "") {
+      await addReminder(selectedJournal, reminderText, reminderDate);
+      await addJournalMessage(
+        selectedJournal,
+        "A new Reminder added for the date " + reminderDate
+      );
+      let d = await getJournalMessages(selectedJournal);
+      setMessages(d);
+      setReminderDate("");
+      setReminderText("");
+    }
+  };
+
+  const handleAddJournal = async () => {
+    if (newJournalName.trim() !== "") {
+      await addUserJournal(uid, newJournalName); // Add new journal
+      let d = await getUserJournals(uid); // Refresh the list of journals
+      setsampleJournals(d);
+      setNewJournalName(""); // Clear the input field
+    }
   };
 
   return (
@@ -73,16 +81,36 @@ const JournalList = ({ params }) => {
               <li
                 key={journal.id}
                 onClick={() => handleJournalClick(journal.id)}
-                className={`cursor-pointer p-2 rounded-lg hover:bg-gray-200 transition-colors ${
+                className={`relative cursor-pointer p-2 rounded-lg hover:bg-gray-200 transition-colors ${
                   selectedJournal === journal.id
                     ? "bg-gray-300 font-semibold"
                     : ""
                 }`}
               >
                 {journal.journalname}
+                <span className="absolute bottom-2 right-2 text-sm text-gray-500">
+                  {timeAgo(journal.time)}
+                </span>
               </li>
             ))}
           </ul>
+          {parseInt(Cookies.get("userid")) === parseInt(params.id) ? (
+            <div className="mt-4">
+              <input
+                type="text"
+                value={newJournalName}
+                onChange={(e) => setNewJournalName(e.target.value)}
+                placeholder="Add a new journal"
+                className="w-full border p-2 rounded-lg"
+              />
+              <button
+                onClick={handleAddJournal}
+                className="mt-2 w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
+              >
+                Add Journal
+              </button>
+            </div>
+          ) : null}
         </div>
 
         <div className="lg:w-2/3 p-4 flex flex-col">
@@ -94,44 +122,69 @@ const JournalList = ({ params }) => {
                   messages.map((msg, index) => (
                     <div
                       key={index}
-                      className="p-2 mb-2 bg-white border rounded-lg shadow-sm"
+                      className={`p-4 mb-4 rounded-lg shadow-sm relative ${
+                        msg.message.startsWith("Reminder:-")
+                          ? "border border-red-500 bg-red-200"
+                          : "border border-gray-300 bg-white"
+                      }`}
                     >
-                      {msg.message}
+                      <div className="mb-2 text-sm text-gray-600">
+                        Date: {new Date(msg.time).toLocaleDateString()}
+                      </div>
+                      <p className="text-gray-800">{msg.message}</p>
                     </div>
                   ))
                 ) : (
                   <p className="text-gray-600">No messages yet.</p>
                 )}
               </div>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Add a new message"
-                  className="flex-1 border p-2 rounded-lg"
-                />
-                <button
-                  onClick={handleAddMessage}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-                >
-                  Add
-                </button>
-              </div>
-              <div className="mt-4 flex gap-2 items-center">
-                <input
-                  type="date"
-                  value={reminderDate}
-                  onChange={(e) => setReminderDate(e.target.value)}
-                  className="border p-2 rounded-lg flex-1"
-                />
-                <button
-                  onClick={handleSetReminder}
-                  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
-                >
-                  Set Reminder
-                </button>
-              </div>
+              {parseInt(Cookies.get("userid")) === parseInt(params.id) ? (
+                <>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      placeholder="Add a new message"
+                      className="flex-1 border p-2 rounded-lg"
+                    />
+                    <button
+                      onClick={handleAddMessage}
+                      className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                    >
+                      Add
+                    </button>
+                  </div>
+                  <div className="mt-4">
+                    <h3 className="text-lg font-semibold mb-2">
+                      Set a Reminder
+                    </h3>
+                    <div className="flex gap-2 items-center mb-2">
+                      <input
+                        type="date"
+                        value={reminderDate}
+                        onChange={(e) => setReminderDate(e.target.value)}
+                        className="border p-2 rounded-lg flex-1"
+                      />
+                    </div>
+                    <div className="flex gap-2 items-center">
+                      <input
+                        type="text"
+                        value={reminderText}
+                        onChange={(e) => setReminderText(e.target.value)}
+                        placeholder="Reminder text"
+                        className="border p-2 rounded-lg flex-1"
+                      />
+                      <button
+                        onClick={handleSetReminder}
+                        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
+                      >
+                        Set Reminder
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : null}
             </>
           ) : (
             <p className="text-gray-600">Select a journal to view messages.</p>

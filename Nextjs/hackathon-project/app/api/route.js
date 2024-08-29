@@ -83,6 +83,14 @@ cloudinary.v2.config({
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { ChangeProfile } from "./ChangeProfile";
+import {
+  addJournalMessage,
+  addReminder,
+  addUserJournal,
+  getJournalMessages,
+  getReminders,
+  getUserjournals,
+} from "./journalFunctions";
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
@@ -696,6 +704,27 @@ export async function POST(request) {
       info.kindof = sanitizeInput(info.kindof);
 
       return await removeReactPost(info.userId, info.postId, info.kindof);
+    } else if (type === "getUserJournals") {
+      info.userId = sanitizeInput(info.userId);
+      return await getUserjournals(info.userId);
+    } else if (type === "getJournalMessages") {
+      info.journalId = sanitizeInput(info.journalId);
+      return await getJournalMessages(info.journalId);
+    } else if (type === "addUserJournal") {
+      info.userId = sanitizeInput(info.userId);
+      info.journalName = sanitizeInput(info.journalName);
+      return await addUserJournal(info.userId, info.journalName);
+    } else if (type === "addJournalMessage") {
+      info.journalId = sanitizeInput(info.journalId);
+      info.msg = sanitizeInput(info.msg);
+      return await addJournalMessage(info.journalId, info.msg);
+    } else if (type === "getReminders") {
+      info.userId = sanitizeInput(info.userId);
+      return await getReminders(info.userId);
+    } else if (type === "addReminder") {
+      info.journalId = sanitizeInput(info.journalId);
+      info.msg = sanitizeInput(info.msg);
+      return await addReminder(info.journalId, info.msg, info.time);
     } else if (type === "addQuestion") {
       info.userid = sanitizeInput(info.userid);
       info.question = sanitizeInput(info.question);
