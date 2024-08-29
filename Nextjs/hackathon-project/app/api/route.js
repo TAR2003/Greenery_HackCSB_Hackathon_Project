@@ -58,6 +58,7 @@ import { submitQuestion } from "./addForumQuestion";
 import { getForumInfo } from "./forumInfo";
 import { submitAnswer } from "./addForumAnswer";
 import { getAnswers } from "./getAnswer";
+import { getDistrict } from "./getDistrict";
 
 //added image handling functionality
 import cloudinary from "cloudinary";
@@ -558,6 +559,10 @@ export async function POST(request) {
       info.qid = sanitizeInput(info.qid);
 
       return await getAnswers(info.qid);
+    } else if (type === "getDistrict") {
+      info.userid = sanitizeInput(info.userid);
+
+      return await getDistrict(info.userid);
     } else {
       return NextResponse.json(
         { message: "Invalid request type" },
