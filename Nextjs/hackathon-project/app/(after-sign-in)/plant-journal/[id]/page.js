@@ -20,28 +20,36 @@ const JournalList = ({ params }) => {
   const [newJournalName, setNewJournalName] = useState(""); // New state for journal name
   const [uid, setuid] = useState(0);
 
-  const fetchData = async () => {
-    setuid(parseInt(params.id));
-    let d = await getUserJournals(parseInt(params.id));
-    setsampleJournals(d);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      setuid(parseInt(params.id));
+      let d = await getUserJournals(parseInt(params.id));
+      setsampleJournals(d);
+    };
+    fetchData();
+  }, [params.id]);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (selectedJournal) {
+      const fetchMessages = async () => {
+        let d = await getJournalMessages(selectedJournal);
+        setMessages(d);
+      };
+      fetchMessages();
+    }
+  }, [selectedJournal]);
 
-  const handleJournalClick = async (journalId) => {
+  const handleJournalClick = (journalId) => {
     setSelectedJournal(journalId);
-    let d = await getJournalMessages(journalId);
-    setMessages(d);
   };
 
   const handleAddMessage = async () => {
     if (selectedJournal) {
       await addJournalMessage(selectedJournal, newMessage);
-      let d = await getJournalMessages(selectedJournal);
-      setMessages(d);
       setNewMessage("");
+      // Fetch messages after adding a new message
+      const d = await getJournalMessages(selectedJournal);
+      setMessages(d);
     }
   };
 
@@ -52,7 +60,8 @@ const JournalList = ({ params }) => {
         selectedJournal,
         "A new Reminder added for the date " + reminderDate
       );
-      let d = await getJournalMessages(selectedJournal);
+      // Fetch messages after adding a reminder
+      const d = await getJournalMessages(selectedJournal);
       setMessages(d);
       setReminderDate("");
       setReminderText("");
@@ -61,10 +70,11 @@ const JournalList = ({ params }) => {
 
   const handleAddJournal = async () => {
     if (newJournalName.trim() !== "") {
-      await addUserJournal(uid, newJournalName); // Add new journal
-      let d = await getUserJournals(uid); // Refresh the list of journals
-      setsampleJournals(d);
+      await addUserJournal(uid, newJournalName);
       setNewJournalName(""); // Clear the input field
+      // Refresh the list of journals
+      const d = await getUserJournals(uid);
+      setsampleJournals(d);
     }
   };
 

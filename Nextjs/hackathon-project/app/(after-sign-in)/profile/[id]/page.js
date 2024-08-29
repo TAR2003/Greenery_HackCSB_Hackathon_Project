@@ -15,86 +15,80 @@ import ChangeProfile from "@/app/ChangeProfile";
 const ProfileID = ({ params }) => {
   const [userid, setUserid] = useState("");
   const [showstring, setShowstring] = useState("Loading.....");
-  const [info, setinfo] = useState(null);
-  const [username, setusername] = useState("Loading username....");
-  const [image, setimage] = useState("/1.jpg");
-  const [userplants, setuserplants] = useState("...");
-  const [harvestedtimes, setharvestedtimes] = useState("...");
-  const [communitypost, setcommunitypost] = useState("...");
-  const [answeredqueries, setansweredqueries] = useState("...");
-  const [earnedbadges, setearnedbadges] = useState(0);
-  const [showmodal, setshowmodal] = useState(false);
+  const [info, setInfo] = useState(null);
+  const [username, setUsername] = useState("Loading username....");
+  const [image, setImage] = useState("/1.jpg");
+  const [userPlants, setUserPlants] = useState("...");
+  const [harvestedTimes, setHarvestedTimes] = useState("...");
+  const [communityPost, setCommunityPost] = useState("...");
+  const [answeredQueries, setAnsweredQueries] = useState("...");
+  const [earnedBadges, setEarnedBadges] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
-  const handleModalClick = () => {
-    setshowmodal(true);
-  };
-  const closeModal = () => {
-    setshowmodal(false);
-  };
+  const handleModalClick = () => setShowModal(true);
+  const closeModal = () => setShowModal(false);
 
   const fetchData = async () => {
     setUserid(params.id);
-    //console.log(params.id);
     const result = await getUserInfo(parseInt(params.id));
-    setinfo(result[0]);
-    if (result[0].name !== null) {
-      setusername(result[0].name);
-    } else setusername("No user with this id");
-    setimage(result[0].image);
-    const userplantrows = await getTotalNoOfPlants(parseInt(params.id));
-    setuserplants(userplantrows);
-    const harvestedtimesrows = await getUserHarvests(parseInt(params.id));
-    setharvestedtimes(harvestedtimesrows.length);
-    const communitypostrows = await getUserPosts(parseInt(params.id));
-    setcommunitypost(communitypostrows.length);
-    const answeredqueriesrows = await getUserAnswers(parseInt(params.id));
-    setansweredqueries(answeredqueriesrows.length);
-    //console.log(answeredqueriesrows);
-    setearnedbadges(1);
-    //console.log(userplantrows);
+    setInfo(result[0]);
+    if (result[0].name) {
+      setUsername(result[0].name);
+    } else {
+      setUsername("No user with this id");
+    }
+    setImage(result[0].image);
+
+    const userPlantRows = await getTotalNoOfPlants(parseInt(params.id));
+    setUserPlants(userPlantRows);
+
+    const harvestedTimesRows = await getUserHarvests(parseInt(params.id));
+    setHarvestedTimes(harvestedTimesRows.length);
+
+    const communityPostRows = await getUserPosts(parseInt(params.id));
+    setCommunityPost(communityPostRows.length);
+
+    const answeredQueriesRows = await getUserAnswers(parseInt(params.id));
+    setAnsweredQueries(answeredQueriesRows.length);
+
+    setEarnedBadges(1);
     setShowstring(JSON.stringify(result));
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [params.id]);
+
+  // Render loading or placeholder content before fetching data
+  if (!info) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
-      <div
-        className="flex  bg-black"
-        style={{
-          height: "370px",
-        }}
-      >
+      <div className="flex bg-black" style={{ height: "370px" }}>
         <div
           className="w-full h-96 bg-cover bg-center"
-          style={{
-            backgroundImage: "url('/cover.png')",
-            height: "60%", // Adjust height as needed
-          }}
+          style={{ backgroundImage: "url('/cover.png')", height: "60%" }}
         >
-          <div className="h-32 w-full "></div>
+          <div className="h-32 w-full"></div>
           <div className="h-56 w-full flex items-center justify-center">
             <div className="flex flex-col items-center">
               <img
                 src={image}
-                className="rounded-full h-52 w-52  border-white border-8"
+                className="rounded-full h-52 w-52 border-white border-8"
                 alt="Profile Picture"
               />
-              <button
-                className="text-center bg-green-400 text-white hover:bg-red-400 p-2 rounded-xl"
-                onClick={handleModalClick}
-              >
-                Change profile picture
-              </button>
+              {parseInt(Cookies.get("userid")) === parseInt(params.id) ? (
+                <button
+                  className="text-center bg-green-400 text-white hover:bg-red-400 p-2 rounded-xl"
+                  onClick={handleModalClick}
+                >
+                  Change profile picture
+                </button>
+              ) : null}
             </div>
-            <div
-              className="ml-16 lg:ml-16 "
-              style={{
-                paddingTop: "60px",
-              }}
-            >
+            <div className="ml-16 lg:ml-16" style={{ paddingTop: "60px" }}>
               <h1 className="lg:text-3xl sm:text-3xl font-extrabold">
                 {username}
               </h1>
@@ -103,12 +97,7 @@ const ProfileID = ({ params }) => {
         </div>
       </div>
       <div className="sm:pl-20 sm:pr-20">
-        <div
-          className="flex flex-wrap w-full h-full bg-black overflow-y-auto justify-center items-center"
-          style={{}}
-        >
-          {" "}
-          {/*started the list  from here */}
+        <div className="flex flex-wrap w-full h-full bg-black overflow-y-auto justify-center items-center">
           <div
             className="w-96 h-96 bg-cover bg-center rounded-3xl m-6 transform transition-transform duration-300 hover:scale-110"
             style={{
@@ -118,9 +107,9 @@ const ProfileID = ({ params }) => {
               backgroundPosition: "center",
             }}
           >
-            <div className="flex flex-col h-full w-full  justify-end items-center">
+            <div className="flex flex-col h-full w-full justify-end items-center">
               <h1 className="text-3xl text-black py-8 text-center font-bold">
-                Planted {userplants} Trees
+                Planted {userPlants} Trees
               </h1>
               <a
                 href="/greenery"
@@ -129,8 +118,6 @@ const ProfileID = ({ params }) => {
                 Learn More
               </a>
             </div>
-
-            {/* Content inside the div */}
           </div>
           <div
             className="w-96 h-96 bg-cover bg-center rounded-3xl m-6 transform transition-transform duration-300 hover:scale-110"
@@ -141,9 +128,9 @@ const ProfileID = ({ params }) => {
               backgroundPosition: "center",
             }}
           >
-            <div className="flex flex-col h-full w-full  justify-end items-center">
+            <div className="flex flex-col h-full w-full justify-end items-center">
               <h1 className="text-3xl text-black py-8 text-center font-bold">
-                Harvested {harvestedtimes} Times
+                Harvested {harvestedTimes} Times
               </h1>
               <a
                 href={`/harvest/${params.id}`}
@@ -152,8 +139,6 @@ const ProfileID = ({ params }) => {
                 Learn More
               </a>
             </div>
-
-            {/* Content inside the div */}
           </div>
           <div
             className="w-96 h-96 bg-cover bg-center rounded-3xl m-6 transform transition-transform duration-300 hover:scale-110"
@@ -164,19 +149,17 @@ const ProfileID = ({ params }) => {
               backgroundPosition: "center",
             }}
           >
-            <div className="flex flex-col h-full w-full  justify-end items-center">
-              <h1 className="text-3xl text-black py-8 tet-center font-bold">
-                Answered {answeredqueries} Queries
+            <div className="flex flex-col h-full w-full justify-end items-center">
+              <h1 className="text-3xl text-black py-8 text-center font-bold">
+                Answered {answeredQueries} Queries
               </h1>
               <a
-                href={"/forum"}
+                href="/forum"
                 className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
               >
                 Learn More
               </a>
             </div>
-
-            {/* Content inside the div */}
           </div>
           <div
             className="w-96 h-96 bg-cover bg-center rounded-3xl m-6 transform transition-transform duration-300 hover:scale-110"
@@ -187,9 +170,9 @@ const ProfileID = ({ params }) => {
               backgroundPosition: "center",
             }}
           >
-            <div className="flex flex-col h-full w-full  justify-end items-center">
+            <div className="flex flex-col h-full w-full justify-end items-center">
               <h1 className="text-3xl text-black py-8 text-center font-bold">
-                Posted total {communitypost} Community Posts
+                Posted total {communityPost} Community Posts
               </h1>
               <a
                 href={`/community/${params.id}`}
@@ -198,8 +181,6 @@ const ProfileID = ({ params }) => {
                 Learn More
               </a>
             </div>
-
-            {/* Content inside the div */}
           </div>
           <div
             className="w-96 h-96 bg-cover bg-center rounded-3xl m-6 transform transition-transform duration-300 hover:scale-110"
@@ -210,43 +191,19 @@ const ProfileID = ({ params }) => {
               backgroundPosition: "center",
             }}
           >
-            <div className="flex flex-col h-full w-full  justify-end items-center">
+            <div className="flex flex-col h-full w-full justify-end items-center">
               <h1 className="text-3xl text-black py-8 text-center font-bold">
-                Earned {earnedbadges} Badges
+                Earned {earnedBadges} Badges
               </h1>
               <a className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110">
                 Learn More
               </a>
             </div>
-
-            {/* Content inside the div */}
-          </div>
-          <div
-            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6 transform transition-transform duration-300 hover:scale-110"
-            style={{
-              backgroundImage: "url('/messaging.png')",
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-            }}
-          >
-            <div className="flex flex-col h-full w-full  justify-end items-center">
-              <h1 className="text-3xl text-black py-8 text-center font-bold">
-                Find the plant journals
-              </h1>
-              <a
-                href={`/plant-journal/${params.id}`}
-                className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
-              >
-                Click to see the journals
-              </a>
-            </div>
-
-            {/* Content inside the div */}
           </div>
         </div>
       </div>
-      {showmodal && <ChangeProfile onClose={closeModal} />}
+
+      {showModal && <ChangeProfile onClose={closeModal} />}
     </>
   );
 };
