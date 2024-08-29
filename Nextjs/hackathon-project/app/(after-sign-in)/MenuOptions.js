@@ -7,13 +7,11 @@ const MenuOptions = [
   { href: "/plant-detection", label: "Plant Identification" },
   { href: "/message", label: "Message" },
   { href: "/marketplace", label: "Marketplace" },
-  { href: "/exchange", label: "Exchange" },
+  { href: "/chat-ai", label: "Chat AI" },
   { href: "/plants", label: "Plants" },
   { href: "/plant-challenge", label: "Plant Challenges" },
   { href: "/plant-journal", label: "Plant Journal" },
-  { href: "/marketplace", label: "Marketplace" },
   { href: "/calender", label: "Plant Calender" },
-  { href: "/chat-ai", label: "Chat AI" },
 ];
 
 export default MenuOptions;
