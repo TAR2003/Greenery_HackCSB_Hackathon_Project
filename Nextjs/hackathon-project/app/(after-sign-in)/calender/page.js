@@ -266,7 +266,7 @@ export default function calender() {
         <div className='relative' style={{
             background: "linear-gradient(135deg, #6A0DAD, #BA55D3)", // Royal Purple to Medium Orchid
           }}>
-            <div className="py-20 mx-auto text-center flex flex-col items-center max-w-3xl">
+            <div className="py-10 mx-auto text-center flex flex-col items-center max-w-3xl">
                 <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
                     Maintain Your <span className="text-blue-400">Planting Planner</span>!
                 </h1>
@@ -277,48 +277,58 @@ export default function calender() {
                 <br></br>
             </div>
 
-            <div className='flex flex-col bg-gradient-to-r from-indigo-800 via-blue-700 to-green-400 rounded-lg shadow-lg w-60 p-4 ml-auto mr-20'>
-                <div className='flex flex-row'>
-                    <img src="/temperature.png" className="w-8 h-8 mr-4 mb-2" />
-                    <p>Temperature</p>
+            <div className='flex flex-col items-center bg-gradient-to-r from-green-500 to-gray-800 to-black max-w-screen-md rounded-lg shadow-lg p-4 mx-auto mb-10'>
+                <div className='grid grid-cols-3 gap-7'>
+                    <div className='flex flex-row items-center'>
+                        <img src="/temperature.png" className="w-8 h-8 mr-2 mb-2" />
+                        <p>Temperature</p>
+                    </div>
+                    <div className='flex flex-row items-center'>
+                        <img src="/watering.png" className="w-8 h-8 mr-2 mb-2" />
+                        <p>Watering</p>
+                    </div>
+                    <div className='flex flex-row items-center'>
+                        <img src="/harvesting.png" className="w-8 h-8 mr-2 mb-2" />
+                        <p>Harvesting</p>
+                    </div>
+                    <div className='flex flex-row items-center'>
+                        <img src="/pruning.png" className="w-8 h-8 mr-2 mb-2" />
+                        <p>Pruning</p>
+                    </div>
+                    <div className='flex flex-row items-center'>
+                        <img src="/planting.png" className="w-8 h-8 mr-2 mb-2" />
+                        <p>Planting seeds</p>
+                    </div>
+                    <div className='flex flex-row items-center'>
+                        <img src="/fertilizer.png" className="w-8 h-8 mr-2 mb-2" />
+                        <p>Fertilizer</p>
+                    </div>
+                    <div className='flex flex-row items-center'>
+                        <img src="/pest-control.png" className="w-8 h-8 mr-2 mb-2" />
+                        <p>Pest control</p>
+                    </div>
+                    <div className='flex flex-row items-center'>
+                        <img src="/minus.png" className="w-8 h-8 mr-2 mb-2" />
+                        <p>Not needed</p>
+                    </div>
+                    <div className='flex flex-row items-center'>
+                        <img src="/shield.png" className="w-8 h-8 mr-2 mb-2" />
+                        <p>Recommended</p>
+                    </div>
                 </div>
-                <div className='flex flex-row'>
-                    <img src="/watering.png" className="w-8 h-8 mr-4 mb-2" />
-                    <p>Watering</p>
+                <div className='flex flex-rows gap-4 mt-7'>
+                    <img src="/drop.png" className='w-6 h-6'/>
+                    Needed Watering Level : 
+                    <div> {renderWateringLevel('heavy watering')} </div> 
+                    <div> {renderWateringLevel('medium watering')} </div> 
+                    <div> {renderWateringLevel('light watering')} </div>
+                    <div> {renderWateringLevel('no watering')} </div>
                 </div>
-                <div className='flex flex-row'>
-                    <img src="/harvesting.png" className="w-8 h-8 mr-4 mb-2" />
-                    <p>Harvesting</p>
-                </div>
-                <div className='flex flex-row'>
-                    <img src="/pruning.png" className="w-8 h-8 mr-4 mb-2" />
-                    <p>Pruning</p>
-                </div>
-                <div className='flex flex-row'>
-                    <img src="/planting.png" className="w-8 h-8 mr-4 mb-2" />
-                    <p>Planting seeds</p>
-                </div>
-                <div className='flex flex-row'>
-                    <img src="/fertilizer.png" className="w-8 h-8 mr-4 mb-2" />
-                    <p>Fertilizer</p>
-                </div>
-                <div className='flex flex-row'>
-                    <img src="/pest-control.png" className="w-8 h-8 mr-4 mb-2" />
-                    <p>Pest control</p>
-                </div>
-                <div className='flex flex-row'>
-                    <img src="/minus.png" className="w-8 h-8 mr-4 mb-2" />
-                    <p>Not needed</p>
-                </div>
-                <div className='flex flex-row'>
-                    <img src="/shield.png" className="w-8 h-8 mr-4 mb-2" />
-                    <p>Recommended</p>
-                </div>
-
             </div>
 
+            <hr className='m-8 border-3 border-black'></hr>
             <div className='text-center font-bold text-3xl text-black mb-10 underline'> {months[date.getMonth()]} , {date.getFullYear()} </div>
-            <div className='px-10 mr-10'>
+            <div className='px-10 mr-10 ml-10'>
                 <div class="grid grid-cols-7 gap-6 p-6 bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 rounded-xl">
                     {daysOfWeek.map((day) => (
                         <div className='underline text-center text-white font-2xl m-3 font-bold'>
@@ -401,9 +411,9 @@ export default function calender() {
                     
                 </div>
             </div>
-            <hr className='m-8'></hr>
+            <hr className='m-8 border-3 border-black'></hr>
 
-            {(getRestDays() < 16) && <div className='px-10 mr-10'>
+            {(getRestDays() < 16) && <div className='px-10 mr-10 ml-10'>
                 <div className='text-center font-bold text-3xl text-black mt-10 mb-10 underline'> {months[date.getMonth()+1]} , {date.getFullYear()} </div>
                 <div class="grid grid-cols-7 gap-6 p-6 bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 rounded-xl">
                     {daysOfWeek.map((day) => (
