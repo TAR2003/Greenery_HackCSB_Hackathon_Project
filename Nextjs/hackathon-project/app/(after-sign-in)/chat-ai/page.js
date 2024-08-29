@@ -40,24 +40,27 @@ const ChatAI = () => {
   };
 
   return (
-    <div className="chat-container p-4 max-w-2xl mx-auto">
+    <div className="chat-container p-6 max-w-2xl mx-auto bg-white rounded-xl shadow-lg">
       {/* Chat History */}
-      <div className="chat-box mb-4 bg-gray-100 p-4 rounded-lg shadow-lg h-80 overflow-y-auto">
+      <div className="chat-box mb-4 bg-gray-50 p-4 rounded-lg shadow-inner h-80 overflow-y-auto">
         {chatHistory.map((chat, index) => (
-          <div key={index} className="chat-message mb-4">
+          <div key={index} className="chat-message mb-6">
             {/* User Message */}
-            <div className="user-message text-blue-500 font-semibold bg-blue-100 p-2 rounded-lg mb-2">
+            <div className="user-message text-indigo-600 font-medium bg-indigo-100 p-3 rounded-lg mb-2">
               You: {chat.user}
             </div>
             {/* AI Message */}
-            <div className="bot-message flex items-start text-green-600 font-semibold bg-green-100 p-2 rounded-lg">
+            <div className="bot-message flex items-start text-gray-700 bg-green-50 p-3 rounded-lg">
               <img
                 src="/robot-assistant.jpg"
                 alt="AI Avatar"
-                className="w-8 h-8 rounded-full mr-2"
+                className="w-8 h-8 rounded-full mr-3 shadow-md"
               />
               <div
-                dangerouslySetInnerHTML={{ __html: sanitizeBotResponse(chat.bot) }}
+                className="leading-relaxed"
+                dangerouslySetInnerHTML={{
+                  __html: sanitizeBotResponse(chat.bot),
+                }}
               />
             </div>
           </div>
@@ -65,12 +68,12 @@ const ChatAI = () => {
       </div>
 
       {/* Input Field and Send Button */}
-      <div className="flex">
+      <div className="flex items-center">
         <input
           type="text"
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
-          className="input-field border p-2 w-full text-black bg-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="input-field border border-gray-300 p-3 w-full text-gray-800 bg-gray-100 rounded-l-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
           placeholder="Ask about your plant..."
           onKeyDown={(e) => {
             if (e.key === "Enter") sendQuery(); // Send the query on pressing Enter
@@ -78,11 +81,11 @@ const ChatAI = () => {
         />
         <button
           onClick={sendQuery}
-          className="send-btn bg-green-500 text-white px-4 py-2 rounded-lg ml-2 shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+          className="send-btn bg-indigo-500 text-white px-5 py-3 rounded-r-lg shadow-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-300"
           disabled={loading}
         >
           {loading ? (
-            <span className="animate-grow">Thinking...</span>
+            <span className="animate-pulse">Thinking...</span>
           ) : (
             "Send"
           )}
