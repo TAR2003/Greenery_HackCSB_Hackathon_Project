@@ -6,17 +6,19 @@ import {
   getDislikeNumberPost,
   getHarvestComments,
   getLikeNumberPost,
+  getPlantName,
   getPostComments,
   getReactStatePost,
   insertNewCommentinHarvest,
   insertNewCommentinPost,
   removeReactPost,
+  timeAgo,
 } from "./functions";
 import Cookies from "js-cookie";
 
 const formatDate = (dateString) => {
-  const date = parseISO(dateString);
-  return formatDistanceToNow(date, { addSuffix: true });
+  const date = timeAgo(parseISO(dateString));
+  return date;
 };
 
 const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
@@ -28,6 +30,7 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
   const [writeComment, setwriteComment] = useState("");
   const [likeNumber, setLikeNumber] = useState(0);
   const [dislikeNumber, setDislikeNumber] = useState(0);
+  const [plantName, setPlantName] = useState("");
 
   const handleLikeClick = async () => {
     if (disliked) {
@@ -106,6 +109,8 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
     }
     setVisibleComments(0);
     await countNumbers();
+    const nm = await getPlantName(elem.plant_id);
+    setPlantName(nm[0].name);
     //console.log(commentInfo);
   };
 
@@ -194,9 +199,7 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
         <div className="flex items-center mb-4">
           <img
             src={
-              userinfo === undefined
-                ? "/user/masnoon.png"
-                : `${userinfo.image}`
+              userinfo === undefined ? "/user/masnoon.png" : `${userinfo.image}`
             }
             alt="Profile Picture"
             className="w-16 h-16 object-cover rounded-full border-2 border-gray-300"
@@ -206,6 +209,31 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
               <a href={`/profile/${userinfo.id}`}>{userinfo.name}</a>
             </h2>
             <p className="text-gray-500 text-sm">{formatDate(elem.time)}</p>
+          </div>
+          <div
+            className={`flex flex-row justify-center items-center text-black p-2 rounded-lg ml-auto mr-12 ${
+              type === "community"
+                ? "bg-gradient-to-r from-green-300 to-green-500"
+                : "bg-gradient-to-r from-amber-400 to-amber-600"
+            } shadow-lg`}
+          >
+            <div className="bg-white rounded-xl p-2 shadow-sm flex items-center">
+              <a href={`/plants/${elem.plant_id}`}>
+                <h1 className="text-black text-sm font-serif font-semibold">
+                  {plantName}
+                </h1>
+              </a>
+            </div>
+            <img
+              src={
+                type === "harvest"
+                  ? "wheat.png"
+                  : elem.advice_or_plantation === "plantation"
+                  ? `tree.png`
+                  : "idea.png"
+              }
+              className="w-auto h-12 ml-4 rounded-full shadow-md"
+            />
           </div>
         </div>
         {/* Full Caption */}

@@ -66,7 +66,7 @@ const Layout = ({ children }) => {
         <div className="flex items-center">
           <div className="pl-0 sm:pl-8">
             <button onClick={toggleMenu} className="focus:outline-none">
-              <Image
+              <img
                 src="/hamburger.png"
                 width={80}
                 height={80}
@@ -76,7 +76,7 @@ const Layout = ({ children }) => {
             </button>
           </div>
           <div className="flex-1 flex justify-center md:justify-start mr-2 md:mx-4">
-            <Image
+            <img
               src="/logo.png"
               width={70}
               height={60}
@@ -92,7 +92,7 @@ const Layout = ({ children }) => {
               href="/"
               className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold p-2 sm:m-2 rounded-full flex items-center justify-center"
             >
-              <Image
+              <img
                 src={newnotification}
                 alt="Notification Bell"
                 width={44} // Adjust the width to match the height of the button
@@ -141,7 +141,7 @@ const Layout = ({ children }) => {
         }}
       >
         <button onClick={toggleMenu} className="pl-8 text-white">
-          <Image
+          <img
             src="/cross.png"
             width={80}
             height={80}
@@ -168,7 +168,7 @@ const Layout = ({ children }) => {
                       onClick={() => handleSuggestionClick(suggestion.id)}
                     >
                       <div className="flex flex-row">
-                        <Image
+                        <img
                           src={suggestion.image}
                           alt="pic"
                           className="rounded-full"

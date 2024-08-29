@@ -1,5 +1,6 @@
 "use client";
 import {
+  getTotalNoOfPlants,
   getUserAnswers,
   getUserHarvests,
   getUserInfo,
@@ -9,6 +10,7 @@ import {
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import ChangeProfile from "@/app/ChangeProfile";
 
 const ProfileID = ({ params }) => {
   const [userid, setUserid] = useState("");
@@ -20,26 +22,34 @@ const ProfileID = ({ params }) => {
   const [harvestedtimes, setharvestedtimes] = useState("...");
   const [communitypost, setcommunitypost] = useState("...");
   const [answeredqueries, setansweredqueries] = useState("...");
-  const [earnedbadges, setearnedbadges] = useState(5);
+  const [earnedbadges, setearnedbadges] = useState(0);
+  const [showmodal, setshowmodal] = useState(false);
+
+  const handleModalClick = () => {
+    setshowmodal(true);
+  };
+  const closeModal = () => {
+    setshowmodal(false);
+  };
 
   const fetchData = async () => {
     setUserid(params.id);
-    console.log(params.id);
+    //console.log(params.id);
     const result = await getUserInfo(parseInt(params.id));
     setinfo(result[0]);
     if (result[0].name !== null) {
       setusername(result[0].name);
     } else setusername("No user with this id");
     setimage(result[0].image);
-    const userplantrows = await getUserPlants(parseInt(params.id));
-    setuserplants(userplantrows.length);
+    const userplantrows = await getTotalNoOfPlants(parseInt(params.id));
+    setuserplants(userplantrows);
     const harvestedtimesrows = await getUserHarvests(parseInt(params.id));
     setharvestedtimes(harvestedtimesrows.length);
     const communitypostrows = await getUserPosts(parseInt(params.id));
     setcommunitypost(communitypostrows.length);
     const answeredqueriesrows = await getUserAnswers(parseInt(params.id));
     setansweredqueries(answeredqueriesrows.length);
-    console.log(answeredqueriesrows);
+    //console.log(answeredqueriesrows);
     setearnedbadges(1);
     //console.log(userplantrows);
     setShowstring(JSON.stringify(result));
@@ -66,12 +76,18 @@ const ProfileID = ({ params }) => {
         >
           <div className="h-32 w-full "></div>
           <div className="h-56 w-full flex items-center justify-center">
-            <div className="">
+            <div className="flex flex-col items-center">
               <img
                 src={image}
                 className="rounded-full h-52 w-52  border-white border-8"
                 alt="Profile Picture"
               />
+              <button
+                className="text-center bg-green-400 text-white hover:bg-red-400 p-2 rounded-xl"
+                onClick={handleModalClick}
+              >
+                Change profile picture
+              </button>
             </div>
             <div
               className="ml-16 lg:ml-16 "
@@ -198,10 +214,7 @@ const ProfileID = ({ params }) => {
               <h1 className="text-3xl text-black py-8 text-center font-bold">
                 Earned {earnedbadges} Badges
               </h1>
-              <a
-                onClick={""}
-                className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
-              >
+              <a className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110">
                 Learn More
               </a>
             </div>
@@ -219,13 +232,13 @@ const ProfileID = ({ params }) => {
           >
             <div className="flex flex-col h-full w-full  justify-end items-center">
               <h1 className="text-3xl text-black py-8 text-center font-bold">
-                Message freely to get help
+                Find the plant journals
               </h1>
               <a
-                href={`/message/${params.id}`}
+                href={`/plant-journal/${params.id}`}
                 className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
               >
-                Click to message
+                Click to see the journals
               </a>
             </div>
 
@@ -233,6 +246,7 @@ const ProfileID = ({ params }) => {
           </div>
         </div>
       </div>
+      {showmodal && <ChangeProfile onClose={closeModal} />}
     </>
   );
 };
