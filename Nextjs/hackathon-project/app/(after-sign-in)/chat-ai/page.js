@@ -9,7 +9,7 @@ const ChatAI = () => {
   const [userInput, setUserInput] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
-  
+
   // Ref to the chat container
   const chatContainerRef = useRef(null);
 

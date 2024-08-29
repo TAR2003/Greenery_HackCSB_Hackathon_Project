@@ -6,7 +6,6 @@ const pool = getPool();
 
 export async function getUserAnswers(userId) {
   try {
-
     // Use parameterized query to prevent SQL injection
     const result = await pool.query(
       `SELECT * FROM Forumanswer WHERE user_id = $1`,
@@ -14,7 +13,7 @@ export async function getUserAnswers(userId) {
     );
 
     const harvests = result.rows;
-    console.log(harvests);
+    // console.log(harvests);
     return NextResponse.json(harvests);
   } catch (error) {
     console.error("Database query error:", error);

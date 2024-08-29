@@ -9,6 +9,9 @@ const MenuOptions = [
   { href: "/marketplace", label: "Marketplace" },
   { href: "/exchange", label: "Exchange" },
   { href: "/plants", label: "Plants" },
+  { href: "/plant-challenge", label: "Plant Challenges" },
+  { href: "/plant-journal", label: "Plant Journal" },
+  { href: "/marketplace", label: "Marketplace" },
   { href: "/calender", label: "Plant Calender" },
   { href: "/chat-ai", label: "Chat AI" },
 ];
