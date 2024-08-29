@@ -9,6 +9,7 @@ const ChatAI = () => {
   const [userInput, setUserInput] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); // State to store error message
 
   // Ref to the chat container
   const chatContainerRef = useRef(null);
@@ -18,7 +19,7 @@ const ChatAI = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTo({
         top: chatContainerRef.current.scrollHeight,
-        behavior: "smooth", // Smooth scrolling
+        behavior: "smooth",
       });
     }
   };
@@ -29,9 +30,15 @@ const ChatAI = () => {
   }, [chatHistory]);
 
   const sendQuery = async () => {
-    if (userInput.trim() === "") return;
+    // Check if user input is empty
+    if (userInput.trim() === "") {
+      setErrorMessage("Please enter a message before sending.");
+      return;
+    }
 
+    setErrorMessage(""); // Clear any previous error messages
     setLoading(true);
+
     try {
       const response = await axios.post("/api", {
         type: "chat-ai",
@@ -89,12 +96,20 @@ const ChatAI = () => {
           ))}
         </div>
 
+        {/* Error Message */}
+        {errorMessage && (
+          <div className="text-red-600 text-center mt-2">{errorMessage}</div>
+        )}
+
         {/* Input Field and Send Button */}
         <div className="mt-4 flex space-x-2">
           <input
             type="text"
             value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
+            onChange={(e) => {
+              setUserInput(e.target.value);
+              if (errorMessage) setErrorMessage(""); // Clear error on typing
+            }}
             className="input-field w-full p-3 rounded-xl shadow-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Ask about your plant..."
             onKeyDown={(e) => {
