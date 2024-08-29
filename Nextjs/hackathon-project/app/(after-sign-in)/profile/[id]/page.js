@@ -22,7 +22,7 @@ const ProfileID = ({ params }) => {
   const [harvestedtimes, setharvestedtimes] = useState("...");
   const [communitypost, setcommunitypost] = useState("...");
   const [answeredqueries, setansweredqueries] = useState("...");
-  const [earnedbadges, setearnedbadges] = useState(5);
+  const [earnedbadges, setearnedbadges] = useState(0);
   const [showmodal, setshowmodal] = useState(false);
 
   const handleModalClick = () => {
@@ -232,13 +232,13 @@ const ProfileID = ({ params }) => {
           >
             <div className="flex flex-col h-full w-full  justify-end items-center">
               <h1 className="text-3xl text-black py-8 text-center font-bold">
-                Message freely to get help
+                Find the plant journals
               </h1>
               <a
-                href={`/message/${params.id}`}
+                href={`/plant-journal/${params.id}`}
                 className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
               >
-                Click to message
+                Click to see the journals
               </a>
             </div>
 
