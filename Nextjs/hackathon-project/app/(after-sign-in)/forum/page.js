@@ -424,7 +424,7 @@ const forum = () => {
                                     <div>{question.name}</div>
                                 </div>
                                 
-                                <div className='text-left border-b p-3 mr-40 bg-[#008080] rounded-xl'>
+                                <div className='text-left border-b p-3 mr-40 bg-[#008080] rounded-xl shadow-lg shadow-teal-700/50 bg-gradient-to-br from-teal-500 to-teal-900'>
                                     <h4 className='text-red-500 font-bold'>Question:</h4>
                                     <h3 className='text-lg font-semibold'>{question.text}</h3>
                                     <p className='text-sm text-black text-right'>{timeAgo(question.time)}</p>
