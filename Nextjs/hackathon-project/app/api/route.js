@@ -81,6 +81,7 @@ cloudinary.v2.config({
 // ended image handling functionality
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { ChangeProfile } from "./ChangeProfile";
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
@@ -476,6 +477,45 @@ export async function POST(request) {
       }
 
       return await getUserChats(info.userId, info.otherUserId);
+    } else if (type === "ChangeProfile") {
+      info.userId = sanitizeInput(info.userId);
+
+      const image = info.image; // Parse the JSON request body
+      if (!image) {
+        return NextResponse.json(
+          { error: "No image data provided" },
+          { status: 400 }
+        );
+      }
+
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.v2.uploader.upload_stream(
+          { folder: "default" }, // Specify the folder or use 'default'
+          (error, result) => {
+            if (error) {
+              console.error("Error uploading to Cloudinary:", error);
+              return resolve(
+                NextResponse.json(
+                  { error: "Error uploading to Cloudinary" },
+                  { status: 500 }
+                )
+              );
+            }
+            //console.log("Successgful " + result.secure_url);
+            ChangeProfile(info.userId, result.secure_url);
+            return resolve(
+              NextResponse.json(
+                { message: "Image changed successfully" },
+                { status: 200 }
+              )
+            );
+          }
+        );
+
+        // Convert base64 to buffer and upload
+        const buffer = Buffer.from(image, "base64");
+        uploadStream.end(buffer);
+      });
     } else if (type === "recommendplants") {
       info.userId = sanitizeInput(info.userId);
       const validationResult = userInfoSchema.validate({ userId: info.userId });
