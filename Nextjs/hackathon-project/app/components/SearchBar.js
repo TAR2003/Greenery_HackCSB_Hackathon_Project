@@ -1,27 +1,20 @@
 "use client";
 import { useState } from 'react';
 import Image from 'next/image';
-import styles from './SearchBar.module.css'; // Ensure you create this CSS module
-import products from './ProductGrid';
-const SearchBar = () => {
-  const [search, setSearchTerm] = useState('');
+import styles from './SearchBar.module.css';
+
+const SearchBar = ({ handleSearch }) => {
+  const [search, setSearch] = useState('');
 
   const handleInputChange = (e) => {
-    setSearchTerm(e.target.value);
+    const term = e.target.value;
+    setSearch(term);   
+    handleSearch(term); 
   };
 
   const handleClear = () => {
-    setSearchTerm('');
-  };
-  const handleSearch = (e) => {
-    const term = e.target.value.toLowerCase();
-    setSearchTerm(term);
-    const filtered = products.filter(product =>
-      product.title.toLowerCase().includes(term)
-    );
-    setFilteredProducts(filtered);
-    setSortedProducts(filtered);
-    setCurrentPage(1);
+    setSearch('');    
+    handleSearch(''); 
   };
 
   return (
@@ -37,7 +30,7 @@ const SearchBar = () => {
         type="text" 
         placeholder="Search product" 
         value={search}
-        onChange={(e) => handleSearch(e)}
+        onChange={handleInputChange}
         className={styles.input}
       />
       {search && (
@@ -55,3 +48,6 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
+
+
+

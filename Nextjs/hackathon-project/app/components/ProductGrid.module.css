@@ -1,66 +1,103 @@
 /* ProductGrid.module.css */
 
 .productGrid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 3 products per row */
-    gap: 25px;
-  }
-  
-  .productCard {
-    width: 200px; /* Set a fixed width */
-    height: 300px; /* Set a fixed height */
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 10px;
-    text-align: center;
-    background-color: #d2edd6; /* Ensure the background is white */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    overflow: hidden;
-  }
-  
-  .productImage {
-    width: 300px; /* Set a fixed width for the image */
-    height: 200px; /* Set a fixed height for the image */
-    object-fit: contain; /* Ensure the image fits within the specified dimensions */
-    margin-bottom: 10px;
-  
-  transition: transform 0.3s ease; /* Smooth transition for hover effect */
-  }
-  .productImage:hover {
-    transform: scale(1.1); /* Increase size by 20% on hover */
-  }
-  .productTitle {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-  }
-  
-  .productPrice {
-    font-size: 1em;
-    color: #333;
-  }
-  .pagination {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .paginationButton {
-     width: 180px; /* Fixed width 
-    height: 40px;  */
-    padding: 10px 20px;
-    background-color: #41c377;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .paginationButton:hover {
-    background-color: #00b377;
-  }
-  
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 products per row */
+  gap: 25px;
+}
+
+
+.productCard {
+  width: 200px; /* Set a fixed width */
+  height: 350px; /* Set a fixed height */
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  background-color: #d2edd6; /* Ensure the background is white */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+
+.productImage {
+  width: 300px; /* Set a fixed width for the image */
+  height: 200px; /* Set a fixed height for the image */
+  object-fit: contain; /* Ensure the image fits within the specified dimensions */
+  margin-bottom: 10px;
+
+transition: transform 0.3s ease; /* Smooth transition for hover effect */
+}
+.productImage:hover {
+  transform: scale(1.1); /* Increase size by 20% on hover */
+}
+.productTitle {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.productPrice {
+  font-size: 1em;
+  color: #333;
+}
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.buyProduct{
+  color: crimson;
+}
+.selected {
+  background-color: green;
+  color: white;
+}
+
+.unselected {
+  background-color: gray;
+  color: white;
+}
+.paginationButton {
+   width: 180px; /* Fixed width 
+  height: 40px;  */
+  padding: 10px 20px;
+  background-color: #41c377;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.sidebar {
+  width: 30%;
+  background-color: #d3d3d3; /* Light gray background */
+  padding-left: 1px;
+  border-radius: 4px;
+  margin-right: 30px;
+  /* border-right: 1px solid #f80303; */
+}
+.checkoutButton{
+  width: 280px; /* Fixed width 
+  height: 40px;  */
+  padding: 10px 20px;
+  background-color: #41c377;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.paginationButton:hover {
+  background-color: #00b377;
+}
+.sortByContainer {
+  padding-left: 100px;
+  margin-bottom: 20px;
+  color: #000000;
+  width: 80px;
+}
