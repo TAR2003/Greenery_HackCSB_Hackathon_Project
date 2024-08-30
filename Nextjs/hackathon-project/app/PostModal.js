@@ -139,7 +139,7 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
       );
     }
     setwriteComment("");
-    fetchData();
+    await fetchData();
   };
 
   useEffect(() => {
