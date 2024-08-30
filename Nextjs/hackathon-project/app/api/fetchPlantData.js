@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-const plantPageCache = {}; // Initialize cache
 let totalPages = null; // Track total number of pages
 
 export async function fetchPlantScientificNamesByPage(page = 1) {
@@ -26,15 +25,7 @@ export async function fetchPlantScientificNamesByPage(page = 1) {
       })
     );
 
-    // Log the plant details from Wikipedia
-    // plantDetailsFromWikipedia.forEach(plant => {
-    //   console.log(`Plant: ${plant.scientificName}`);
-    //   console.log(`Wikipedia Details: ${plant.wikipediaDetails.details}`);
-    //   console.log(`Image URL: ${plant.wikipediaDetails.imageUrl}`);
-    //   console.log(`Wikipedia Page: ${plant.wikipediaDetails.pageUrl}`);
-    // });
-
-    // Cache the fetched data if needed (optional)
+   // Extract total number of pages if not already set
     if (!totalPages) {
       const lastPageUrl = response.data.links.last;
       const lastPageMatch = lastPageUrl.match(/page=(\d+)/);
@@ -118,11 +109,12 @@ async function fetchPlantDetailsFromWikipedia(scientificName, trefleImageUrl) {
     const pageUrl = `https://en.wikipedia.org/?curid=${page.pageid}`; // Construct the Wikipedia page URL
 
 
-    // If image URL is still not available, use the Trefle API image
+    // If image URL is still not available, use wiki image
     if (imageUrl === 'No image available') {
       imageUrl = page.thumbnail?.source;
     }
 
+    //if still image not available then use a demo image
     if(imageUrl === undefined) {
       imageUrl = 'https://thumbs.dreamstime.com/b/seagrass-oceana-serrulata-undersea-red-sea-egypt-sharm-el-sheikh-nabq-bay-seagrass-oceana-serrulata-undersea-red-sea-279820596.jpg'
     }

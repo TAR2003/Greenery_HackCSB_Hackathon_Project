@@ -6,7 +6,7 @@ PlantInfo(id, name, image, description)
 
 UserXPlant(id, user_id, plant_id, no_of_plants, time)
 
-ForumQuestion(id, text, user_id, time)
+ForumQuestion(id,plant_id, text, user_id, time)
 
 ForumAnswer(id, question_id, text, user_id, time)
 
@@ -25,8 +25,6 @@ ReactXPost(id, post_id, react, time)
 CommentXPost(id, user_id, post_id, text, time)
 
 ReactXComment(id, user_id, post_id, react, time) 
-
-Notification(id, user_id, post_id, text, status, time)
 
 Product(id, name, text, price, image, status)
 
