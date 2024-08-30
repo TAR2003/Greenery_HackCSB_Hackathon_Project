@@ -28,7 +28,6 @@ const CommunityID = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const fetchData = async (relevant) => {
-    //console.log("the type " + all + "  " + relevant);
     setloading(true);
     if (relevant == false) {
       const data = await getAllHarvestPosts();
@@ -36,7 +35,6 @@ const CommunityID = () => {
       setVisiblePosts(0);
     } else if (relevant == true) {
       const data = await getPlantHarvests(parseInt(Cookies.get("userid")));
-      //console.log(JSON.stringify(data));
       setPosts(data);
       setVisiblePosts(0);
     }
@@ -98,7 +96,6 @@ const CommunityID = () => {
       data = await getAllHarvestPosts();
     } else if (relevant == true) {
       data = await getPlantHarvests(parseInt(Cookies.get("userid")));
-      //console.log(JSON.stringify(data));
     }
     // setfilter(true);
     const p = await findPlant(searchText);
@@ -110,8 +107,6 @@ const CommunityID = () => {
       setloading(false);
       return;
     }
-    // console.log(JSON.stringify(p[0]));
-    //setplantid(p[0].id);
 
     for (let i = 0; i < data.length; i++) {
       if (data[i].plant_id == p[0].id) arr.push(data[i]);

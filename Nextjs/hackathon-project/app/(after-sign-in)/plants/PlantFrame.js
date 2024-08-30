@@ -6,7 +6,6 @@ const PlantFrame = ({ plantName, style }) => {
   const [picture, setPicture] = useState("/tree.png");
   const router = useRouter();
   const handleClick = async () => {
-    console.log(JSON.stringify(plantName));
     router.push("/plants/" + plantName.id);
   };
   const fetchData = async () => {};

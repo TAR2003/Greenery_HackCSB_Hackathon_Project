@@ -71,8 +71,6 @@ const Newpost = ({ isOpen, onClose, type }) => {
   const handlePlantNameChange = async (event) => {
     const inputValue = event.target.value;
     setPlantName(inputValue);
-    //console.log(plantName);
-    //console.log(inputValue.length + " is the lenthg");
     // Fetch plant name suggestions based on input
     if (inputValue.length > 0) {
       const response = await getPlantNamesStartingWith(inputValue);
@@ -81,7 +79,6 @@ const Newpost = ({ isOpen, onClose, type }) => {
     } else {
       setPlantSuggestions([]);
     }
-    //console.log(plantName);
   };
 
   const handleSuggestionClick = (suggestion) => {
@@ -103,9 +100,7 @@ const Newpost = ({ isOpen, onClose, type }) => {
     const base64Data = base64String.split(",")[1]; // Remove the data URL part
 
     const plantinfo = await insertPlant(plantName);
-    console.log(plantName + " i the name searhed ");
     const plantId = plantinfo.plantId;
-    console.log(JSON.stringify(plantinfo));
 
     const response = await fetch("/api", {
       method: "POST",
@@ -127,7 +122,6 @@ const Newpost = ({ isOpen, onClose, type }) => {
     }
 
     const result = await response.json();
-    console.log("Image URL: " + JSON.stringify(result)); // Log the image URL from Cloudinary
   }
 
   async function uploadImageHarvest(file) {
@@ -135,9 +129,8 @@ const Newpost = ({ isOpen, onClose, type }) => {
     const base64Data = base64String.split(",")[1]; // Remove the data URL part
 
     const plantinfo = await insertPlant(plantName);
-    console.log(plantName + " i the name searhed ");
     const plantId = plantinfo.plantId;
-    console.log(JSON.stringify(plantinfo));
+  
 
     const response = await fetch("/api", {
       method: "POST",
@@ -158,15 +151,12 @@ const Newpost = ({ isOpen, onClose, type }) => {
     }
 
     const result = await response.json();
-    console.log("Image URL: " + JSON.stringify(result)); // Log the image URL from Cloudinary
   }
 
   useEffect(() => {
-    console.log(plantName);
   }, [plantName]);
 
   const handleSubmit = async () => {
-    console.log(plantName);
     setIsSubmitting(true);
     try {
       if (type === "community") await uploadImagePost(file);
@@ -182,7 +172,7 @@ const Newpost = ({ isOpen, onClose, type }) => {
       setAdviceChecked(false);
       onClose();
     }
-    console.log("posting done ");
+   
     window.location.reload();
   };
 

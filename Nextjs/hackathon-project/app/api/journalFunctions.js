@@ -86,7 +86,6 @@ export async function addReminder(journalId, msg, time) {
 ( $1 , $2 ,  to_timestamp($3, 'YYYY-MM-DD') )`,
       [msg, journalId, time]
     );
-    //console.log(" the time wr ifndd is " + time);
     await pool.query(
       `insert into journalmessages (journal_id, message, time) 
         values ( $1, $2, to_timestamp($3, 'YYYY-MM-DD') )`,

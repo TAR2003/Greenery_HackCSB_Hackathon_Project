@@ -130,7 +130,6 @@ const CommunityID = () => {
       setloading(false);
       return;
     }
-    console.log(JSON.stringify(p[0]));
     //setplantid(p[0].id);
 
     for (let i = 0; i < data.length; i++) {

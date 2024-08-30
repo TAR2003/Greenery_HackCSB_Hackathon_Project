@@ -37,7 +37,6 @@ export default function signin() {
 
     const handleSelectLocation = (value) => {
         setSelectedLocation(value);
-        console.log('selected :', value);
         setShowInvalidPopup(false);
         setFormData((prevData) => ({
             ...prevData,
@@ -89,7 +88,6 @@ export default function signin() {
                 }
                 else {
                     setShowInvalidPopup(true);
-                    console.log('Login failed:', data.message);
                 }
             }
             else 

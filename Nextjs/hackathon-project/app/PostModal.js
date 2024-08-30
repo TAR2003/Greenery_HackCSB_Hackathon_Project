@@ -76,7 +76,6 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
   const countNumbers = async () => {
     const likes = await getLikeNumberPost(parseInt(elem.id), type);
     const dislikes = await getDislikeNumberPost(parseInt(elem.id), type);
-    // console.log(likes[0].count + " " + JSON.stringify(dislikes));
     setLikeNumber(likes[0].count);
     setDislikeNumber(dislikes[0].count);
     const likeinfo = await getReactStatePost(
@@ -97,13 +96,10 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
   // Fetch comments when the modal is opened
   const fetchData = async () => {
     // Replace this with your actual data fetching logic
-    // console.log(elem);
-    //console.log(type + " is the type of content");
     if (type === "community") {
       const commentInfo = await getPostComments(parseInt(elem.id));
       setComments(commentInfo);
     } else if (type === "harvest") {
-      // console.log(JSON.stringify(elem));
       const commentInfo = await getHarvestComments(parseInt(elem.id));
       setComments(commentInfo);
     }
@@ -111,16 +107,13 @@ const PostModal = ({ elem, userinfo, isOpen, onClose, type }) => {
     await countNumbers();
     const nm = await getPlantName(elem.plant_id);
     setPlantName(nm[0].name);
-    //console.log(commentInfo);
   };
 
   const handleInputChange = (e) => {
     setwriteComment(e.target.value);
-    //console.log(writeComment + " is the writeten one ");
   };
 
   const handleAddComment = async () => {
-    //console.log("Write comment " + writeComment);
     if (writeComment === "") return;
     if (type == "community") {
       await insertNewCommentinPost(

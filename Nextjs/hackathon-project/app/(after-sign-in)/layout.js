@@ -61,8 +61,6 @@ const Layout = ({ children }) => {
       setReminders(rs);
       setnewnotification("/bell2.png");
     }
-    // console.log(JSON.stringify(rs));
-    //console.log("info we got == " + info[0].image);
   };
 
   useEffect(() => {

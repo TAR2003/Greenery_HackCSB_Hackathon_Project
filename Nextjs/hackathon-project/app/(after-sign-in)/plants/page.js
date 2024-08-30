@@ -91,7 +91,6 @@ const Greenery = () => {
 
     setPlants(result);
     setloading(false);
-    //console.log(JSON.stringify(result));
   };
 
   const handleSearchClick = async () => {

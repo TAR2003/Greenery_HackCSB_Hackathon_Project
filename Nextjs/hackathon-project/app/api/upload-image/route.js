@@ -30,8 +30,6 @@ export async function POST(req) {
               )
             );
           }
-
-          console.log("Image URL:", result.secure_url);
           return resolve(
             NextResponse.json({ url: result.secure_url }, { status: 200 })
           );

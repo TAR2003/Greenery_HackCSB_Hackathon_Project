@@ -1,7 +1,6 @@
 //mport fetch from 'node-fetch';
 
 export async function getname() {
-  console.log("We are done in the funcrion js mmm");
   return "Miraj";
 }
 
@@ -18,7 +17,6 @@ export async function getinfo() {
       }),
     });
     const newData = await response.json();
-    console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -38,15 +36,12 @@ export async function getUserInfo(uid) {
       }),
     });
     const newData = await response.json();
-    //  console.log("the new data  for " + uid + " is " + JSON.stringify(newData));
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
   }
 }
 export async function getUserPlants(uid) {
-  console.log("find uid " + uid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -59,7 +54,6 @@ export async function getUserPlants(uid) {
       }),
     });
     const newData = await response.json();
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -67,7 +61,6 @@ export async function getUserPlants(uid) {
 }
 
 export async function getUserPosts(uid) {
-  //console.log("find uid " + uid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -80,7 +73,6 @@ export async function getUserPosts(uid) {
       }),
     });
     const newData = await response.json();
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -88,7 +80,6 @@ export async function getUserPosts(uid) {
 }
 
 export async function getUserHarvests(uid) {
-  // console.log("find uid " + uid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -101,7 +92,6 @@ export async function getUserHarvests(uid) {
       }),
     });
     const newData = await response.json();
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -121,7 +111,6 @@ export async function searchUserByPrefix(prefix) {
       }),
     });
     const newData = await response.json();
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -141,8 +130,6 @@ export async function getUserAnswers(uid) {
       }),
     });
     const newData = await response.json();
-    //  console.log(newData);
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -161,8 +148,6 @@ export async function getAllCommunityPosts() {
       }),
     });
     const newData = await response.json();
-    //  console.log(newData);
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -181,8 +166,6 @@ export async function getAllHarvestPosts() {
       }),
     });
     const newData = await response.json();
-    //  console.log(newData);
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -190,7 +173,6 @@ export async function getAllHarvestPosts() {
 }
 
 export async function getPostComments(pId) {
-  // console.log("int the fintion " + pId);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -203,8 +185,6 @@ export async function getPostComments(pId) {
       }),
     });
     const newData = await response.json();
-    //console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -212,7 +192,6 @@ export async function getPostComments(pId) {
 }
 
 export async function getHarvestComments(pId) {
-  // console.log("int the fintion " + pId);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -225,8 +204,6 @@ export async function getHarvestComments(pId) {
       }),
     });
     const newData = await response.json();
-    //console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -249,8 +226,6 @@ export async function insertNewCommentinPost(uid, pid, txt, img) {
       }),
     });
     const newData = await response.json();
-    //console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -258,8 +233,6 @@ export async function insertNewCommentinPost(uid, pid, txt, img) {
 }
 
 export async function insertNewCommentinHarvest(uid, pid, txt, img) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -275,8 +248,6 @@ export async function insertNewCommentinHarvest(uid, pid, txt, img) {
       }),
     });
     const newData = await response.json();
-    //console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -284,8 +255,6 @@ export async function insertNewCommentinHarvest(uid, pid, txt, img) {
 }
 
 export async function getReactStatePost(uid, pid, kindof) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -300,8 +269,6 @@ export async function getReactStatePost(uid, pid, kindof) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -309,8 +276,6 @@ export async function getReactStatePost(uid, pid, kindof) {
 }
 
 export async function getLikeNumberPost(pid, kindof) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -324,8 +289,6 @@ export async function getLikeNumberPost(pid, kindof) {
       }),
     });
     const newData = await response.json();
-    //console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -333,8 +296,6 @@ export async function getLikeNumberPost(pid, kindof) {
 }
 
 export async function getDislikeNumberPost(pid, kindof) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -348,8 +309,6 @@ export async function getDislikeNumberPost(pid, kindof) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -357,8 +316,6 @@ export async function getDislikeNumberPost(pid, kindof) {
 }
 
 export async function addReactPost(uid, pid, react, kindof) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -374,8 +331,6 @@ export async function addReactPost(uid, pid, react, kindof) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -383,8 +338,6 @@ export async function addReactPost(uid, pid, react, kindof) {
 }
 
 export async function removeReactPost(uid, pid, kindof) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -399,8 +352,6 @@ export async function removeReactPost(uid, pid, kindof) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -425,8 +376,6 @@ export async function getPlantInfo(plantName) {
 }
 
 export async function getPlantPosts(uid) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -439,8 +388,6 @@ export async function getPlantPosts(uid) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -448,8 +395,6 @@ export async function getPlantPosts(uid) {
 }
 
 export async function getPlantHarvests(uid) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -462,8 +407,6 @@ export async function getPlantHarvests(uid) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -471,8 +414,6 @@ export async function getPlantHarvests(uid) {
 }
 
 export async function insertPlant(name) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -485,8 +426,6 @@ export async function insertPlant(name) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -494,8 +433,6 @@ export async function insertPlant(name) {
 }
 
 export async function getTotalNoOfPlants(uId) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -508,8 +445,6 @@ export async function getTotalNoOfPlants(uId) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -517,8 +452,6 @@ export async function getTotalNoOfPlants(uId) {
 }
 
 export async function getAllPlantNames() {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -530,8 +463,6 @@ export async function getAllPlantNames() {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -539,8 +470,6 @@ export async function getAllPlantNames() {
 }
 
 export async function getPlantNamesStartingWith(name) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -553,8 +482,6 @@ export async function getPlantNamesStartingWith(name) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -562,8 +489,6 @@ export async function getPlantNamesStartingWith(name) {
 }
 
 export async function findPlant(name) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -576,8 +501,6 @@ export async function findPlant(name) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -585,8 +508,6 @@ export async function findPlant(name) {
 }
 
 export async function getPlantName(pid) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -599,8 +520,6 @@ export async function getPlantName(pid) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -642,8 +561,6 @@ export function timeAgo(timestamp) {
 }
 
 export async function getUserJournals(uid) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -656,8 +573,6 @@ export async function getUserJournals(uid) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -665,8 +580,6 @@ export async function getUserJournals(uid) {
 }
 
 export async function getJournalMessages(jid) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -679,8 +592,6 @@ export async function getJournalMessages(jid) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -688,8 +599,6 @@ export async function getJournalMessages(jid) {
 }
 
 export async function getReminders(uid) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -702,8 +611,6 @@ export async function getReminders(uid) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -711,8 +618,6 @@ export async function getReminders(uid) {
 }
 
 export async function addReminder(jid, msg, time) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -727,8 +632,6 @@ export async function addReminder(jid, msg, time) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -736,8 +639,6 @@ export async function addReminder(jid, msg, time) {
 }
 
 export async function addUserJournal(uid, journalName) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -751,8 +652,6 @@ export async function addUserJournal(uid, journalName) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -760,8 +659,6 @@ export async function addUserJournal(uid, journalName) {
 }
 
 export async function addJournalMessage(jid, msg) {
-  //console.log(uid, pid, text, image);
-  // console.log("in harvest functin " + pid);
   try {
     const response = await fetch("/api", {
       method: "POST",
@@ -775,8 +672,6 @@ export async function addJournalMessage(jid, msg) {
       }),
     });
     const newData = await response.json();
-    //  console.log(JSON.stringify(newData) + "got back");
-    //console.log("We are done in the funcrion js   === ");
     return newData;
   } catch (error) {
     console.error("Error posting data:", error);

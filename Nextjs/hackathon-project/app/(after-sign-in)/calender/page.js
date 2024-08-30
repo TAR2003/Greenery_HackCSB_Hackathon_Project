@@ -138,8 +138,6 @@ export default function calender() {
 
             const data = await response.json();
 
-            console.log(data.days);
-
             setWeatherData(data.days);
 
         } catch(error) {

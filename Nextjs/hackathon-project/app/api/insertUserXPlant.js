@@ -6,7 +6,6 @@ export async function insertUserXPlant(userId, plantId) {
   const pool = getPool(); // Get the singleton instance of the pool
   try {
     // Use a parameterized query to fetch posts for the specified user ID
-    console.log("in the userxplant " + plantId + " " + userId);
     const result = await pool.query(
       `
     INSERT INTO userxplant (user_id, plant_id, no_of_plants)
@@ -19,7 +18,6 @@ export async function insertUserXPlant(userId, plantId) {
     );
 
     const ans = result.rows;
-    //console.log(JSON.stringify(ans));
 
     return NextResponse.json(ans);
   } catch (error) {
@@ -35,7 +33,6 @@ export async function insertUserXPlant2(userId, plantId) {
   const pool = getPool(); // Get the singleton instance of the pool
   try {
     // Use a parameterized query to fetch posts for the specified user ID
-    console.log("in the userxplant " + plantId + " " + userId);
     const result = await pool.query(
       `
     INSERT INTO userxplant (user_id, plant_id, no_of_plants)
@@ -48,7 +45,6 @@ export async function insertUserXPlant2(userId, plantId) {
     );
 
     const ans = result.rows;
-    //console.log(JSON.stringify(ans));
 
     return NextResponse.json(ans);
   } catch (error) {

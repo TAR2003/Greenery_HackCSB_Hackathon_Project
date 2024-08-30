@@ -74,7 +74,6 @@ const PostFrame = ({ elem, className, style, type }) => {
   const countNumbers = async () => {
     const likes = await getLikeNumberPost(parseInt(elem.id), type);
     const dislikes = await getDislikeNumberPost(parseInt(elem.id), type);
-    // console.log(likes[0].count + " " + JSON.stringify(dislikes));
     setLikeNumber(likes[0].count);
     setDislikeNumber(dislikes[0].count);
     const likeinfo = await getReactStatePost(
@@ -120,7 +119,6 @@ const PostFrame = ({ elem, className, style, type }) => {
       const commentInfo = await getPostComments(parseInt(elem.id));
       setComments(commentInfo);
     } else if (type === "harvest") {
-      // console.log(JSON.stringify(elem));
       const commentInfo = await getHarvestComments(parseInt(elem.id));
       setComments(commentInfo);
     }

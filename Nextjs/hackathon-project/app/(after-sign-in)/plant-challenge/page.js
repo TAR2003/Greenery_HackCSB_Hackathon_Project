@@ -9,7 +9,6 @@ const page = () => {
   const [uid, setuid] = useState(0);
   useEffect(() => {
     const uuid = parseInt(Cookies.get("userid"));
-    // console.log(uuid);
     setuid(uuid);
   }, []);
 

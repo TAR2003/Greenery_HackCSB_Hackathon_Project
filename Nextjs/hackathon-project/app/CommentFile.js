@@ -15,7 +15,6 @@ const CommentFile = ({ elem, className, style }) => {
   const fetchData = async () => {
     const info = await getUserInfo(elem.user_id);
     setuserinfo(info[0]);
-    //console.log("the value " + info[0].image);
   };
 
   useEffect(() => {

@@ -13,7 +13,6 @@ export async function getUserAnswers(userId) {
     );
 
     const harvests = result.rows;
-    // console.log(harvests);
     return NextResponse.json(harvests);
   } catch (error) {
     console.error("Database query error:", error);

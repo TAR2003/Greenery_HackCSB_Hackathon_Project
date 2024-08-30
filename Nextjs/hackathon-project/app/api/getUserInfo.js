@@ -4,7 +4,6 @@ import { getPool } from "./db";
 
 export async function getUserInfo(userId) {
   const pool = getPool();
-  console.log(userId + " -- " + typeof userId);
   try {
     // Use parameterized query to fetch user data from the UserInfo table
 

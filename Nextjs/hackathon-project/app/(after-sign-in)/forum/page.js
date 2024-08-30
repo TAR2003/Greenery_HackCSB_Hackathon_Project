@@ -130,8 +130,6 @@ const forum = () => {
 
             const data = await response.json();
 
-            console.log(data.answers);
-
             setAnswers(data.answers);
 
           } catch (error) {

@@ -119,8 +119,6 @@ async function fetchPlantDetailsFromWikipedia(scientificName, trefleImageUrl) {
       imageUrl = 'https://thumbs.dreamstime.com/b/seagrass-oceana-serrulata-undersea-red-sea-egypt-sharm-el-sheikh-nabq-bay-seagrass-oceana-serrulata-undersea-red-sea-279820596.jpg'
     }
 
-    console.log(`Fetched details for ${scientificName} from Wikipedia `, imageUrl);
-
     return { details, imageUrl, pageUrl };
   } catch (error) {
     console.error(`Error fetching details from Wikipedia for ${scientificName}:`, error.message);

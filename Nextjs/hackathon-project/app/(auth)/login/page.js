@@ -62,7 +62,6 @@ export default function login() {
             }
             else {
                 setShowInvalidPopup(true);
-                console.log('Login failed:', data.message);
             }
 
         } catch (error) {

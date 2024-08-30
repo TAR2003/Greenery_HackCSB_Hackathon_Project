@@ -5,7 +5,6 @@ export async function insertCommentInHarvest(harvest_id, user_id, text, image) {
 
   try {
     // Use parameterized query to prevent SQL injection
-    //console.log(" till now ");
     const queryText = `
       INSERT INTO CommentXHarvest (harvest_id, user_id, text, image)
       VALUES ($1, $2, $3, $4)
