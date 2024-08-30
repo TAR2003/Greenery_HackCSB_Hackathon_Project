@@ -1,43 +1,45 @@
 /* SortBy.module.css */
 .sortByContainer {
-    position: relative;
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
-  }
-  
-  .sortByButton {
-    background-color: #86efac;
-    color: #000000;
-    border: none;
-    border-radius: 4px;
-    padding: 10px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .sortByOptions {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 5px;
-  }
-  
-  .sortByOption {
-    display: block;
-    padding: 10px;
-    cursor: pointer;
-    width: 100%;
-    text-align: left;
-    background-color: #fff;
-    border: none;
-  }
-  
-  .sortByOption:hover {
-    background-color: #f0f0f0;
-  }
-  
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  color: #000000;
+  width: 10;
+}
+
+.sortByButton {
+  background-color: #86efac;
+  color: #000000;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 30;
+}
+
+.sortByOptions {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+}
+
+.sortByOption {
+  display: block;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  background-color: #fff;
+  border: none;
+}
+
+.sortByOption:hover {
+  background-color: #f0f0f0;
+}
