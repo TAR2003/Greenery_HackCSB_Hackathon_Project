@@ -1,9 +1,11 @@
 "use client";
 import {
+  getBadges,
   getTotalNoOfPlants,
   getUserAnswers,
   getUserHarvests,
   getUserInfo,
+  getUserJournals,
   getUserPlants,
   getUserPosts,
 } from "@/app/functions";
@@ -23,6 +25,7 @@ const ProfileID = ({ params }) => {
   const [communityPost, setCommunityPost] = useState("...");
   const [answeredQueries, setAnsweredQueries] = useState("...");
   const [earnedBadges, setEarnedBadges] = useState(0);
+  const [userjournals, setuserjournals] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
   const handleModalClick = () => setShowModal(true);
@@ -40,7 +43,7 @@ const ProfileID = ({ params }) => {
     setImage(result[0].image);
 
     const userPlantRows = await getTotalNoOfPlants(parseInt(params.id));
-    setUserPlants(userPlantRows);
+    setUserPlants(userPlantRows.length);
 
     const harvestedTimesRows = await getUserHarvests(parseInt(params.id));
     setHarvestedTimes(harvestedTimesRows.length);
@@ -51,9 +54,28 @@ const ProfileID = ({ params }) => {
     const answeredQueriesRows = await getUserAnswers(parseInt(params.id));
     setAnsweredQueries(answeredQueriesRows.length);
 
-    setEarnedBadges(1);
+    const journals = await getUserJournals(parseInt(params.id));
+    setuserjournals(journals.length);
+
     setShowstring(JSON.stringify(result));
   };
+
+  useEffect(() => {
+    const b = getBadges(
+      communityPost,
+      harvestedTimes,
+      answeredQueries,
+      userPlants,
+      userjournals
+    );
+    setEarnedBadges(b);
+  }, [
+    communityPost,
+    harvestedTimes,
+    answeredQueries,
+    userPlants,
+    userjournals,
+  ]);
 
   useEffect(() => {
     fetchData();
@@ -185,6 +207,27 @@ const ProfileID = ({ params }) => {
           <div
             className="w-96 h-96 bg-cover bg-center rounded-3xl m-6 transform transition-transform duration-300 hover:scale-110"
             style={{
+              backgroundImage: "url('/messaging.png')",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          >
+            <div className="flex flex-col h-full w-full justify-end items-center">
+              <h1 className="text-3xl text-black py-8 text-center font-bold">
+                Total {userjournals} plant journals
+              </h1>
+              <a
+                href={"/plant-journal/" + parseInt(params.id)}
+                className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
+              >
+                Learn More
+              </a>
+            </div>
+          </div>
+          <div
+            className="w-96 h-96 bg-cover bg-center rounded-3xl m-6 transform transition-transform duration-300 hover:scale-110"
+            style={{
               backgroundImage: "url('/earnedbadges.png')",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
@@ -195,7 +238,10 @@ const ProfileID = ({ params }) => {
               <h1 className="text-3xl text-black py-8 text-center font-bold">
                 Earned {earnedBadges} Badges
               </h1>
-              <a className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110">
+              <a
+                href={"/plant-challenge/" + parseInt(params.id)}
+                className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
+              >
                 Learn More
               </a>
             </div>

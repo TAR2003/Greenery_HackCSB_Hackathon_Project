@@ -88,22 +88,23 @@ const JournalList = ({ params }) => {
           <div className="lg:w-1/3 p-4 border-b lg:border-b-0 lg:border-r bg-gray-50">
             <h2 className="text-xl font-semibold mb-4">Journals</h2>
             <ul className="space-y-2">
-              {sampleJournals.map((journal) => (
-                <li
-                  key={journal.id}
-                  onClick={() => handleJournalClick(journal.id)}
-                  className={`relative cursor-pointer p-2 rounded-lg hover:bg-gray-200 transition-colors ${
-                    selectedJournal === journal.id
-                      ? "bg-gray-300 font-semibold"
-                      : ""
-                  }`}
-                >
-                  {journal.journalname}
-                  <span className="absolute bottom-2 right-2 text-sm text-gray-500">
-                    {timeAgo(journal.time)}
-                  </span>
-                </li>
-              ))}
+              {Array.isArray(sampleJournals) &&
+                sampleJournals.map((journal) => (
+                  <li
+                    key={journal.id}
+                    onClick={() => handleJournalClick(journal.id)}
+                    className={`relative cursor-pointer p-2 rounded-lg hover:bg-gray-200 transition-colors ${
+                      selectedJournal === journal.id
+                        ? "bg-gray-300 font-semibold"
+                        : ""
+                    }`}
+                  >
+                    {journal.journalname}
+                    <span className="absolute bottom-2 right-2 text-sm text-gray-500">
+                      {timeAgo(journal.time)}
+                    </span>
+                  </li>
+                ))}
             </ul>
             {parseInt(Cookies.get("userid")) === parseInt(params.id) ? (
               <div className="mt-4">

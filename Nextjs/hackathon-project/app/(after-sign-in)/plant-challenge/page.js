@@ -1,39 +1,19 @@
 "use client";
-import {
-  getUserAnswers,
-  getUserHarvests,
-  getUserPlants,
-  getUserPosts,
-} from "@/app/functions";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import JournalList from "./[id]/page";
+import { Cookie } from "next/font/google";
+import Cookies from "js-cookie";
+import Challenge from "./[id]/page";
 
-const challenge = () => {
-  const [userplants, setuserplants] = useState("...");
-  const [harvestedtimes, setharvestedtimes] = useState("...");
-  const [communitypost, setcommunitypost] = useState("...");
-  const [answeredqueries, setansweredqueries] = useState("...");
-
-  const fetchData = async () => {
-    let up;
-    up = await getUserPlants(parseInt(Cookies.get("userid")));
-    console.log(up.length);
-    up = await getUserHarvests(parseInt(Cookies.get("userid")));
-    console.log(up.length);
-    up = await getUserPosts(parseInt(Cookies.get("userid")));
-    console.log(up.length);
-    up = await getUserAnswers(parseInt(Cookies.get("userid")));
-    console.log(up.length);
-  };
-
+const page = () => {
+  const [uid, setuid] = useState(0);
   useEffect(() => {
-    fetchData();
+    const uuid = parseInt(Cookies.get("userid"));
+    // console.log(uuid);
+    setuid(uuid);
   }, []);
-  return (
-    <>
-      <h1>Overcome Challenges to become our most effective user</h1>
-    </>
-  );
+
+  return <>{uid != 0 ? <Challenge params={{ id: uid }} /> : null}</>;
 };
 
-export default challenge;
+export default page;

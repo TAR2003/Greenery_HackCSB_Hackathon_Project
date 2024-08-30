@@ -782,3 +782,16 @@ export async function addJournalMessage(jid, msg) {
     console.error("Error posting data:", error);
   }
 }
+
+export function getDigit(n) {
+  let s = 0;
+  while (n >= 1) {
+    s++;
+    n = Math.floor(n / 10); // Use Math.floor to reduce n properly
+  }
+  return s;
+}
+
+export function getBadges(a, b, c, d, e) {
+  return getDigit(a) + getDigit(b) + getDigit(c) + getDigit(d) + getDigit(e);
+}

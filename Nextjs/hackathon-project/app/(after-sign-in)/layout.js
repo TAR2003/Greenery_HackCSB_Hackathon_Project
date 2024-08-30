@@ -4,7 +4,7 @@ import Image from "next/image";
 import MenuOptions from "./MenuOptions"; // Import menu options
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { getUserInfo, searchUserByPrefix } from "../functions";
+import { getReminders, getUserInfo, searchUserByPrefix } from "../functions";
 
 const Layout = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,6 +13,9 @@ const Layout = ({ children }) => {
   const [userid, setuserid] = useState(0);
   const [newnotification, setnewnotification] = useState("/bell.png");
   const [userinfo, setuserinfo] = useState([]);
+  const [reminders, setReminders] = useState([]);
+  const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
+    useState(false);
   const router = useRouter();
 
   const toggleMenu = () => {
@@ -21,6 +24,10 @@ const Layout = ({ children }) => {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  const toggleNotificationDropdown = () => {
+    setIsNotificationDropdownOpen(!isNotificationDropdownOpen);
   };
 
   const handleSearchChange = async (event) => {
@@ -42,9 +49,19 @@ const Layout = ({ children }) => {
     Cookies.remove("userid");
   };
 
+  const handleReminderClick = () => {
+    router.push("/plant-journal");
+  };
+
   const fetchData = async () => {
     const info = await getUserInfo(parseInt(Cookies.get("userid")));
     setuserinfo(info[0]);
+    const rs = await getReminders(parseInt(Cookies.get("userid")));
+    if (rs.length > 0) {
+      setReminders(rs);
+      setnewnotification("/bell2.png");
+    }
+    // console.log(JSON.stringify(rs));
     //console.log("info we got == " + info[0].image);
   };
 
@@ -88,18 +105,38 @@ const Layout = ({ children }) => {
 
         <div className="flex-1 text-right">
           <div className="flex flex-row sm:gap-2 justify-end items-center pr-4 md:pr-16">
-            <a
-              href="/"
-              className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold p-2 sm:m-2 rounded-full flex items-center justify-center"
-            >
-              <img
-                src={newnotification}
-                alt="Notification Bell"
-                width={44} // Adjust the width to match the height of the button
-                height={44} // Adjust the height to match the width
-                className="object-contain"
-              />
-            </a>
+            <div className="relative">
+              <button
+                onClick={toggleNotificationDropdown}
+                className="bg-blue-500 border border-white hover:bg-white text-white hover:text-black font-bold p-2 sm:m-2 rounded-full flex items-center justify-center"
+              >
+                <img
+                  src={newnotification}
+                  alt="Notification Bell"
+                  width={44} // Adjust the width to match the height of the button
+                  height={44} // Adjust the height to match the width
+                  className="object-contain"
+                />
+              </button>
+              {isNotificationDropdownOpen && (
+                <>
+                  <h1 className="bg-red-300 text-center font-extrabold absolute right-0 mt-0 w-64 border border-black  rounded-lg shadow-lg z-10 text-black">
+                    {"Today's Reminders:-"}
+                  </h1>
+                  <ul className="absolute right-0 mt-6 w-64 bg-white border border-gray-300 rounded-lg shadow-lg z-10 text-black">
+                    {reminders.map((reminder, index) => (
+                      <li
+                        key={index}
+                        className="p-2 hover:bg-gray-200 cursor-pointer text-center"
+                        onClick={handleReminderClick}
+                      >
+                        {reminder.message}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
 
             <a
               href={userid == 0 ? "/profile" : `/profile/${userid}`}
@@ -208,11 +245,6 @@ const Layout = ({ children }) => {
           <div className="flex flex-col justify-center items-center h-full">
             <h3 className="text-center">
               Terms and conditions | Privacy Policy | Legal
-            </h3>
-          </div>
-          <div className="flex flex-col justify-center items-center h-full">
-            <h3 className="text-center">
-              Copyright , LOGO, 2024, All Rights Reserved
             </h3>
           </div>
         </div>
