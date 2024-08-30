@@ -20,10 +20,10 @@ const ProfileID = ({ params }) => {
   const [info, setInfo] = useState(null);
   const [username, setUsername] = useState("Loading username....");
   const [image, setImage] = useState("/1.jpg");
-  const [userPlants, setUserPlants] = useState("...");
-  const [harvestedTimes, setHarvestedTimes] = useState("...");
-  const [communityPost, setCommunityPost] = useState("...");
-  const [answeredQueries, setAnsweredQueries] = useState("...");
+  const [userPlants, setUserPlants] = useState("0");
+  const [harvestedTimes, setHarvestedTimes] = useState("0");
+  const [communityPost, setCommunityPost] = useState("0");
+  const [answeredQueries, setAnsweredQueries] = useState("0");
   const [earnedBadges, setEarnedBadges] = useState(0);
   const [userjournals, setuserjournals] = useState(0);
   const [showModal, setShowModal] = useState(false);
@@ -42,20 +42,24 @@ const ProfileID = ({ params }) => {
     }
     setImage(result[0].image);
 
-    const userPlantRows = await getTotalNoOfPlants(parseInt(params.id));
-    setUserPlants(userPlantRows.length);
+    try {
+      const userPlantRows = await getTotalNoOfPlants(parseInt(params.id));
+      setUserPlants(userPlantRows.length);
 
-    const harvestedTimesRows = await getUserHarvests(parseInt(params.id));
-    setHarvestedTimes(harvestedTimesRows.length);
+      const harvestedTimesRows = await getUserHarvests(parseInt(params.id));
+      setHarvestedTimes(harvestedTimesRows.length);
 
-    const communityPostRows = await getUserPosts(parseInt(params.id));
-    setCommunityPost(communityPostRows.length);
+      const communityPostRows = await getUserPosts(parseInt(params.id));
+      setCommunityPost(communityPostRows.length);
 
-    const answeredQueriesRows = await getUserAnswers(parseInt(params.id));
-    setAnsweredQueries(answeredQueriesRows.length);
+      const answeredQueriesRows = await getUserAnswers(parseInt(params.id));
+      setAnsweredQueries(answeredQueriesRows.length);
 
-    const journals = await getUserJournals(parseInt(params.id));
-    setuserjournals(journals.length);
+      const journals = await getUserJournals(parseInt(params.id));
+      setuserjournals(journals.length);
+    } catch (er) {
+      console.log(er + " error");
+    }
 
     setShowstring(JSON.stringify(result));
   };
@@ -134,7 +138,7 @@ const ProfileID = ({ params }) => {
                 Planted {userPlants} Trees
               </h1>
               <a
-                href="/greenery"
+                href="/plants"
                 className="bg-green-400 m-4 p-2 rounded-xl text-lg text-black border border-black hover:border-black hover:bg-white cursor-pointer transform transition-transform duration-300 hover:scale-110"
               >
                 Learn More

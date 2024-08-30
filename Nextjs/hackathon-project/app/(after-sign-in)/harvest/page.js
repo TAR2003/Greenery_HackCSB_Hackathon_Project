@@ -188,9 +188,7 @@ const CommunityID = () => {
       {loading ? (
         <div className="text-center mb-8">
           <div className="spinner-border animate-spin inline-block w-12 h-12 border-4 rounded-full  border-t-white"></div>
-          <p className="text-white text-xl mt-4">
-            Searching community posts...
-          </p>
+          <p className="text-white text-xl mt-4">Searching harvest posts...</p>
         </div>
       ) : (
         <div className="flex flex-wrap justify-around w-full">
