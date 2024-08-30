@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { getPool } from "./db";
-import message from "../(after-sign-in)/message/page";
 
 const pool = getPool();
 
