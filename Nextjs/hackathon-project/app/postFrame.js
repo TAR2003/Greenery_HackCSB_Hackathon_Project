@@ -137,6 +137,7 @@ const PostFrame = ({ elem, className, style, type }) => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    fetchData();
   };
 
   return (
