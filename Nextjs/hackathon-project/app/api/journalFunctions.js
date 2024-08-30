@@ -110,10 +110,14 @@ export async function getReminders(userId) {
     );
 
     const result = await pool.query(
-      `select * from reminders where time::date = current_timestamp::date and
-journal_id = any(select id from plantjournals where user_id = $1)
-
-
+      `SELECT *
+FROM reminders r
+WHERE r.time::date = current_timestamp::date
+  AND r.journal_id = ANY (
+    SELECT p.id
+    FROM plantjournals p
+    WHERE p.user_id = $1
+  )
 `,
       [userId]
     );
