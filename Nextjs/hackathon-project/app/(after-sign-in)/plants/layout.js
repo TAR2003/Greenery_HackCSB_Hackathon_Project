@@ -13,8 +13,8 @@ const Layout = ({ children }) => {
     >
       <div className="py-6 w-full text-center flex flex-col items-center">
         <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl text-white">
-          Celebrate the <span className="text-green-300">Beauty of Plants</span>
-          !
+          Find all the <span className="text-green-300">Beautiful Plants</span>{" "}
+          inside our app !
         </h1>
         <p className="mt-4 text-lg max-w-prose text-gray-200">
           Explore the vibrant world of greenery with us. Our plant collection is
