@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function PlantIdentification() {
   const [file, setFile] = useState(null);
-  const [organ, setOrgan] = useState('leaf'); // Default organ type
+  const [organ, setOrgan] = useState("leaf"); // Default organ type
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false); // State for loading
-  const [error, setError] = useState(''); // State for error message
+  const [error, setError] = useState(""); // State for error message
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
-    setError(''); // Clear error when a file is selected
+    setError(""); // Clear error when a file is selected
   };
 
   const handleOrganChange = (e) => {
@@ -20,22 +20,22 @@ export default function PlantIdentification() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validate if file is provided
     if (!file) {
-      setError('Please upload an image before identifying the plant.');
+      setError("Please upload an image before identifying the plant.");
       return;
     }
 
     setLoading(true); // Set loading to true when the request starts
-    setError(''); // Clear any previous error message
+    setError(""); // Clear any previous error message
 
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('organ', organ); // Append the selected organ type
+    formData.append("file", file);
+    formData.append("organ", organ); // Append the selected organ type
 
-    const res = await fetch('/api/plant-identification', {
-      method: 'POST',
+    const res = await fetch("/api/plant-identification", {
+      method: "POST",
       body: formData,
     });
 
@@ -47,12 +47,13 @@ export default function PlantIdentification() {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Enhanced Aesthetic Message at the top of the page */}
-      <header className="w-full bg-gradient-to-r from-green-400 via-green-500 to-green-700 text-white p-6 text-center shadow-md">
-        <h1 className="text-4xl font-extrabold tracking-tight drop-shadow-lg mb-2">
+      <header className="w-full bg-gradient-to-r from-green-500 via-emerald-400 to-teal-500 text-white p-8 text-center shadow-lg">
+        <h1 className="text-5xl font-extrabold tracking-tight mb-4 drop-shadow-2xl">
           🌿 Welcome to the Plant Identification Tool 🌱
         </h1>
-        <p className="text-lg font-medium italic drop-shadow-md">
-          Upload an image of a plant, select the organ type (leaf, flower, etc.), and let us help identify the plant.
+        <p className="text-xl font-semibold italic drop-shadow-lg">
+          Upload an image of a plant, select the organ type (leaf, flower,
+          etc.), and let us help identify the plant.
         </p>
       </header>
 
@@ -100,28 +101,41 @@ export default function PlantIdentification() {
 
           {!loading && result && (
             <div className="mt-6">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">Plant Identification Result:</h3>
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                Plant Identification Result:
+              </h3>
               <div className="bg-green-50 p-4 rounded-lg shadow-lg">
-                <h4 className="text-lg text-black font-bold mb-2">Best Match:</h4>
+                <h4 className="text-lg text-black font-bold mb-2">
+                  Best Match:
+                </h4>
                 <p className="text-gray-800">
                   <strong>Scientific Name:</strong> {result.bestMatch}
                 </p>
 
-                <h4 className="text-lg text-black font-bold mt-4 mb-2">Top Results:</h4>
+                <h4 className="text-lg text-black font-bold mt-4 mb-2">
+                  Top Results:
+                </h4>
                 <div className="space-y-4">
                   {result.results.map((res, index) => (
-                    <div key={index} className="bg-white p-4 rounded-lg shadow-md">
+                    <div
+                      key={index}
+                      className="bg-white p-4 rounded-lg shadow-md"
+                    >
                       <h5 className="text-md font-semibold text-gray-700">
-                        {res.species.commonNames?.join(', ') || 'No Common Name'}
+                        {res.species.commonNames?.join(", ") ||
+                          "No Common Name"}
                       </h5>
                       <p className="text-sm text-gray-600">
-                        <strong>Scientific Name:</strong> {res.species.scientificName}
+                        <strong>Scientific Name:</strong>{" "}
+                        {res.species.scientificName}
                       </p>
                       <p className="text-sm text-gray-600">
-                        <strong>Family:</strong> {res.species.family.scientificName}
+                        <strong>Family:</strong>{" "}
+                        {res.species.family.scientificName}
                       </p>
                       <p className="text-sm text-gray-600">
-                        <strong>Confidence:</strong> {(res.score * 100).toFixed(2)}%
+                        <strong>Confidence:</strong>{" "}
+                        {(res.score * 100).toFixed(2)}%
                       </p>
 
                       {/* Display plant images */}
