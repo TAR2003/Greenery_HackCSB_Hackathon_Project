@@ -4,7 +4,15 @@
 
 Built with modern web technologies including **Next.js** for seamless user experience and **PostgreSQL** for robust data management, Greenery integrates multiple APIs and AI-powered features to create an immersive gardening ecosystem.
 
-## 🌐 Tech Stack
+## � Project Demo
+
+[![Greenery Demo Video](https://img.shields.io/badge/📹_Demo_Video-Watch_on_YouTube-red?style=for-the-badge&logo=youtube)](https://youtu.be/emfbmrfqPGE)
+
+**[🔗 Watch the Full Project Demo](https://youtu.be/emfbmrfqPGE)**
+
+See Greenery in action! This comprehensive video demonstration showcases all the key features including the AI plant identification, community interactions, weather-based gardening calendar, marketplace functionality, and more.
+
+## �🌐 Tech Stack
 
 ### Frontend & Backend
 - **Framework**: [Next.js 14.2.5](https://nextjs.org/) (React-based full-stack framework)
